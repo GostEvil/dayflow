@@ -9,7 +9,7 @@ import { format, subDays, todayStr } from '../../lib/date-utils';
 interface Insight {
   id: string;
   type: 'suggestion' | 'warning' | 'trend' | 'correlation';
-  icon: React.ElementType;
+  icon: any;
   title: string;
   description: string;
   color: string;
@@ -161,22 +161,24 @@ export function InsightsPage() {
       </div>
 
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-4">
-        {insights.map(insight => (
-          <motion.div key={insight.id} variants={item}
-            className="bg-surface border border-border rounded-2xl p-5 spotlight-card hover:border-border-2 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className={`p-2.5 rounded-xl bg-surface-2 ${insight.color}`}>
-                <insight.icon className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase ${
-                    insight.type === 'warning' ? 'bg-ember-muted text-ember' :
-                    insight.type === 'suggestion' ? 'bg-glow-muted text-glow' :
-                    insight.type === 'correlation' ? 'bg-pulse-muted text-pulse' :
-                    'bg-success-muted text-success'
-                  }`}>
-                    {insight.type}
+        {insights.map(insight => {
+          const Icon = insight.icon;
+          return (
+            <motion.div key={insight.id} variants={item}
+              className="bg-surface border border-border rounded-2xl p-5 spotlight-card hover:border-border-2 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className={`p-2.5 rounded-xl bg-surface-2 ${insight.color}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase ${
+                      insight.type === 'warning' ? 'bg-ember-muted text-ember' :
+                      insight.type === 'suggestion' ? 'bg-glow-muted text-glow' :
+                      insight.type === 'correlation' ? 'bg-pulse-muted text-pulse' :
+                      'bg-success-muted text-success'
+                    }`}>
+                      {insight.type}
                   </span>
                 </div>
                 <h3 className="text-text font-medium mb-1">{insight.title}</h3>
@@ -184,7 +186,8 @@ export function InsightsPage() {
               </div>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
 
         {insights.length === 0 && (
           <div className="bg-surface border border-border rounded-2xl p-12 text-center">

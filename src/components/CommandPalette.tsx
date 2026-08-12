@@ -10,7 +10,7 @@ import {
 interface CommandItem {
   id: string;
   label: string;
-  icon: React.ElementType;
+  icon: any;
   action: () => void;
   category: string;
 }
@@ -112,16 +112,19 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                     <div className="px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider text-text-muted">
                       {category}
                     </div>
-                    {items.map(item => (
-                      <button
-                        key={item.id}
-                        onClick={() => handleSelect(item)}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:bg-surface-2 hover:text-text transition-colors"
-                      >
-                        <item.icon className="w-4 h-4 text-text-muted" />
-                        <span>{item.label}</span>
-                      </button>
-                    ))}
+                    {items.map(item => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => handleSelect(item)}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:bg-surface-2 hover:text-text transition-colors"
+                        >
+                          <Icon className="w-4 h-4 text-text-muted" />
+                          <span>{item.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 ))}
                 {filtered.length === 0 && (

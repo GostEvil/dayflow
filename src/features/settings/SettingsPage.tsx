@@ -90,7 +90,7 @@ export function SettingsPage() {
     }
   };
 
-  const THEME_OPTIONS: { value: ThemeMode; label: string; icon: React.ElementType }[] = [
+  const THEME_OPTIONS: { value: ThemeMode; label: string; icon: any }[] = [
     { value: 'dark', label: 'Dark', icon: Moon },
     { value: 'light', label: 'Light', icon: Sun },
     { value: 'system', label: 'System', icon: Monitor },
@@ -112,14 +112,17 @@ export function SettingsPage() {
       <div className="bg-surface border border-border rounded-2xl p-5 mb-4">
         <div className="text-xs font-mono uppercase text-text-muted mb-3 tracking-wider">Theme</div>
         <div className="flex gap-2">
-          {THEME_OPTIONS.map(opt => (
-            <button key={opt.value} onClick={() => { setTheme(opt.value); if (profile) setProfile({ ...profile, theme: opt.value }); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-colors ${
-                theme === opt.value ? 'bg-glow/10 text-glow border border-glow/30' : 'bg-surface-2 text-text-muted hover:text-text border border-transparent'
-              }`}>
-              <opt.icon className="w-4 h-4" /> {opt.label}
-            </button>
-          ))}
+          {THEME_OPTIONS.map(opt => {
+            const Icon = opt.icon;
+            return (
+              <button key={opt.value} onClick={() => { setTheme(opt.value); if (profile) setProfile({ ...profile, theme: opt.value }); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-colors ${
+                  theme === opt.value ? 'bg-glow/10 text-glow border border-glow/30' : 'bg-surface-2 text-text-muted hover:text-text border border-transparent'
+                }`}>
+                <Icon className="w-4 h-4" /> {opt.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
