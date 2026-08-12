@@ -1,0 +1,16 @@
+{
+  "name": "DayFlow",
+  "short_name": "DayFlow",
+  "description": "Your personal productivity operating system",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06060C",
+  "theme_color": "#00E5FF",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
