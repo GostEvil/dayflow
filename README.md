@@ -3,7 +3,7 @@
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
-daily commit wow, another daily commit. Another day, another larp. Just one more commit for larping haha. Need
+daily commit wow, another daily commit. Another day, another larp. Just one more commit for larping haha. Need this commit 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
