@@ -21,6 +21,7 @@ const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
 
 export function PlannerPage() {
   const [timeBlocks, setTimeBlocks] = useLocalStorage<TimeBlock[]>(STORAGE_KEYS.TIME_BLOCKS, []);
+  const [syncNotice, setSyncNotice] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
   const [showNew, setShowNew] = useState(false);
   const [editBlock, setEditBlock] = useState<TimeBlock | null>(null);
@@ -35,6 +36,17 @@ export function PlannerPage() {
 
   const getBlocksForDate = (date: string) => timeBlocks.filter(b => b.date === date).sort((a, b) => a.startTime.localeCompare(b.startTime));
 
+  const showSyncNotice = (type: 'error' | 'success', text: string) => {
+    setSyncNotice({ type, text });
+    setTimeout(() => setSyncNotice(null), 4000);
+  };
+
+  const isGoogleConflict = (error: unknown) => {
+    if (!(error instanceof Error)) return false;
+    const err = error as Error & { code?: string };
+    return err.code === 'GOOGLE_ETAG_CONFLICT';
+  };
+
   const addBlock = () => {
     if (!newTitle.trim()) return;
     const block: TimeBlock = {
@@ -46,18 +58,29 @@ export function PlannerPage() {
     };
     setTimeBlocks(prev => [...prev, block]);
     void syncGoogleBlock(block).then(result => {
-      setTimeBlocks(prev => prev.map(item => item.id === block.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId } : item));
-    }).catch(() => undefined);
+      setTimeBlocks(prev => prev.map(item => item.id === block.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId, googleEtag: result.etag || item.googleEtag || null } : item));
+    }).catch(() => showSyncNotice('error', 'Failed to sync new block to Google Calendar.'));
     setShowNew(false);
     setNewTitle('');
   };
 
   const saveEdit = () => {
     if (!editBlock) return;
-    setTimeBlocks(prev => prev.map(b => b.id === editBlock.id ? editBlock : b));
-    void syncGoogleBlock(editBlock).then(result => {
-      setTimeBlocks(prev => prev.map(item => item.id === editBlock.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId } : item));
-    }).catch(() => undefined);
+    const nextBlock = editBlock;
+    const previousBlock = timeBlocks.find(item => item.id === nextBlock.id) || null;
+    setTimeBlocks(prev => prev.map(b => b.id === nextBlock.id ? nextBlock : b));
+    void syncGoogleBlock(nextBlock).then(result => {
+      setTimeBlocks(prev => prev.map(item => item.id === nextBlock.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId, googleEtag: result.etag || item.googleEtag || null } : item));
+    }).catch(error => {
+      if (isGoogleConflict(error)) {
+        if (previousBlock) {
+          setTimeBlocks(prev => prev.map(item => item.id === nextBlock.id ? previousBlock : item));
+        }
+        showSyncNotice('error', 'Conflict detected: event changed in Google Calendar. Please import/refresh and retry.');
+        return;
+      }
+      showSyncNotice('error', 'Failed to sync changes to Google Calendar.');
+    });
     setEditBlock(null);
   };
 
@@ -78,6 +101,11 @@ export function PlannerPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
+      {syncNotice && (
+        <div className={`mb-4 px-4 py-2.5 rounded-xl text-sm border ${syncNotice.type === 'error' ? 'bg-danger/10 text-danger border-danger/30' : 'bg-success/10 text-success border-success/30'}`}>
+          {syncNotice.text}
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-display text-2xl font-bold text-text">Planner</h1>

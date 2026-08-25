@@ -27,6 +27,7 @@ Sincronizar dados entre Dayflow (site), Google Calendar e Notion sem custos reco
 - [x] Status de conexao/sync na pagina Settings.
 - [x] Metadata de sync persistida por fonte (Google/Notion) com ultimo sucesso/erro.
 - [ ] Resolucao de conflitos no merge Dayflow <-> Google/Notion.
+- [x] Deteccao de conflito por etag no Google Calendar (com rollback local no Planner e visibilidade em Settings).
 
 ## O Que Falta Depois Desta Fase
 - [ ] Resolucao de conflitos (edicao simultanea em multiplas fontes).

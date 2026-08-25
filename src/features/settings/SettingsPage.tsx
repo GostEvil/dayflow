@@ -248,9 +248,15 @@ export function SettingsPage() {
         <div className="text-xs font-mono uppercase text-text-muted mb-3 tracking-wider">Sync Status</div>
         <p className="text-xs text-text-muted">Last successful sync: {formatTs(syncStatus?.sync.lastSyncAt || null)}</p>
         <p className="text-xs text-text-muted mt-1">Last source: {syncStatus?.sync.lastSource || 'None'}</p>
+        <p className="text-xs text-text-muted mt-1">Google conflicts: {syncStatus?.sync.conflicts.google.count || 0}</p>
         {syncStatus?.sync.lastError && (
           <p className="text-xs text-danger mt-2">
             Last sync error ({formatTs(syncStatus.sync.lastErrorAt)}): {syncStatus.sync.lastError}
+          </p>
+        )}
+        {syncStatus?.sync.conflicts.google.lastMessage && (
+          <p className="text-xs text-danger mt-2">
+            Last Google conflict ({formatTs(syncStatus.sync.conflicts.google.lastAt)}): {syncStatus.sync.conflicts.google.lastMessage}
           </p>
         )}
       </div>

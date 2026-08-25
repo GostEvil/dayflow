@@ -101,6 +101,7 @@ export interface TimeBlock {
   endTime: string; // HH:mm
   isGoogleEvent: boolean;
   googleEventId: string | null;
+  googleEtag?: string | null;
   createdAt: string;
 }
 

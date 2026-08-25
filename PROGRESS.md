@@ -11,7 +11,7 @@ Make Dayflow a local-first personal hub that can reconcile tasks and calendar bl
 - [x] Google Calendar OAuth and event create/update/delete endpoints.
 - [x] Notion task create/update/delete endpoints and manual import.
 - [x] Sync status, errors and manual import controls in Settings.
-- [ ] Conflict handling and merge strategy.
+- [ ] Conflict handling and merge strategy (partially implemented for Google etag conflicts).
 - [x] Durable sync metadata persisted per provider (Google/Notion), including last success and last error tracking.
 
 ## Implementation order
@@ -34,6 +34,7 @@ Make Dayflow a local-first personal hub that can reconcile tasks and calendar bl
 4. **Product hardening** (remaining)
    - [x] Sync status and last error in Settings.
    - [x] Per-provider sync metadata (attempt/success/error) persisted in sync state.
+   - [x] Google etag conflict detection with persisted conflict metadata and UI visibility.
    - Retry-safe operations and conflict visibility.
    - Timezone, deleted-item and token-expiration handling.
 5. **Validation and documentation**

@@ -23,6 +23,10 @@ function defaultState() {
       lastError: null,
       lastErrorAt: null,
       lastSource: null,
+      conflicts: {
+        google: { count: 0, lastAt: null, lastMessage: null, lastEntityId: null },
+        notion: { count: 0, lastAt: null, lastMessage: null, lastEntityId: null },
+      },
       google: defaultSyncChannel(),
       notion: defaultSyncChannel(),
     },
@@ -38,10 +42,22 @@ function normalizeState(rawState) {
     sync: {
       ...fallback.sync,
       ...sync,
+      conflicts: {
+        ...fallback.sync.conflicts,
+        ...(sync.conflicts || {}),
+        google: { ...fallback.sync.conflicts.google, ...(sync.conflicts?.google || {}) },
+        notion: { ...fallback.sync.conflicts.notion, ...(sync.conflicts?.notion || {}) },
+      },
       google: { ...fallback.sync.google, ...(sync.google || {}) },
       notion: { ...fallback.sync.notion, ...(sync.notion || {}) },
     },
   };
+}
+
+function newHttpError(status, message) {
+  const error = new Error(message);
+  error.status = status;
+  return error;
 }
 
 function markSyncSuccess(state, source) {
@@ -62,6 +78,14 @@ function markSyncError(state, source, errorMessage) {
   state.sync.lastSource = source;
   state.sync[source].lastAttemptAt = at;
   state.sync[source].lastError = errorMessage;
+}
+
+function markSyncConflict(state, source, errorMessage, entityId) {
+  markSyncError(state, source, errorMessage);
+  state.sync.conflicts[source].count += 1;
+  state.sync.conflicts[source].lastAt = state.sync.lastErrorAt;
+  state.sync.conflicts[source].lastMessage = errorMessage;
+  state.sync.conflicts[source].lastEntityId = entityId || null;
 }
 
 async function readState() {
@@ -92,7 +116,10 @@ function googleConfigured() {
 async function googleRequest(url, options = {}) {
   const response = await fetch(url, options);
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error?.message || data.error_description || `Google request failed (${response.status})`);
+  if (!response.ok) {
+    const message = data.error?.message || data.error_description || `Google request failed (${response.status})`;
+    throw newHttpError(response.status, message);
+  }
   return data;
 }
 
@@ -165,19 +192,27 @@ async function handle(req, res) {
   }
 
   if (req.method === 'POST' && url.pathname === '/api/google/events') {
+    let block = {};
     try {
-      const block = await readBody(req);
+      block = await readBody(req);
       const state = await readState();
       const token = await googleAccessToken(state);
       const calendarId = encodeURIComponent(process.env.GOOGLE_CALENDAR_ID || 'primary');
       const externalId = block.googleEventId;
       const target = externalId ? `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${encodeURIComponent(externalId)}` : `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`;
-      const result = await googleRequest(target, { method: externalId ? 'PUT' : 'POST', headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' }, body: JSON.stringify(eventPayload(block)) });
+      const headers = { authorization: `Bearer ${token}`, 'content-type': 'application/json' };
+      if (externalId && block.ifMatchEtag) headers['if-match'] = block.ifMatchEtag;
+      const result = await googleRequest(target, { method: externalId ? 'PUT' : 'POST', headers, body: JSON.stringify(eventPayload(block)) });
       markSyncSuccess(state, 'google');
       await writeState(state);
       return send(res, 200, { googleEventId: result.id, etag: result.etag });
     } catch (error) {
       const state = await readState();
+      if (error.status === 412) {
+        markSyncConflict(state, 'google', 'Google event changed remotely (etag mismatch). Refresh/import before retrying.', block.googleEventId || block.id || null);
+        await writeState(state);
+        return send(res, 409, { error: state.sync.lastError, code: 'GOOGLE_ETAG_CONFLICT' });
+      }
       markSyncError(state, 'google', error.message);
       await writeState(state);
       return send(res, 502, { error: error.message });
