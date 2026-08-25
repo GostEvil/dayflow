@@ -12,7 +12,14 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 export interface SyncStatus {
   google: { configured: boolean; connected: boolean };
   notion: { configured: boolean };
-  sync: { lastSyncAt: string | null; lastError: string | null };
+  sync: {
+    lastSyncAt: string | null;
+    lastError: string | null;
+    lastErrorAt: string | null;
+    lastSource: 'google' | 'notion' | null;
+    google: { lastAttemptAt: string | null; lastSuccessAt: string | null; lastError: string | null };
+    notion: { lastAttemptAt: string | null; lastSuccessAt: string | null; lastError: string | null };
+  };
 }
 
 export function getSyncStatus() { return request<SyncStatus>('/api/sync/status'); }

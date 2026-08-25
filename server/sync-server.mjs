@@ -11,9 +11,62 @@ const stateFile = path.join(dataDir, 'sync-state.json');
 const redirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${port}/auth/google/callback`;
 let oauthStates = new Set();
 
+function defaultSyncChannel() {
+  return { lastAttemptAt: null, lastSuccessAt: null, lastError: null };
+}
+
+function defaultState() {
+  return {
+    googleTokens: null,
+    sync: {
+      lastSyncAt: null,
+      lastError: null,
+      lastErrorAt: null,
+      lastSource: null,
+      google: defaultSyncChannel(),
+      notion: defaultSyncChannel(),
+    },
+  };
+}
+
+function normalizeState(rawState) {
+  const fallback = defaultState();
+  const sync = rawState?.sync || {};
+  return {
+    ...fallback,
+    ...rawState,
+    sync: {
+      ...fallback.sync,
+      ...sync,
+      google: { ...fallback.sync.google, ...(sync.google || {}) },
+      notion: { ...fallback.sync.notion, ...(sync.notion || {}) },
+    },
+  };
+}
+
+function markSyncSuccess(state, source) {
+  const at = new Date().toISOString();
+  state.sync.lastSyncAt = at;
+  state.sync.lastError = null;
+  state.sync.lastErrorAt = null;
+  state.sync.lastSource = source;
+  state.sync[source].lastAttemptAt = at;
+  state.sync[source].lastSuccessAt = at;
+  state.sync[source].lastError = null;
+}
+
+function markSyncError(state, source, errorMessage) {
+  const at = new Date().toISOString();
+  state.sync.lastError = errorMessage;
+  state.sync.lastErrorAt = at;
+  state.sync.lastSource = source;
+  state.sync[source].lastAttemptAt = at;
+  state.sync[source].lastError = errorMessage;
+}
+
 async function readState() {
-  try { return JSON.parse(await fs.readFile(stateFile, 'utf8')); }
-  catch { return { googleTokens: null, sync: { lastSyncAt: null, lastError: null } }; }
+  try { return normalizeState(JSON.parse(await fs.readFile(stateFile, 'utf8'))); }
+  catch { return defaultState(); }
 }
 
 async function writeState(state) {
@@ -120,10 +173,15 @@ async function handle(req, res) {
       const externalId = block.googleEventId;
       const target = externalId ? `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${encodeURIComponent(externalId)}` : `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`;
       const result = await googleRequest(target, { method: externalId ? 'PUT' : 'POST', headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' }, body: JSON.stringify(eventPayload(block)) });
-      state.sync = { lastSyncAt: new Date().toISOString(), lastError: null };
+      markSyncSuccess(state, 'google');
       await writeState(state);
       return send(res, 200, { googleEventId: result.id, etag: result.etag });
-    } catch (error) { const state = await readState(); state.sync.lastError = error.message; await writeState(state); return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'google', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   if (req.method === 'GET' && url.pathname === '/api/google/events') {
@@ -133,33 +191,64 @@ async function handle(req, res) {
       const calendarId = encodeURIComponent(process.env.GOOGLE_CALENDAR_ID || 'primary');
       const params = new URLSearchParams({ singleEvents: 'true', orderBy: 'startTime', timeMin: new Date().toISOString(), timeMax: new Date(Date.now() + 90 * 86400000).toISOString() });
       const result = await googleRequest(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${params}`, { headers: { authorization: `Bearer ${token}` } });
+      markSyncSuccess(state, 'google');
+      await writeState(state);
       return send(res, 200, { events: result.items || [] });
-    } catch (error) { return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'google', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   if (req.method === 'POST' && url.pathname === '/api/notion/tasks') {
     if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATABASE_ID) return send(res, 400, { error: 'Set NOTION_TOKEN and NOTION_DATABASE_ID first' });
     try {
       const task = await readBody(req);
+      const state = await readState();
       const result = await syncNotionTask(task);
+      markSyncSuccess(state, 'notion');
+      await writeState(state);
       return send(res, 200, { notionPageId: result.id });
-    } catch (error) { return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'notion', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   if (req.method === 'GET' && url.pathname === '/api/notion/tasks') {
     if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATABASE_ID) return send(res, 400, { error: 'Set NOTION_TOKEN and NOTION_DATABASE_ID first' });
     try {
+      const state = await readState();
       const result = await googleRequest(`https://api.notion.com/v1/databases/${encodeURIComponent(process.env.NOTION_DATABASE_ID)}/query`, { method: 'POST', headers: notionHeaders(), body: JSON.stringify({ page_size: 100 }) });
+      markSyncSuccess(state, 'notion');
+      await writeState(state);
       return send(res, 200, { pages: result.results || [] });
-    } catch (error) { return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'notion', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   if (req.method === 'DELETE' && url.pathname.startsWith('/api/notion/tasks/')) {
     if (!process.env.NOTION_TOKEN) return send(res, 400, { error: 'Set NOTION_TOKEN first' });
     try {
+      const state = await readState();
       await googleRequest(`https://api.notion.com/v1/blocks/${encodeURIComponent(url.pathname.split('/').pop())}`, { method: 'DELETE', headers: notionHeaders() });
+      markSyncSuccess(state, 'notion');
+      await writeState(state);
       return send(res, 200, { ok: true });
-    } catch (error) { return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'notion', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   if (req.method === 'DELETE' && url.pathname.startsWith('/api/google/events/')) {
@@ -168,10 +257,15 @@ async function handle(req, res) {
       const token = await googleAccessToken(state);
       const calendarId = encodeURIComponent(process.env.GOOGLE_CALENDAR_ID || 'primary');
       await googleRequest(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${encodeURIComponent(url.pathname.split('/').pop())}`, { method: 'DELETE', headers: { authorization: `Bearer ${token}` } });
-      state.sync = { lastSyncAt: new Date().toISOString(), lastError: null };
+      markSyncSuccess(state, 'google');
       await writeState(state);
       return send(res, 200, { ok: true });
-    } catch (error) { return send(res, 502, { error: error.message }); }
+    } catch (error) {
+      const state = await readState();
+      markSyncError(state, 'google', error.message);
+      await writeState(state);
+      return send(res, 502, { error: error.message });
+    }
   }
 
   return send(res, 404, { error: 'Not found' });

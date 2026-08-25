@@ -139,6 +139,8 @@ export function SettingsPage() {
     { value: 'system', label: 'System', icon: Monitor },
   ];
 
+  const formatTs = (value: string | null) => value ? new Date(value).toLocaleString() : 'Never';
+
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[700px] mx-auto">
       <h1 className="font-display text-2xl font-bold text-text mb-8">Settings</h1>
@@ -216,7 +218,12 @@ export function SettingsPage() {
             {syncStatus?.google.connected ? 'Connected' : syncStatus?.google.configured ? 'Not connected' : 'Sync service not configured'}
           </span>
         </div>
-        {syncStatus?.sync.lastError && <p className="text-xs text-danger mt-3">Last sync error: {syncStatus.sync.lastError}</p>}
+        {syncStatus && (
+          <div className="mt-3 space-y-1">
+            <p className="text-xs text-text-muted">Last Google success: {formatTs(syncStatus.sync.google.lastSuccessAt)}</p>
+            {syncStatus.sync.google.lastError && <p className="text-xs text-danger">Google error: {syncStatus.sync.google.lastError}</p>}
+          </div>
+        )}
       </div>
 
       {/* Notion */}
@@ -228,6 +235,24 @@ export function SettingsPage() {
         <span className={`text-xs ${syncStatus?.notion.configured ? 'text-success' : 'text-text-muted'}`}>
           {syncStatus?.notion.configured ? 'Database configured' : 'Database not configured'}
         </span>
+        {syncStatus && (
+          <div className="mt-3 space-y-1">
+            <p className="text-xs text-text-muted">Last Notion success: {formatTs(syncStatus.sync.notion.lastSuccessAt)}</p>
+            {syncStatus.sync.notion.lastError && <p className="text-xs text-danger">Notion error: {syncStatus.sync.notion.lastError}</p>}
+          </div>
+        )}
+      </div>
+
+      {/* Sync status */}
+      <div className="bg-surface border border-border rounded-2xl p-5 mb-4">
+        <div className="text-xs font-mono uppercase text-text-muted mb-3 tracking-wider">Sync Status</div>
+        <p className="text-xs text-text-muted">Last successful sync: {formatTs(syncStatus?.sync.lastSyncAt || null)}</p>
+        <p className="text-xs text-text-muted mt-1">Last source: {syncStatus?.sync.lastSource || 'None'}</p>
+        {syncStatus?.sync.lastError && (
+          <p className="text-xs text-danger mt-2">
+            Last sync error ({formatTs(syncStatus.sync.lastErrorAt)}): {syncStatus.sync.lastError}
+          </p>
+        )}
       </div>
 
       {/* Data */}
