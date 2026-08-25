@@ -40,7 +40,7 @@ Make Dayflow a local-first personal hub that can reconcile tasks and calendar bl
 5. **Validation and documentation**
    - [x] Local Docker setup and OAuth/Notion instructions.
    - [x] TypeScript, syntax and health endpoint checks.
-   - [ ] Full build/lint after reinstalling incomplete native npm optional dependencies.
+   - [x] Full build/lint executado no ambiente atual.
 
 ## Cost model
 

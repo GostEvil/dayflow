@@ -5,9 +5,9 @@ Sincronizar dados entre Dayflow (site), Google Calendar e Notion sem custos reco
 
 ## Estado Atual
 - Frontend local-first com dados em localStorage.
-- Planner ja armazena campos para Google (`isGoogleEvent`, `googleEventId`), mas sem integracao real.
-- Tasks sem sincronizacao com Notion.
-- Sem backend de autenticacao/sincronizacao.
+- Planner sincroniza blocos com Google Calendar via backend e preserva IDs externos.
+- Tasks sincronizam com uma base Notion configurada, com importacao manual e deduplicacao.
+- Backend local de autenticacao e sincronizacao implementado em Node, com estado persistente em JSON.
 
 ## Progresso Feito Nesta Iteracao
 - Analise tecnica do projeto atual concluida.
@@ -17,13 +17,13 @@ Sincronizar dados entre Dayflow (site), Google Calendar e Notion sem custos reco
   - Sync incremental e idempotente por `externalId`.
 
 ## Em Desenvolvimento
-- [ ] Backend de sync (Google + Notion).
-- [ ] Endpoints de autenticacao Google (OAuth).
-- [ ] Endpoints de sync de time blocks para Google Calendar.
-- [ ] Endpoints de sync de tasks para Notion.
-- [ ] Cliente frontend para chamar backend de sync.
-- [ ] Integracao do Planner no fluxo de sync.
-- [ ] Integracao de Tasks no fluxo de sync.
+- [x] Backend de sync (Google + Notion).
+- [x] Endpoints de autenticacao Google (OAuth).
+- [x] Endpoints de sync de time blocks para Google Calendar.
+- [x] Endpoints de sync de tasks para Notion.
+- [x] Cliente frontend para chamar backend de sync.
+- [x] Integracao do Planner no fluxo de sync.
+- [x] Integracao de Tasks no fluxo de sync.
 - [x] Status de conexao/sync na pagina Settings.
 - [x] Metadata de sync persistida por fonte (Google/Notion) com ultimo sucesso/erro.
 - [ ] Resolucao de conflitos no merge Dayflow <-> Google/Notion.
