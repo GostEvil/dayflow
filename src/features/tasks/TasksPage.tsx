@@ -10,6 +10,7 @@ import type { Task, TaskStatus, Priority, TaskCategory, GamificationState } from
 import { STORAGE_KEYS } from '../../types';
 import { formatDate, todayStr } from '../../lib/date-utils';
 import { XP_VALUES, getLevel, checkBadges } from '../../lib/xp';
+import { deleteNotionTask, syncNotionTask } from '../../lib/sync-api';
 
 const STATUS_LABELS: Record<TaskStatus, string> = {
   backlog: 'Backlog',
@@ -87,6 +88,9 @@ export function TasksPage() {
       isInbox: false,
     };
     setTasks(prev => [task, ...prev]);
+    void syncNotionTask(task).then(result => {
+      setTasks(prev => prev.map(item => item.id === task.id ? { ...item, notionPageId: result.notionPageId } : item));
+    }).catch(() => undefined);
     resetForm();
     setShowNewTask(false);
   };
@@ -98,7 +102,12 @@ export function TasksPage() {
   };
 
   const updateTask = (id: string, updates: Partial<Task>) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    setTasks(prev => {
+      const updated = prev.map(t => t.id === id ? { ...t, ...updates } : t);
+      const task = updated.find(t => t.id === id);
+      if (task) void syncNotionTask(task).then(result => setTasks(current => current.map(item => item.id === id ? { ...item, notionPageId: result.notionPageId } : item))).catch(() => undefined);
+      return updated;
+    });
   };
 
   const toggleComplete = (task: Task) => {
@@ -123,7 +132,9 @@ export function TasksPage() {
   };
 
   const deleteTask = (id: string) => {
+    const task = tasks.find(item => item.id === id);
     setTasks(prev => prev.filter(t => t.id !== id));
+    if (task?.notionPageId) void deleteNotionTask(task.notionPageId).catch(() => undefined);
     if (editingTask?.id === id) setEditingTask(null);
   };
 

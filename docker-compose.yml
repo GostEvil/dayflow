@@ -4,3 +4,18 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
+  sync:
+    image: node:20-alpine
+    working_dir: /app
+    command: node server/sync-server.mjs
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+      - dayflow-sync-data:/app/server/data
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
+
+volumes:
+  dayflow-sync-data:

@@ -1,12 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Monitor, Download, Upload, Trash2, RotateCcw, Database, Calendar } from 'lucide-react';
+import { Sun, Moon, Monitor, Download, Upload, Trash2, RotateCcw, Database, Calendar, RefreshCw } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useTheme } from '../../hooks/useTheme';
-import type { UserProfile, ThemeMode } from '../../types';
+import type { UserProfile, ThemeMode, Task, TimeBlock } from '../../types';
 import { STORAGE_KEYS } from '../../types';
 import { exportAllData, importAllData, clearAllData, getBackups, restoreBackup, createBackup } from '../../lib/storage';
 import { resetToSeedData } from '../../lib/seed-data';
+import { connectGoogle, getSyncStatus, pullGoogleEvents, pullNotionPages, type SyncStatus } from '../../lib/sync-api';
 
 export function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -15,8 +16,15 @@ export function SettingsPage() {
   const [workStart, setWorkStart] = useState(profile?.workingHoursStart || '09:00');
   const [workEnd, setWorkEnd] = useState(profile?.workingHoursEnd || '17:00');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const backups = getBackups();
+
+  const refreshSyncStatus = () => {
+    void getSyncStatus().then(setSyncStatus).catch(() => setSyncStatus(null));
+  };
+
+  useEffect(() => { refreshSyncStatus(); }, []);
 
   const saveProfile = () => {
     if (profile) {
@@ -77,6 +85,41 @@ export function SettingsPage() {
   const handleBackup = () => {
     createBackup();
     showMsg('success', 'Backup created');
+  };
+
+  const handleImportGoogle = () => {
+    void pullGoogleEvents().then(result => {
+      const imported = result.events.map<TimeBlock | null>(event => {
+        const start = event.start?.dateTime;
+        const end = event.end?.dateTime;
+        if (!start || !end) return null;
+        return {
+          id: crypto.randomUUID(), title: event.summary || 'Google event', category: 'meeting',
+          date: start.slice(0, 10), startTime: start.slice(11, 16), endTime: end.slice(11, 16),
+          isGoogleEvent: true, googleEventId: event.id, createdAt: new Date().toISOString(),
+        };
+      }).filter((block): block is TimeBlock => block !== null);
+      const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.TIME_BLOCKS) || '[]') as TimeBlock[];
+      const existingIds = new Set(current.map(block => block.googleEventId));
+      localStorage.setItem(STORAGE_KEYS.TIME_BLOCKS, JSON.stringify([...current, ...imported.filter(block => !existingIds.has(block.googleEventId))]));
+      showMsg('success', `${imported.length} Google events checked`);
+      setTimeout(() => window.location.reload(), 500);
+    }).catch(error => showMsg('error', error.message));
+  };
+
+  const handleImportNotion = () => {
+    void pullNotionPages().then(result => {
+      const titleProperty = import.meta.env.VITE_NOTION_TITLE_PROPERTY || 'Name';
+      const imported: Task[] = result.pages.map(page => {
+        const title = page.properties[titleProperty]?.title?.[0]?.plain_text || 'Notion task';
+        return { id: crypto.randomUUID(), notionPageId: page.id, title, description: '', status: 'today', priority: 'medium', category: 'other', dueDate: null, dueTime: null, createdAt: new Date().toISOString(), completedAt: null, isInbox: false };
+      });
+      const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.TASKS) || '[]') as Task[];
+      const existingIds = new Set(current.map(task => task.notionPageId));
+      localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify([...current, ...imported.filter(task => !existingIds.has(task.notionPageId))]));
+      showMsg('success', `${imported.length} Notion tasks checked`);
+      setTimeout(() => window.location.reload(), 500);
+    }).catch(error => showMsg('error', error.message));
   };
 
   const handleRestore = (backupId: string) => {
@@ -160,17 +203,43 @@ export function SettingsPage() {
         </div>
         <p className="text-sm text-text-secondary mb-3">
           Connect your Google Calendar to sync events with the Planner.
-          Requires setting up <code className="text-glow font-mono text-xs">VITE_GOOGLE_CLIENT_ID</code> env var.
+          The free local sync service uses server-side OAuth credentials.
         </p>
-        <button className="px-4 py-2 bg-surface-2 text-text-muted text-sm rounded-xl hover:bg-surface-3 transition-colors">
-          Connect Google Calendar
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button onClick={connectGoogle} disabled={!syncStatus?.google.configured} className="px-4 py-2 bg-surface-2 text-text-muted text-sm rounded-xl hover:bg-surface-3 transition-colors disabled:opacity-40">
+            {syncStatus?.google.connected ? 'Reconnect Google Calendar' : 'Connect Google Calendar'}
+          </button>
+          <button onClick={refreshSyncStatus} aria-label="Refresh sync status" className="p-2 text-text-muted hover:text-text rounded-lg hover:bg-surface-2">
+            <RefreshCw className="w-4 h-4" />
+          </button>
+          <span className={`text-xs ${syncStatus?.google.connected ? 'text-success' : 'text-text-muted'}`}>
+            {syncStatus?.google.connected ? 'Connected' : syncStatus?.google.configured ? 'Not connected' : 'Sync service not configured'}
+          </span>
+        </div>
+        {syncStatus?.sync.lastError && <p className="text-xs text-danger mt-3">Last sync error: {syncStatus.sync.lastError}</p>}
+      </div>
+
+      {/* Notion */}
+      <div className="bg-surface border border-border rounded-2xl p-5 mb-4">
+        <div className="text-xs font-mono uppercase text-text-muted mb-3">Notion Tasks</div>
+        <p className="text-sm text-text-secondary mb-3">
+          Tasks are sent to the configured Notion database when the local sync service is running.
+        </p>
+        <span className={`text-xs ${syncStatus?.notion.configured ? 'text-success' : 'text-text-muted'}`}>
+          {syncStatus?.notion.configured ? 'Database configured' : 'Database not configured'}
+        </span>
       </div>
 
       {/* Data */}
       <div className="bg-surface border border-border rounded-2xl p-5 mb-4">
         <div className="text-xs font-mono uppercase text-text-muted mb-3 tracking-wider">Data Management</div>
         <div className="space-y-2">
+          <button onClick={handleImportGoogle} disabled={!syncStatus?.google.connected} className="w-full flex items-center gap-3 px-4 py-3 bg-surface-2 rounded-xl text-sm text-text hover:bg-surface-3 transition-colors disabled:opacity-40">
+            <Calendar className="w-4 h-4 text-text-muted" /> Check Google Calendar
+          </button>
+          <button onClick={handleImportNotion} disabled={!syncStatus?.notion.configured} className="w-full flex items-center gap-3 px-4 py-3 bg-surface-2 rounded-xl text-sm text-text hover:bg-surface-3 transition-colors disabled:opacity-40">
+            <Database className="w-4 h-4 text-text-muted" /> Check Notion Tasks
+          </button>
           <button onClick={handleExport} className="w-full flex items-center gap-3 px-4 py-3 bg-surface-2 rounded-xl text-sm text-text hover:bg-surface-3 transition-colors">
             <Download className="w-4 h-4 text-text-muted" /> Export All Data (JSON)
           </button>

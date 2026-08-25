@@ -5,6 +5,7 @@ export type TaskCategory = 'work' | 'personal' | 'health' | 'learning' | 'financ
 
 export interface Task {
   id: string;
+  notionPageId?: string | null;
   title: string;
   description: string;
   status: TaskStatus;

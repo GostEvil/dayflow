@@ -6,6 +6,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { TimeBlock, TimeBlockCategory } from '../../types';
 import { STORAGE_KEYS } from '../../types';
 import { getWeekDates, format, addDays, formatTime, dateStr } from '../../lib/date-utils';
+import { deleteGoogleEvent, syncGoogleBlock } from '../../lib/sync-api';
 
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 6); // 6am - 9pm
 const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
@@ -44,6 +45,9 @@ export function PlannerPage() {
       createdAt: new Date().toISOString(),
     };
     setTimeBlocks(prev => [...prev, block]);
+    void syncGoogleBlock(block).then(result => {
+      setTimeBlocks(prev => prev.map(item => item.id === block.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId } : item));
+    }).catch(() => undefined);
     setShowNew(false);
     setNewTitle('');
   };
@@ -51,11 +55,16 @@ export function PlannerPage() {
   const saveEdit = () => {
     if (!editBlock) return;
     setTimeBlocks(prev => prev.map(b => b.id === editBlock.id ? editBlock : b));
+    void syncGoogleBlock(editBlock).then(result => {
+      setTimeBlocks(prev => prev.map(item => item.id === editBlock.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId } : item));
+    }).catch(() => undefined);
     setEditBlock(null);
   };
 
   const deleteBlock = (id: string) => {
+    const block = timeBlocks.find(item => item.id === id);
     setTimeBlocks(prev => prev.filter(b => b.id !== id));
+    if (block?.googleEventId) void deleteGoogleEvent(block.googleEventId).catch(() => undefined);
     if (editBlock?.id === id) setEditBlock(null);
   };
 

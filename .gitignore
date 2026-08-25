@@ -20,6 +20,7 @@ dist-ssr/
 .env
 .env.local
 .env.*.local
+server/data/
 
 # OS
 .DS_Store
