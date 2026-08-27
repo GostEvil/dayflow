@@ -15,7 +15,7 @@ Open `http://localhost:5173`. Dayflow works without the sync service; integratio
 
 ## Google Calendar setup
 
-1. Create a project in Google Cloud Console and enable Google Calendar API.
+1. Create a project in Google Cloud Console and enable Google Calendar API.  [!] Tenho conta gemini pro com o pacote de student e nao me deixar por add uma api porque nao tenho cartao de credito.  
 2. Create an OAuth client for a web application.
 3. Add `http://localhost:8787/auth/google/callback` as an authorized redirect URI.
 4. Put the client ID and secret in `.env` as `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
