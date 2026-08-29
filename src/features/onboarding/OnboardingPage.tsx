@@ -59,9 +59,26 @@ export function OnboardingPage() {
 
   const complete = () => {
     loadSeedData();
+    if (selectedHabits.length > 0) {
+      const existingHabits = JSON.parse(localStorage.getItem(STORAGE_KEYS.HABITS) || '[]');
+      const newHabits = selectedHabits.map(h => {
+        const found = HABIT_SUGGESTIONS.find(s => s.name === h);
+        return {
+          id: crypto.randomUUID(),
+          name: h,
+          icon: found?.icon || '⭐',
+          color: '#00E5FF',
+          frequency: 'daily' as const,
+          targetDays: [0, 1, 2, 3, 4, 5, 6],
+          createdAt: new Date().toISOString(),
+          completions: {},
+        };
+      });
+      localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify([...existingHabits, ...newHabits]));
+    }
     setProfile({
       name: name || 'User',
-      primaryGoal: goal || 'Be more productive',
+      primaryGoal: goal || '',
       workingHoursStart: workStart,
       workingHoursEnd: workEnd,
       energyPattern: energy,
@@ -126,7 +143,7 @@ export function OnboardingPage() {
                     Get Started <ArrowRight className="w-4 h-4" />
                   </button>
                   <button onClick={skip} className="px-6 py-2.5 text-text-muted text-sm hover:text-text transition-colors flex items-center justify-center gap-1">
-                    <SkipForward className="w-3.5 h-3.5" /> Skip with demo data
+                    <SkipForward className="w-3.5 h-3.5" /> Skip setup
                   </button>
                 </div>
               </div>

@@ -198,4 +198,5 @@ export const STORAGE_KEYS = {
   GOOGLE_TOKENS: 'dayflow_google_tokens',
   BACKUPS: 'dayflow_backups',
   SEED_LOADED: 'dayflow_seed_loaded',
+  CLEAN_INITIALIZED: 'dayflow_clean_initialized',
 } as const;

@@ -67,10 +67,10 @@ export function SettingsPage() {
   };
 
   const handleReset = () => {
-    if (confirm('Reset all data to demo defaults? This cannot be undone.')) {
+    if (confirm('Clear all data and reset workspace to empty? This cannot be undone.')) {
       clearAllData();
       resetToSeedData();
-      showMsg('success', 'Data reset — refreshing...');
+      showMsg('success', 'Workspace cleared — refreshing...');
       setTimeout(() => window.location.reload(), 1000);
     }
   };
@@ -282,7 +282,7 @@ export function SettingsPage() {
             <Database className="w-4 h-4 text-text-muted" /> Create Backup Now
           </button>
           <button onClick={handleReset} className="w-full flex items-center gap-3 px-4 py-3 bg-surface-2 rounded-xl text-sm text-danger hover:bg-danger/10 transition-colors">
-            <Trash2 className="w-4 h-4" /> Reset to Demo Data
+            <Trash2 className="w-4 h-4" /> Clear All Data (Reset)
           </button>
           <button onClick={handleRestartOnboarding} className="w-full flex items-center gap-3 px-4 py-3 bg-surface-2 rounded-xl text-sm text-text hover:bg-surface-3 transition-colors">
             <RotateCcw className="w-4 h-4 text-text-muted" /> Restart Onboarding
