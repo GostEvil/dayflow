@@ -8,7 +8,8 @@ import { STORAGE_KEYS } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { exportAllData, importAllData, clearAllData, getBackups, restoreBackup, createBackup } from '../../lib/storage';
 import { resetToSeedData } from '../../lib/seed-data';
-import { connectGoogle, getSyncStatus, pullGoogleEvents, pullNotionPages, type SyncStatus } from '../../lib/sync-api';
+import { connectGoogle, getSyncStatus, type SyncStatus } from '../../lib/sync-api';
+import { syncPullGoogleEvents, syncPullNotionTasks } from '../../lib/sync-manager';
 
 export function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -89,37 +90,22 @@ export function SettingsPage() {
   };
 
   const handleImportGoogle = () => {
-    void pullGoogleEvents().then(result => {
-      const imported = result.events.map<TimeBlock | null>(event => {
-        const start = event.start?.dateTime;
-        const end = event.end?.dateTime;
-        if (!start || !end) return null;
-        return {
-          id: crypto.randomUUID(), title: event.summary || 'Google event', category: 'meeting',
-          date: start.slice(0, 10), startTime: start.slice(11, 16), endTime: end.slice(11, 16),
-          isGoogleEvent: true, googleEventId: event.id, createdAt: new Date().toISOString(),
-        };
-      }).filter((block): block is TimeBlock => block !== null);
-      const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.TIME_BLOCKS) || '[]') as TimeBlock[];
-      const existingIds = new Set(current.map(block => block.googleEventId));
-      localStorage.setItem(STORAGE_KEYS.TIME_BLOCKS, JSON.stringify([...current, ...imported.filter(block => !existingIds.has(block.googleEventId))]));
-      showMsg('success', `${imported.length} Google events checked`);
-      setTimeout(() => window.location.reload(), 500);
+    void syncPullGoogleEvents().then(res => {
+      refreshSyncStatus();
+      const parts: string[] = [];
+      if (res.importedCount > 0) parts.push(`${res.importedCount} imported`);
+      if (res.updatedCount > 0) parts.push(`${res.updatedCount} updated`);
+      if (res.deletedCount > 0) parts.push(`${res.deletedCount} deleted`);
+      const details = parts.length > 0 ? ` (${parts.join(', ')})` : '';
+      showMsg('success', `Google Calendar checked${details}`);
     }).catch(error => showMsg('error', error.message));
   };
 
   const handleImportNotion = () => {
-    void pullNotionPages().then(result => {
-      const titleProperty = import.meta.env.VITE_NOTION_TITLE_PROPERTY || 'Name';
-      const imported: Task[] = result.pages.map(page => {
-        const title = page.properties[titleProperty]?.title?.[0]?.plain_text || 'Notion task';
-        return { id: crypto.randomUUID(), notionPageId: page.id, title, description: '', status: 'today', priority: 'medium', category: 'other', dueDate: null, dueTime: null, createdAt: new Date().toISOString(), completedAt: null, isInbox: false };
-      });
-      const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.TASKS) || '[]') as Task[];
-      const existingIds = new Set(current.map(task => task.notionPageId));
-      localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify([...current, ...imported.filter(task => !existingIds.has(task.notionPageId))]));
-      showMsg('success', `${imported.length} Notion tasks checked`);
-      setTimeout(() => window.location.reload(), 500);
+    void syncPullNotionTasks().then(res => {
+      refreshSyncStatus();
+      const details = res.importedCount > 0 ? ` (${res.importedCount} new)` : '';
+      showMsg('success', `Notion tasks checked${details}`);
     }).catch(error => showMsg('error', error.message));
   };
 

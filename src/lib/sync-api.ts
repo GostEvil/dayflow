@@ -43,7 +43,16 @@ export function syncNotionTask(task: Task) { return request<{ notionPageId: stri
 export function deleteNotionTask(pageId: string) { return request<{ ok: true }>(`/api/notion/tasks/${encodeURIComponent(pageId)}`, { method: 'DELETE' }); }
 
 export function pullGoogleEvents() {
-  return request<{ events: Array<{ id: string; summary?: string; start?: { date?: string; dateTime?: string }; end?: { date?: string; dateTime?: string } }> }>('/api/google/events');
+  return request<{
+    events: Array<{
+      id: string;
+      status?: string;
+      etag?: string;
+      summary?: string;
+      start?: { date?: string; dateTime?: string };
+      end?: { date?: string; dateTime?: string };
+    }>;
+  }>('/api/google/events');
 }
 
 export function pullNotionPages() {

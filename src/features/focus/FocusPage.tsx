@@ -173,7 +173,7 @@ export function FocusPage() {
                 <select value={linkedTaskId || ''} onChange={e => setLinkedTaskId(e.target.value || null)}
                   className="flex-1 bg-surface border border-border rounded-xl px-3.5 py-2.5 text-xs text-text outline-none focus:border-glow/30">
                   <option value="">Link to task (optional)</option>
-                  {uncompletedTasks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+                  {activeTasks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
                 </select>
               </div>
               <div className="flex items-center gap-2">

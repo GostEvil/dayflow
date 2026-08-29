@@ -22,11 +22,13 @@ import { GamificationPage } from './features/gamification/GamificationPage';
 import { ReviewPage } from './features/review/ReviewPage';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { OnboardingPage } from './features/onboarding/OnboardingPage';
+import { useAutoSync } from './hooks/useAutoSync';
 import type { UserProfile } from './types';
 import { STORAGE_KEYS } from './types';
 
 export default function App() {
   useTheme();
+  useAutoSync();
   const [profile] = useLocalStorage<UserProfile | null>(STORAGE_KEYS.PROFILE, null);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [quickCaptureOpen, setQuickCaptureOpen] = useState(false);

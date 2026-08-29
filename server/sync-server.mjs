@@ -224,7 +224,13 @@ async function handle(req, res) {
       const state = await readState();
       const token = await googleAccessToken(state);
       const calendarId = encodeURIComponent(process.env.GOOGLE_CALENDAR_ID || 'primary');
-      const params = new URLSearchParams({ singleEvents: 'true', orderBy: 'startTime', timeMin: new Date().toISOString(), timeMax: new Date(Date.now() + 90 * 86400000).toISOString() });
+      const params = new URLSearchParams({
+        singleEvents: 'true',
+        orderBy: 'startTime',
+        showDeleted: 'true',
+        timeMin: new Date(Date.now() - 30 * 86400000).toISOString(),
+        timeMax: new Date(Date.now() + 90 * 86400000).toISOString(),
+      });
       const result = await googleRequest(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${params}`, { headers: { authorization: `Bearer ${token}` } });
       markSyncSuccess(state, 'google');
       await writeState(state);
