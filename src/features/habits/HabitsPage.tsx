@@ -124,7 +124,7 @@ export function HabitsPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1400px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1400px] mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -151,7 +151,7 @@ export function HabitsPage() {
             <motion.div
               key={habit.id}
               layout
-              className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
+              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
               onClick={() => setDetailHabit(habit)}
             >
               <div>

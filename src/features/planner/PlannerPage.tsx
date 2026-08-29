@@ -220,7 +220,7 @@ export function PlannerPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1440px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1440px] mx-auto space-y-8">
       {syncNotice && (
         <div
           className={`px-4 py-3 rounded-2xl text-sm border font-medium ${

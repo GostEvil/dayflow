@@ -185,7 +185,7 @@ export function InsightsPage() {
   }, [tasks, habits, sessions, journal, wellbeing]);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1200px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1200px] mx-auto space-y-8">
       {/* Header */}
       <div>
         <h1 className="font-display text-3xl font-bold text-text tracking-tight">AI Insights & Patterns</h1>
@@ -201,7 +201,7 @@ export function InsightsPage() {
             <motion.div
               key={insight.id}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm hover:border-border transition-all duration-200"
+              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm hover:border-border transition-all duration-200"
             >
               <div className="flex items-start gap-5">
                 <div

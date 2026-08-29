@@ -130,7 +130,7 @@ export function AnalyticsPage() {
   const CHART_COLORS = ['#00E5FF', '#A855F7', '#F97316', '#10B981', '#EF4444', '#64748B'];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1440px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1440px] mx-auto space-y-8">
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
         {/* Top Header */}
         <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -176,7 +176,7 @@ export function AnalyticsPage() {
             <motion.div
               key={i}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+              className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -195,7 +195,7 @@ export function AnalyticsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm"
+            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
@@ -220,7 +220,7 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm"
+            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
@@ -245,7 +245,7 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm"
+            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
@@ -270,7 +270,7 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm"
+            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>

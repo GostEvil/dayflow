@@ -208,7 +208,7 @@ export function TasksPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1440px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1440px] mx-auto space-y-8">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -321,7 +321,7 @@ export function TasksPage() {
           {(['backlog', 'today', 'in-progress', 'done'] as TaskStatus[]).map(status => (
             <div
               key={status}
-              className="bg-surface/95 border border-border/80 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between min-h-[420px]"
+              className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between min-h-[420px]"
             >
               <div>
                 {/* Column Header */}
@@ -422,7 +422,7 @@ export function TasksPage() {
       {/* List View */}
       {view === 'list' && (
         <div className="bg-surface/95 border border-border/80 rounded-3xl overflow-hidden shadow-sm">
-          <div className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-6 py-4 border-b border-border/60 text-xs font-mono uppercase tracking-wider text-text-muted bg-surface-2/40">
+          <div className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 border-b border-border/60 text-xs font-mono uppercase tracking-wider text-text-muted bg-surface-2/40">
             <div className="w-5" />
             <div>Task Title</div>
             <div className="hidden sm:block">Status</div>
@@ -434,7 +434,7 @@ export function TasksPage() {
             {filtered.map(task => (
               <div
                 key={task.id}
-                className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-6 py-4 items-center hover:bg-surface-2/60 transition-colors cursor-pointer"
+                className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 items-center hover:bg-surface-2/60 transition-colors cursor-pointer"
                 onClick={() => setEditingTask(task)}
               >
                 <button

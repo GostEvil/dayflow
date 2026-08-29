@@ -149,8 +149,25 @@ export interface GamificationState {
 export type EnergyPattern = 'morning' | 'afternoon' | 'evening' | 'night';
 export type ThemeMode = 'dark' | 'light' | 'system';
 
+export interface UserNotificationSettings {
+  emailDigest: boolean;
+  taskReminders: boolean;
+  habitStreaks: boolean;
+  weeklyReview: boolean;
+  soundEffects: boolean;
+}
+
 export interface UserProfile {
   name: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  avatarUrl?: string;
+  role?: string;
+  country?: string;
+  timezone?: string;
+  bio?: string;
+  notifications?: UserNotificationSettings;
   primaryGoal: string;
   workingHoursStart: string; // HH:mm
   workingHoursEnd: string; // HH:mm

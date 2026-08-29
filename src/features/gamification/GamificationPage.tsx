@@ -26,7 +26,7 @@ export function GamificationPage() {
   const xpProgress = useMemo(() => getXpProgress(gamification.xp), [gamification.xp]);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1200px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1200px] mx-auto space-y-8">
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
         
         {/* Header */}
@@ -40,7 +40,7 @@ export function GamificationPage() {
         {/* Level Progression Card */}
         <motion.div
           variants={item}
-          className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:border-border transition-all duration-200"
+          className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm relative overflow-hidden group hover:border-border transition-all duration-200"
         >
           <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
             <div className="w-24 h-24 rounded-2xl bg-pulse/15 border border-pulse/30 flex flex-col items-center justify-center flex-shrink-0 shadow-lg shadow-pulse/10">
@@ -89,7 +89,7 @@ export function GamificationPage() {
             <motion.div
               key={i}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+              className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -105,7 +105,7 @@ export function GamificationPage() {
         </div>
 
         {/* Quests Section */}
-        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
@@ -150,7 +150,7 @@ export function GamificationPage() {
         </motion.div>
 
         {/* Achievement Badges Section */}
-        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">

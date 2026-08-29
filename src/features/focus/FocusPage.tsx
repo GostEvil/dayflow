@@ -91,7 +91,7 @@ export function FocusPage() {
   const dashOffset = circumference * (1 - progress);
 
   return (
-    <div className={`min-h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-void p-8' : ''}`}>
+    <div className={`min-h-full flex flex-col items-center justify-center p-5 sm:p-8 lg:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-void p-8' : ''}`}>
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -105,7 +105,7 @@ export function FocusPage() {
         )}
 
         {/* Timer Card Container */}
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm text-center">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm text-center">
           {/* Timer Circle */}
           <div className="relative w-64 h-64 mx-auto mb-8">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 256 256">
@@ -246,7 +246,7 @@ export function FocusPage() {
 
         {/* Recent Sessions */}
         {!isFullscreen && (
-          <div className="mt-8 bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm">
+          <div className="mt-8 bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm">
             <div className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">Recent Focus Sessions</div>
             <div className="space-y-2.5">
               {sessions.slice(0, 5).map(s => (

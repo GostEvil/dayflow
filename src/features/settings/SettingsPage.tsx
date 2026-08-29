@@ -164,7 +164,7 @@ export function SettingsPage() {
   const formatTs = (value: string | null) => (value ? new Date(value).toLocaleString() : 'Never');
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[960px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[960px] mx-auto space-y-8">
       <div>
         <h1 className="font-display text-3xl font-bold text-text tracking-tight">Settings</h1>
         <p className="text-sm text-text-muted mt-1 font-mono">
@@ -188,7 +188,7 @@ export function SettingsPage() {
       )}
 
       {/* Theme Card */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-5 pb-3 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
             <Sliders className="w-4 h-4" />
@@ -224,7 +224,7 @@ export function SettingsPage() {
       </div>
 
       {/* Navigation Tabs Customization */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-2 pb-3 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse">
             <Layout className="w-4 h-4" />
@@ -277,7 +277,7 @@ export function SettingsPage() {
       </div>
 
       {/* User Profile Settings */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-5 pb-3 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
             <User className="w-4 h-4" />
@@ -316,7 +316,7 @@ export function SettingsPage() {
       </div>
 
       {/* Google Calendar Sync */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-3 pb-3 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
             <Calendar className="w-4 h-4" />
@@ -373,7 +373,7 @@ export function SettingsPage() {
       </div>
 
       {/* Data Management Card */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-5 pb-3 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center text-success">
             <Database className="w-4 h-4" />

@@ -108,7 +108,7 @@ export function JournalPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1400px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1400px] mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -128,7 +128,7 @@ export function JournalPage() {
       </div>
 
       {/* Mood & Energy Trend Chart Card */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-border/60">
           <div>
             <h3 className="font-display text-lg font-semibold text-text">Mood & Energy Trend</h3>
@@ -175,7 +175,7 @@ export function JournalPage() {
             <motion.div
               key={entry.id}
               layout
-              className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 cursor-pointer hover:border-border transition-all duration-200 shadow-sm group"
+              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 cursor-pointer hover:border-border transition-all duration-200 shadow-sm group"
               onClick={() => setSelectedEntry(entry)}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-border/50">

@@ -71,7 +71,7 @@ export function WellbeingPage() {
   }, [logs]);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1400px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1400px] mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -92,7 +92,7 @@ export function WellbeingPage() {
 
       {/* Summary Bento Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Sleep</span>
             <div className="w-8 h-8 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse">
@@ -105,7 +105,7 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Energy</span>
             <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
@@ -118,7 +118,7 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Hydration</span>
             <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
@@ -131,7 +131,7 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Total Entries</span>
             <div className="w-8 h-8 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center text-success">
@@ -147,7 +147,7 @@ export function WellbeingPage() {
 
       {/* Analytics Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
             <div>
               <h3 className="font-display text-lg font-semibold text-text">Sleep Duration</h3>
@@ -169,7 +169,7 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm">
+        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
             <div>
               <h3 className="font-display text-lg font-semibold text-text">Energy & Sleep Quality</h3>

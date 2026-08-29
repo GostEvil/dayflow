@@ -103,7 +103,7 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-void flex items-center justify-center p-4 sm:p-6">
+    <div className="min-h-screen bg-void flex items-center justify-center p-5 sm:p-8">
       <div className="w-full max-w-lg">
         {/* Progress Bar */}
         <div className="flex gap-2 mb-10">
@@ -125,7 +125,7 @@ export function OnboardingPage() {
             animate="center"
             exit="exit"
             transition={{ duration: 0.25 }}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md"
+            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-2xl backdrop-blur-md"
           >
             {/* Welcome Step */}
             {step === 'welcome' && (

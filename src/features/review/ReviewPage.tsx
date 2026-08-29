@@ -86,7 +86,7 @@ export function ReviewPage() {
   }, [tasks, habits, goals, journal, sessions, wellbeing, dateRange, days]);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 max-w-[1200px] mx-auto space-y-8">
+    <div className="p-5 sm:p-8 lg:p-10 max-w-[1200px] mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -134,7 +134,7 @@ export function ReviewPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04 }}
-            className="bg-surface/95 border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+            className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -154,7 +154,7 @@ export function ReviewPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm"
+        className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
@@ -194,7 +194,7 @@ export function ReviewPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-8 shadow-sm"
+        className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
