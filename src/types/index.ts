@@ -199,4 +199,22 @@ export const STORAGE_KEYS = {
   BACKUPS: 'dayflow_backups',
   SEED_LOADED: 'dayflow_seed_loaded',
   CLEAN_INITIALIZED: 'dayflow_clean_initialized',
+  VISIBLE_TABS: 'dayflow_visible_tabs',
 } as const;
+
+export const DEFAULT_VISIBLE_TABS: Record<string, boolean> = {
+  dashboard: true,
+  tasks: true,
+  habits: true,
+  goals: true,
+  planner: true,
+  focus: true,
+  journal: true,
+  analytics: true,
+  insights: true,
+  wellbeing: true,
+  gamification: true,
+  review: true,
+  settings: true,
+};
+

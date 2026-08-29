@@ -6,26 +6,31 @@ import {
   Timer, BookOpen, BarChart3, Lightbulb, Heart, Trophy,
   ClipboardList, Settings, Menu, X, Zap
 } from 'lucide-react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { STORAGE_KEYS, DEFAULT_VISIBLE_TABS } from '../types';
 
-const NAV_ITEMS = [
-  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/tasks', icon: CheckSquare, label: 'Tasks' },
-  { path: '/habits', icon: Repeat, label: 'Habits' },
-  { path: '/goals', icon: Target, label: 'Goals' },
-  { path: '/planner', icon: Calendar, label: 'Planner' },
-  { path: '/focus', icon: Timer, label: 'Focus' },
-  { path: '/journal', icon: BookOpen, label: 'Journal' },
-  { path: '/analytics', icon: BarChart3, label: 'Analytics' },
-  { path: '/insights', icon: Lightbulb, label: 'Insights' },
-  { path: '/wellbeing', icon: Heart, label: 'Wellbeing' },
-  { path: '/gamification', icon: Trophy, label: 'Profile' },
-  { path: '/review', icon: ClipboardList, label: 'Review' },
-  { path: '/settings', icon: Settings, label: 'Settings' },
+export const NAV_ITEMS = [
+  { key: 'dashboard', path: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { key: 'tasks', path: '/tasks', icon: CheckSquare, label: 'Tasks' },
+  { key: 'habits', path: '/habits', icon: Repeat, label: 'Habits' },
+  { key: 'goals', path: '/goals', icon: Target, label: 'Goals' },
+  { key: 'planner', path: '/planner', icon: Calendar, label: 'Planner' },
+  { key: 'focus', path: '/focus', icon: Timer, label: 'Focus' },
+  { key: 'journal', path: '/journal', icon: BookOpen, label: 'Journal' },
+  { key: 'analytics', path: '/analytics', icon: BarChart3, label: 'Analytics' },
+  { key: 'insights', path: '/insights', icon: Lightbulb, label: 'Insights' },
+  { key: 'wellbeing', path: '/wellbeing', icon: Heart, label: 'Wellbeing' },
+  { key: 'gamification', path: '/gamification', icon: Trophy, label: 'Profile' },
+  { key: 'review', path: '/review', icon: ClipboardList, label: 'Review' },
+  { key: 'settings', path: '/settings', icon: Settings, label: 'Settings' },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [visibleTabs] = useLocalStorage<Record<string, boolean>>(STORAGE_KEYS.VISIBLE_TABS, DEFAULT_VISIBLE_TABS);
   const location = useLocation();
+
+  const activeNavItems = NAV_ITEMS.filter(item => visibleTabs[item.key] !== false);
 
   return (
     <div className="flex h-screen overflow-hidden bg-void">
@@ -67,7 +72,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* Nav */}
         <nav className="flex-1 py-3 px-3 space-y-0.5 overflow-y-auto">
-          {NAV_ITEMS.map(item => (
+          {activeNavItems.map(item => (
             <NavLink
               key={item.path}
               to={item.path}
@@ -97,14 +102,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </NavLink>
           ))}
         </nav>
-
-        {/* Footer */}
-        <div className="p-3 border-t border-border">
-          <div className="px-3 py-2 text-xs text-text-muted font-mono">
-            <kbd className="px-1.5 py-0.5 bg-surface rounded text-text-muted text-[10px]">⌘K</kbd>
-            <span className="ml-2">Command palette</span>
-          </div>
-        </div>
       </aside>
 
       {/* Main content */}

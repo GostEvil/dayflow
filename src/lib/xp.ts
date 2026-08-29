@@ -45,29 +45,29 @@ export interface BadgeDefinition {
 
 export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   // Task badges
-  { id: 'task_10', name: 'Starter', description: 'Complete 10 tasks', icon: '⚡', condition: { type: 'task_count', threshold: 10 } },
-  { id: 'task_50', name: 'Achiever', description: 'Complete 50 tasks', icon: '🎯', condition: { type: 'task_count', threshold: 50 } },
-  { id: 'task_100', name: 'Centurion', description: 'Complete 100 tasks', icon: '💎', condition: { type: 'task_count', threshold: 100 } },
-  { id: 'task_500', name: 'Unstoppable', description: 'Complete 500 tasks', icon: '🔥', condition: { type: 'task_count', threshold: 500 } },
+  { id: 'task_10', name: 'Starter', description: 'Complete 10 tasks', icon: 'zap', condition: { type: 'task_count', threshold: 10 } },
+  { id: 'task_50', name: 'Achiever', description: 'Complete 50 tasks', icon: 'target', condition: { type: 'task_count', threshold: 50 } },
+  { id: 'task_100', name: 'Centurion', description: 'Complete 100 tasks', icon: 'diamond', condition: { type: 'task_count', threshold: 100 } },
+  { id: 'task_500', name: 'Unstoppable', description: 'Complete 500 tasks', icon: 'flame', condition: { type: 'task_count', threshold: 500 } },
 
   // Focus badges
-  { id: 'focus_60', name: 'Deep Diver', description: '60 minutes of focus', icon: '🧠', condition: { type: 'focus_minutes', threshold: 60 } },
-  { id: 'focus_300', name: 'Flow State', description: '5 hours of focus', icon: '🌊', condition: { type: 'focus_minutes', threshold: 300 } },
-  { id: 'focus_1000', name: 'Marathon Mind', description: '1000 minutes of focus', icon: '🏔️', condition: { type: 'focus_minutes', threshold: 1000 } },
+  { id: 'focus_60', name: 'Deep Diver', description: '60 minutes of focus', icon: 'brain', condition: { type: 'focus_minutes', threshold: 60 } },
+  { id: 'focus_300', name: 'Flow State', description: '5 hours of focus', icon: 'waves', condition: { type: 'focus_minutes', threshold: 300 } },
+  { id: 'focus_1000', name: 'Marathon Mind', description: '1000 minutes of focus', icon: 'mountain', condition: { type: 'focus_minutes', threshold: 1000 } },
 
   // Habit badges
-  { id: 'streak_7', name: 'Week Warrior', description: '7-day habit streak', icon: '📅', condition: { type: 'habit_streak', threshold: 7 } },
-  { id: 'streak_30', name: 'Month Master', description: '30-day habit streak', icon: '🗓️', condition: { type: 'habit_streak', threshold: 30 } },
-  { id: 'streak_100', name: 'Consistency King', description: '100-day habit streak', icon: '👑', condition: { type: 'habit_streak', threshold: 100 } },
+  { id: 'streak_7', name: 'Week Warrior', description: '7-day habit streak', icon: 'calendar', condition: { type: 'habit_streak', threshold: 7 } },
+  { id: 'streak_30', name: 'Month Master', description: '30-day habit streak', icon: 'calendar-days', condition: { type: 'habit_streak', threshold: 30 } },
+  { id: 'streak_100', name: 'Consistency King', description: '100-day habit streak', icon: 'crown', condition: { type: 'habit_streak', threshold: 100 } },
 
   // Journal badges
-  { id: 'journal_7', name: 'Reflector', description: 'Write 7 journal entries', icon: '📝', condition: { type: 'journal_count', threshold: 7 } },
-  { id: 'journal_30', name: 'Chronicler', description: 'Write 30 journal entries', icon: '📖', condition: { type: 'journal_count', threshold: 30 } },
+  { id: 'journal_7', name: 'Reflector', description: 'Write 7 journal entries', icon: 'file-text', condition: { type: 'journal_count', threshold: 7 } },
+  { id: 'journal_30', name: 'Chronicler', description: 'Write 30 journal entries', icon: 'book-open', condition: { type: 'journal_count', threshold: 30 } },
 
   // Level badges
-  { id: 'level_5', name: 'Rising Star', description: 'Reach level 5', icon: '⭐', condition: { type: 'level', threshold: 5 } },
-  { id: 'level_10', name: 'Veteran', description: 'Reach level 10', icon: '🌟', condition: { type: 'level', threshold: 10 } },
-  { id: 'level_20', name: 'Legend', description: 'Reach level 20', icon: '✨', condition: { type: 'level', threshold: 20 } },
+  { id: 'level_5', name: 'Rising Star', description: 'Reach level 5', icon: 'star', condition: { type: 'level', threshold: 5 } },
+  { id: 'level_10', name: 'Veteran', description: 'Reach level 10', icon: 'award', condition: { type: 'level', threshold: 10 } },
+  { id: 'level_20', name: 'Legend', description: 'Reach level 20', icon: 'sparkles', condition: { type: 'level', threshold: 20 } },
 ];
 
 export function checkBadges(state: GamificationState): string[] {

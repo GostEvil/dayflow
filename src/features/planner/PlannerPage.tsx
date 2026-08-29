@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, X, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { TimeBlock, TimeBlockCategory } from '../../types';
@@ -8,16 +8,19 @@ import { STORAGE_KEYS } from '../../types';
 import { getWeekDates, format, addDays, formatTime, dateStr } from '../../lib/date-utils';
 import { deleteGoogleEvent, syncGoogleBlock } from '../../lib/sync-api';
 import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Select } from '../../components/ui/Select';
+import { Modal } from '../../components/ui/Modal';
 
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 6); // 6am - 9pm
 const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
-  'deep-work': 'bg-glow/20 border-glow/40 text-glow',
-  meeting: 'bg-pulse/20 border-pulse/40 text-pulse',
-  exercise: 'bg-success/20 border-success/40 text-success',
-  personal: 'bg-ember/20 border-ember/40 text-ember',
-  study: 'bg-[#818CF8]/20 border-[#818CF8]/40 text-[#818CF8]',
-  break: 'bg-drift/20 border-drift/40 text-drift',
-  other: 'bg-surface-2 border-border text-text-secondary',
+  'deep-work': 'bg-glow/15 border-glow/40 text-glow shadow-sm shadow-glow/5',
+  meeting: 'bg-pulse/15 border-pulse/40 text-pulse shadow-sm shadow-pulse/5',
+  exercise: 'bg-success/15 border-success/40 text-success shadow-sm shadow-success/5',
+  personal: 'bg-ember/15 border-ember/40 text-ember shadow-sm shadow-ember/5',
+  study: 'bg-[#818CF8]/15 border-[#818CF8]/40 text-[#818CF8] shadow-sm',
+  break: 'bg-drift/15 border-drift/40 text-drift shadow-sm',
+  other: 'bg-surface-2 border-border text-text-secondary shadow-sm',
 };
 
 const minutesToTimeStr = (minsFrom6AM: number): string => {
@@ -64,7 +67,8 @@ export function PlannerPage() {
   const baseDate = useMemo(() => addDays(new Date(), weekOffset * 7), [weekOffset]);
   const weekDates = useMemo(() => getWeekDates(baseDate), [baseDate]);
 
-  const getBlocksForDate = (date: string) => timeBlocks.filter(b => b.date === date).sort((a, b) => a.startTime.localeCompare(b.startTime));
+  const getBlocksForDate = (date: string) =>
+    timeBlocks.filter(b => b.date === date).sort((a, b) => a.startTime.localeCompare(b.startTime));
 
   const showSyncNotice = (type: 'error' | 'success', text: string) => {
     setSyncNotice({ type, text });
@@ -80,16 +84,33 @@ export function PlannerPage() {
   const addBlock = () => {
     if (!newTitle.trim()) return;
     const block: TimeBlock = {
-      id: uuid(), title: newTitle.trim(), category: newCategory,
+      id: uuid(),
+      title: newTitle.trim(),
+      category: newCategory,
       date: newDate || dateStr(weekDates[0]),
-      startTime: newStart, endTime: newEnd,
-      isGoogleEvent: false, googleEventId: null,
+      startTime: newStart,
+      endTime: newEnd,
+      isGoogleEvent: false,
+      googleEventId: null,
       createdAt: new Date().toISOString(),
     };
     setTimeBlocks(prev => [...prev, block]);
-    void syncGoogleBlock(block).then(result => {
-      setTimeBlocks(prev => prev.map(item => item.id === block.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId, googleEtag: result.etag || item.googleEtag || null } : item));
-    }).catch(() => showSyncNotice('error', 'Failed to sync new block to Google Calendar.'));
+    void syncGoogleBlock(block)
+      .then(result => {
+        setTimeBlocks(prev =>
+          prev.map(item =>
+            item.id === block.id
+              ? {
+                  ...item,
+                  isGoogleEvent: true,
+                  googleEventId: result.googleEventId,
+                  googleEtag: result.etag || item.googleEtag || null,
+                }
+              : item
+          )
+        );
+      })
+      .catch(() => showSyncNotice('error', 'Failed to sync new block to Google Calendar.'));
     setShowNew(false);
     setNewTitle('');
   };
@@ -98,19 +119,35 @@ export function PlannerPage() {
     if (!editBlock) return;
     const nextBlock = editBlock;
     const previousBlock = timeBlocks.find(item => item.id === nextBlock.id) || null;
-    setTimeBlocks(prev => prev.map(b => b.id === nextBlock.id ? nextBlock : b));
-    void syncGoogleBlock(nextBlock).then(result => {
-      setTimeBlocks(prev => prev.map(item => item.id === nextBlock.id ? { ...item, isGoogleEvent: true, googleEventId: result.googleEventId, googleEtag: result.etag || item.googleEtag || null } : item));
-    }).catch(error => {
-      if (isGoogleConflict(error)) {
-        if (previousBlock) {
-          setTimeBlocks(prev => prev.map(item => item.id === nextBlock.id ? previousBlock : item));
+    setTimeBlocks(prev => prev.map(b => (b.id === nextBlock.id ? nextBlock : b)));
+    void syncGoogleBlock(nextBlock)
+      .then(result => {
+        setTimeBlocks(prev =>
+          prev.map(item =>
+            item.id === nextBlock.id
+              ? {
+                  ...item,
+                  isGoogleEvent: true,
+                  googleEventId: result.googleEventId,
+                  googleEtag: result.etag || item.googleEtag || null,
+                }
+              : item
+          )
+        );
+      })
+      .catch(error => {
+        if (isGoogleConflict(error)) {
+          if (previousBlock) {
+            setTimeBlocks(prev => prev.map(item => (item.id === nextBlock.id ? previousBlock : item)));
+          }
+          showSyncNotice(
+            'error',
+            'Conflict detected: event changed in Google Calendar. Please import/refresh and retry.'
+          );
+          return;
         }
-        showSyncNotice('error', 'Conflict detected: event changed in Google Calendar. Please import/refresh and retry.');
-        return;
-      }
-      showSyncNotice('error', 'Failed to sync changes to Google Calendar.');
-    });
+        showSyncNotice('error', 'Failed to sync changes to Google Calendar.');
+      });
     setEditBlock(null);
   };
 
@@ -126,7 +163,7 @@ export function PlannerPage() {
     const [eh, em] = block.endTime.split(':').map(Number);
     const startMinutes = (sh - 6) * 60 + sm;
     const endMinutes = (eh - 6) * 60 + em;
-    return { top: startMinutes, height: Math.max(endMinutes - startMinutes, 15) };
+    return { top: startMinutes, height: Math.max(endMinutes - startMinutes, 20) };
   };
 
   const getMinuteOffsetFromPointer = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -183,61 +220,119 @@ export function PlannerPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-[1440px] mx-auto space-y-8">
       {syncNotice && (
-        <div className={`mb-4 px-4 py-2.5 rounded-xl text-sm border ${syncNotice.type === 'error' ? 'bg-danger/10 text-danger border-danger/30' : 'bg-success/10 text-success border-success/30'}`}>
+        <div
+          className={`px-4 py-3 rounded-2xl text-sm border font-medium ${
+            syncNotice.type === 'error'
+              ? 'bg-danger/10 text-danger border-danger/30'
+              : 'bg-success/10 text-success border-success/30'
+          }`}
+        >
           {syncNotice.text}
         </div>
       )}
-      <div className="flex items-center justify-between mb-6">
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold text-text">Planner</h1>
-          <p className="text-sm text-text-muted mt-1">
-            {format(weekDates[0], 'MMM d')} – {format(weekDates[6], 'MMM d, yyyy')}
+          <h1 className="font-display text-3xl font-bold text-text tracking-tight">Planner</h1>
+          <p className="text-sm text-text-muted mt-1 font-mono">
+            {format(weekDates[0], 'MMMM d')} – {format(weekDates[6], 'MMMM d, yyyy')}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button onClick={() => setWeekOffset(0)} variant="outline" size="sm">Today</Button>
-          <Button onClick={() => setWeekOffset(w => w - 1)} variant="ghost" size="icon" aria-label="Previous week">
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <Button onClick={() => setWeekOffset(w => w + 1)} variant="ghost" size="icon" aria-label="Next week">
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-          <Button onClick={() => { setNewDate(dateStr(weekDates[0])); setShowNew(true); }} variant="secondary" icon={<Plus className="w-4 h-4" />}>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center bg-surface-2/80 border border-border/80 rounded-2xl p-1 shadow-sm">
+            <button
+              onClick={() => setWeekOffset(0)}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold text-text hover:bg-surface-3 transition-colors"
+            >
+              Today
+            </button>
+            <div className="w-[1px] h-4 bg-border mx-1" />
+            <button
+              onClick={() => setWeekOffset(w => w - 1)}
+              className="p-1.5 rounded-xl text-text-muted hover:text-text hover:bg-surface-3 transition-colors"
+              aria-label="Previous week"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setWeekOffset(w => w + 1)}
+              className="p-1.5 rounded-xl text-text-muted hover:text-text hover:bg-surface-3 transition-colors"
+              aria-label="Next week"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <Button
+            onClick={() => {
+              setNewDate(dateStr(weekDates[0]));
+              setShowNew(true);
+            }}
+            variant="primary"
+            icon={<Plus className="w-4 h-4" />}
+          >
             Add Block
           </Button>
         </div>
       </div>
 
-      {/* Weekly grid */}
-      <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-        {/* Day headers */}
-        <div className="grid grid-cols-[60px_repeat(7,1fr)] border-b border-border">
-          <div className="p-2" />
+      {/* Weekly Grid Board */}
+      <div className="bg-surface/95 border border-border/80 rounded-3xl overflow-hidden shadow-sm">
+        {/* Day Header Row */}
+        <div className="grid grid-cols-[72px_repeat(7,1fr)] border-b border-border/70 bg-surface-2/30">
+          <div className="p-3 border-r border-border/50" />
           {weekDates.map(date => {
             const isToday = dateStr(date) === dateStr(new Date());
             return (
-              <div key={date.toISOString()} className={`p-3 text-center border-l border-border ${isToday ? 'bg-glow/5' : ''}`}>
-                <div className="text-[10px] font-mono uppercase text-text-muted">{format(date, 'EEE')}</div>
-                <div className={`text-lg font-mono font-bold ${isToday ? 'text-glow' : 'text-text'}`}>{format(date, 'd')}</div>
+              <div
+                key={date.toISOString()}
+                className={`py-3.5 px-2 text-center border-l border-border/50 first:border-l-0 ${
+                  isToday ? 'bg-glow/10' : ''
+                }`}
+              >
+                <div
+                  className={`text-[11px] font-mono font-semibold uppercase tracking-wider ${
+                    isToday ? 'text-glow font-bold' : 'text-text-muted'
+                  }`}
+                >
+                  {format(date, 'EEE')}
+                </div>
+                <div
+                  className={`text-lg font-mono font-bold mt-0.5 ${
+                    isToday ? 'text-glow' : 'text-text'
+                  }`}
+                >
+                  {format(date, 'd')}
+                </div>
               </div>
             );
           })}
         </div>
 
-        {/* Time grid */}
-        <div className="grid grid-cols-[60px_repeat(7,1fr)] relative" style={{ height: HOURS.length * 60 }}>
-          {/* Hour labels */}
-          <div className="relative">
+        {/* Time Grid View */}
+        <div
+          className="grid grid-cols-[72px_repeat(7,1fr)] relative"
+          style={{ height: HOURS.length * 60 }}
+        >
+          {/* Left Hour Gutter */}
+          <div className="relative border-r border-border/50 bg-surface-2/15">
             {HOURS.map(h => (
-              <div key={h} className="absolute left-0 right-0 flex items-start justify-end pr-2" style={{ top: (h - 6) * 60, height: 60 }}>
-                <span className="text-[10px] font-mono text-text-muted -mt-1.5">{h.toString().padStart(2, '0')}:00</span>
+              <div
+                key={h}
+                className="absolute left-0 right-0 flex items-start justify-end pr-3.5 select-none"
+                style={{ top: (h - 6) * 60, height: 60 }}
+              >
+                <span className="text-xs font-mono text-text-muted -mt-2 font-medium">
+                  {h.toString().padStart(2, '0')}:00
+                </span>
               </div>
             ))}
           </div>
 
-          {/* Day columns */}
+          {/* Day Columns */}
           {weekDates.map(date => {
             const ds = dateStr(date);
             const blocks = getBlocksForDate(ds);
@@ -245,65 +340,73 @@ export function PlannerPage() {
             return (
               <div
                 key={ds}
-                className={`relative border-l border-border select-none touch-none cursor-crosshair ${isToday ? 'bg-glow/[0.02]' : ''}`}
+                className={`relative border-l border-border/50 select-none touch-none cursor-crosshair transition-colors ${
+                  isToday ? 'bg-glow/[0.03]' : ''
+                }`}
                 onPointerDown={e => handlePointerDown(ds, e)}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerCancel}
               >
-                {/* Hour lines */}
+                {/* Horizontal Hour Dividing Lines */}
                 {HOURS.map(h => (
-                  <div key={h} className="absolute left-0 right-0 border-t border-border/30 pointer-events-none" style={{ top: (h - 6) * 60 }} />
+                  <div
+                    key={h}
+                    className="absolute left-0 right-0 border-t border-border/35 pointer-events-none"
+                    style={{ top: (h - 6) * 60 }}
+                  />
                 ))}
 
-                {/* Current time indicator line */}
+                {/* Current Time Indicator Line */}
                 {isToday && currentMinutesFrom6 >= 0 && currentMinutesFrom6 <= HOURS.length * 60 && (
                   <div
                     className="absolute left-0 right-0 z-30 pointer-events-none"
                     style={{ top: currentMinutesFrom6 }}
                   >
-                    <div className="w-full h-[2px] bg-danger" />
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-danger shadow-sm shadow-danger/50" />
+                    <div className="w-full h-[2px] bg-danger shadow-sm shadow-danger/50" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-danger ring-2 ring-danger/30" />
                   </div>
                 )}
 
                 {/* Live Drag Selection Preview */}
-                {dragSelection && dragSelection.date === ds && (() => {
-                  const minMins = Math.min(dragSelection.startMins, dragSelection.currentMins);
-                  const rawDiff = Math.abs(dragSelection.currentMins - dragSelection.startMins);
-                  const durationMins = rawDiff < 15 ? 60 : rawDiff;
-                  const maxMins = Math.min(HOURS.length * 60, minMins + durationMins);
-                  const height = Math.max(durationMins, 15);
-                  const startStr = minutesToTimeStr(minMins);
-                  const endStr = minutesToTimeStr(maxMins);
+                {dragSelection &&
+                  dragSelection.date === ds &&
+                  (() => {
+                    const minMins = Math.min(dragSelection.startMins, dragSelection.currentMins);
+                    const rawDiff = Math.abs(dragSelection.currentMins - dragSelection.startMins);
+                    const durationMins = rawDiff < 15 ? 60 : rawDiff;
+                    const maxMins = Math.min(HOURS.length * 60, minMins + durationMins);
+                    const height = Math.max(durationMins, 20);
+                    const startStr = minutesToTimeStr(minMins);
+                    const endStr = minutesToTimeStr(maxMins);
 
-                  return (
-                    <div
-                      className="absolute left-1 right-1 rounded-lg border-2 border-glow bg-glow/20 text-glow px-2.5 py-1.5 z-20 pointer-events-none overflow-hidden shadow-lg shadow-glow/10"
-                      style={{ top: minMins, height }}
-                    >
-                      <div className="flex items-center justify-between text-[11px] font-semibold">
-                        <span className="truncate">New Block</span>
-                        <span className="text-[9px] font-mono font-bold bg-glow/30 text-glow px-1.5 py-0.5 rounded ml-1 shrink-0">
-                          {formatDuration(durationMins)}
-                        </span>
-                      </div>
-                      {height >= 30 && (
-                        <div className="text-[10px] font-mono font-medium opacity-90 mt-0.5">
-                          {formatTime(startStr)} – {formatTime(endStr)}
+                    return (
+                      <div
+                        className="absolute left-1.5 right-1.5 rounded-xl border-2 border-glow bg-glow/25 text-glow px-3 py-2 z-20 pointer-events-none overflow-hidden shadow-lg shadow-glow/15 backdrop-blur-xs"
+                        style={{ top: minMins, height }}
+                      >
+                        <div className="flex items-center justify-between text-xs font-semibold leading-tight">
+                          <span className="truncate">New Block</span>
+                          <span className="text-[10px] font-mono font-bold bg-glow/30 text-glow px-2 py-0.5 rounded-md ml-1 shrink-0">
+                            {formatDuration(durationMins)}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  );
-                })()}
+                        {height >= 36 && (
+                          <div className="text-[11px] font-mono font-medium opacity-90 mt-1">
+                            {formatTime(startStr)} – {formatTime(endStr)}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
-                {/* Blocks */}
+                {/* Time Blocks on Calendar */}
                 {blocks.map(block => {
                   const pos = getBlockPosition(block);
                   return (
                     <div
                       key={block.id}
-                      className={`absolute left-1 right-1 rounded-lg border px-2 py-1 cursor-pointer transition-opacity hover:opacity-90 overflow-hidden ${CATEGORY_COLORS[block.category]}`}
+                      className={`absolute left-1.5 right-1.5 rounded-xl border px-3 py-2 cursor-pointer transition-all hover:scale-[1.01] hover:z-10 overflow-hidden ${CATEGORY_COLORS[block.category]}`}
                       style={{ top: pos.top, height: pos.height }}
                       onPointerDown={e => e.stopPropagation()}
                       onClick={e => {
@@ -311,12 +414,17 @@ export function PlannerPage() {
                         setEditBlock(block);
                       }}
                     >
-                      <div className="text-[11px] font-medium truncate">{block.title}</div>
-                      {pos.height >= 30 && (
-                        <div className="text-[9px] opacity-70 font-mono">{formatTime(block.startTime)} – {formatTime(block.endTime)}</div>
+                      <div className="text-xs font-semibold truncate leading-tight">{block.title}</div>
+                      {pos.height >= 38 && (
+                        <div className="text-[10px] opacity-80 font-mono font-medium mt-1">
+                          {formatTime(block.startTime)} – {formatTime(block.endTime)}
+                        </div>
                       )}
-                      {block.isGoogleEvent && (
-                        <div className="text-[8px] mt-0.5 opacity-50">📅 Google</div>
+                      {block.isGoogleEvent && pos.height >= 56 && (
+                        <div className="flex items-center gap-1 text-[10px] font-mono mt-1 opacity-75">
+                          <CalendarIcon className="w-3 h-3 text-glow" />
+                          <span>Google</span>
+                        </div>
                       )}
                     </div>
                   );
@@ -327,83 +435,122 @@ export function PlannerPage() {
         </div>
       </div>
 
-      {/* New Block Modal */}
-      <AnimatePresence>
-        {showNew && (
+      {/* New Time Block Modal */}
+      <Modal
+        isOpen={showNew}
+        onClose={() => setShowNew(false)}
+        title="New Time Block"
+        subtitle="Schedule focus sessions and activities in your calendar"
+        footer={
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={() => setShowNew(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed top-[15%] left-1/2 -translate-x-1/2 w-full max-w-md z-50">
-              <div className="bg-surface border border-border rounded-2xl p-6 m-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-display text-lg font-bold text-text">New Time Block</h2>
-                  <button onClick={() => setShowNew(false)} className="p-1 hover:bg-surface-2 rounded-lg text-text-muted"><X className="w-4 h-4" /></button>
-                </div>
-                <div className="space-y-3">
-                  <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Block title" autoFocus
-                    className="w-full bg-surface-2 border border-border rounded-xl px-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30" />
-                  <select value={newCategory} onChange={e => setNewCategory(e.target.value as TimeBlockCategory)}
-                    className="w-full bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text outline-none">
-                    <option value="deep-work">Deep Work</option><option value="meeting">Meeting</option>
-                    <option value="exercise">Exercise</option><option value="personal">Personal</option>
-                    <option value="study">Study</option><option value="break">Break</option><option value="other">Other</option>
-                  </select>
-                  <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
-                    className="w-full bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text outline-none" />
-                  <div className="grid grid-cols-2 gap-3">
-                    <input type="time" value={newStart} onChange={e => setNewStart(e.target.value)}
-                      className="bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text font-mono outline-none" />
-                    <input type="time" value={newEnd} onChange={e => setNewEnd(e.target.value)}
-                      className="bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text font-mono outline-none" />
-                  </div>
-                  <button onClick={addBlock} disabled={!newTitle.trim()}
-                    className="w-full py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 disabled:opacity-40 transition-colors">
-                    Create Block
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+            <Button variant="ghost" onClick={() => setShowNew(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={addBlock} disabled={!newTitle.trim()}>
+              Create Block
+            </Button>
           </>
-        )}
-      </AnimatePresence>
+        }
+      >
+        <div className="space-y-4">
+          <Input
+            label="Block Title"
+            value={newTitle}
+            onChange={e => setNewTitle(e.target.value)}
+            placeholder="e.g. Deep Work on Core Feature, Workout, Review"
+            autoFocus
+          />
+          <Select
+            label="Category"
+            value={newCategory}
+            onChange={e => setNewCategory(e.target.value as TimeBlockCategory)}
+          >
+            <option value="deep-work">Deep Work</option>
+            <option value="meeting">Meeting</option>
+            <option value="exercise">Exercise</option>
+            <option value="personal">Personal</option>
+            <option value="study">Study</option>
+            <option value="break">Break</option>
+            <option value="other">Other</option>
+          </Select>
+          <Input
+            label="Date"
+            type="date"
+            value={newDate}
+            onChange={e => setNewDate(e.target.value)}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Start Time"
+              type="time"
+              value={newStart}
+              onChange={e => setNewStart(e.target.value)}
+            />
+            <Input
+              label="End Time"
+              type="time"
+              value={newEnd}
+              onChange={e => setNewEnd(e.target.value)}
+            />
+          </div>
+        </div>
+      </Modal>
 
-      {/* Edit Block Modal */}
-      <AnimatePresence>
-        {editBlock && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={() => setEditBlock(null)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed top-[15%] left-1/2 -translate-x-1/2 w-full max-w-md z-50">
-              <div className="bg-surface border border-border rounded-2xl p-6 m-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-display text-lg font-bold text-text">Edit Block</h2>
-                  <button onClick={() => setEditBlock(null)} className="p-1 hover:bg-surface-2 rounded-lg text-text-muted"><X className="w-4 h-4" /></button>
-                </div>
-                <div className="space-y-3">
-                  <input type="text" value={editBlock.title} onChange={e => setEditBlock({ ...editBlock, title: e.target.value })}
-                    className="w-full bg-surface-2 border border-border rounded-xl px-4 py-2.5 text-sm text-text outline-none focus:border-glow/30" />
-                  <select value={editBlock.category} onChange={e => setEditBlock({ ...editBlock, category: e.target.value as TimeBlockCategory })}
-                    className="w-full bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text outline-none">
-                    <option value="deep-work">Deep Work</option><option value="meeting">Meeting</option>
-                    <option value="exercise">Exercise</option><option value="personal">Personal</option>
-                    <option value="study">Study</option><option value="break">Break</option><option value="other">Other</option>
-                  </select>
-                  <div className="grid grid-cols-2 gap-3">
-                    <input type="time" value={editBlock.startTime} onChange={e => setEditBlock({ ...editBlock, startTime: e.target.value })}
-                      className="bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text font-mono outline-none" />
-                    <input type="time" value={editBlock.endTime} onChange={e => setEditBlock({ ...editBlock, endTime: e.target.value })}
-                      className="bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text font-mono outline-none" />
-                  </div>
-                  <div className="flex gap-3">
-                    <button onClick={saveEdit} className="flex-1 py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 transition-colors">Save</button>
-                    <button onClick={() => deleteBlock(editBlock.id)} className="px-4 py-2.5 bg-danger-muted text-danger rounded-xl hover:bg-danger/20 transition-colors">Delete</button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Edit Time Block Modal */}
+      {editBlock && (
+        <Modal
+          isOpen={!!editBlock}
+          onClose={() => setEditBlock(null)}
+          title="Edit Time Block"
+          footer={
+            <>
+              <Button variant="danger" onClick={() => deleteBlock(editBlock.id)}>
+                Delete
+              </Button>
+              <Button variant="primary" onClick={saveEdit}>
+                Save Changes
+              </Button>
+            </>
+          }
+        >
+          <div className="space-y-4">
+            <Input
+              label="Block Title"
+              value={editBlock.title}
+              onChange={e => setEditBlock({ ...editBlock, title: e.target.value })}
+            />
+            <Select
+              label="Category"
+              value={editBlock.category}
+              onChange={e =>
+                setEditBlock({ ...editBlock, category: e.target.value as TimeBlockCategory })
+              }
+            >
+              <option value="deep-work">Deep Work</option>
+              <option value="meeting">Meeting</option>
+              <option value="exercise">Exercise</option>
+              <option value="personal">Personal</option>
+              <option value="study">Study</option>
+              <option value="break">Break</option>
+              <option value="other">Other</option>
+            </Select>
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Start Time"
+                type="time"
+                value={editBlock.startTime}
+                onChange={e => setEditBlock({ ...editBlock, startTime: e.target.value })}
+              />
+              <Input
+                label="End Time"
+                type="time"
+                value={editBlock.endTime}
+                onChange={e => setEditBlock({ ...editBlock, endTime: e.target.value })}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
