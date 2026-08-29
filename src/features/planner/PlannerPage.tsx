@@ -11,6 +11,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
 import { Modal } from '../../components/ui/Modal';
+import { Textarea } from '../../components/ui/Textarea';
 
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 6); // 6am - 9pm
 const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
@@ -53,10 +54,28 @@ export function PlannerPage() {
   const [showNew, setShowNew] = useState(false);
   const [editBlock, setEditBlock] = useState<TimeBlock | null>(null);
   const [newTitle, setNewTitle] = useState('');
-  const [newCategory, setNewCategory] = useState<TimeBlockCategory>('deep-work');
+  const [newDescription, setNewDescription] = useState('');
+  const [newCategory, setNewCategory] = useState<TimeBlockCategory>('other');
   const [newDate, setNewDate] = useState('');
   const [newStart, setNewStart] = useState('09:00');
   const [newEnd, setNewEnd] = useState('10:00');
+  const [newRecurrence, setNewRecurrence] = useState('none');
+  const [newCustomRecurrence, setNewCustomRecurrence] = useState<{
+    frequency: 'day' | 'week' | 'month' | 'year';
+    interval: number;
+    daysOfWeek: number[];
+    endType: 'never' | 'on_date' | 'after_occurrences';
+    endDate: string;
+    occurrences: number;
+  }>({
+    frequency: 'week',
+    interval: 1,
+    daysOfWeek: [],
+    endType: 'never',
+    endDate: '',
+    occurrences: 13,
+  });
+  const [showCustomRecurrence, setShowCustomRecurrence] = useState(false);
 
   const [dragSelection, setDragSelection] = useState<{
     date: string;
@@ -86,10 +105,13 @@ export function PlannerPage() {
     const block: TimeBlock = {
       id: uuid(),
       title: newTitle.trim(),
+      description: newDescription.trim(),
       category: newCategory,
       date: newDate || dateStr(weekDates[0]),
       startTime: newStart,
       endTime: newEnd,
+      recurrence: newRecurrence,
+      customRecurrence: newRecurrence === 'custom' ? newCustomRecurrence : undefined,
       isGoogleEvent: false,
       googleEventId: null,
       createdAt: new Date().toISOString(),
@@ -113,6 +135,8 @@ export function PlannerPage() {
       .catch(() => showSyncNotice('error', 'Failed to sync new block to Google Calendar.'));
     setShowNew(false);
     setNewTitle('');
+    setNewDescription('');
+    setNewRecurrence('none');
   };
 
   const saveEdit = () => {
@@ -217,6 +241,31 @@ export function PlannerPage() {
 
   const handlePointerCancel = () => {
     setDragSelection(null);
+  };
+
+  const getRecurrenceOptions = (dateStr: string) => {
+    if (!dateStr) return [{ value: 'none', label: 'Does not repeat' }, { value: 'custom', label: 'Custom...' }];
+    const date = new Date(dateStr);
+    const dayOfWeek = format(date, 'EEEE');
+    const weekNum = Math.ceil(date.getDate() / 7);
+    let weekStr = '';
+    switch (weekNum) {
+      case 1: weekStr = 'first'; break;
+      case 2: weekStr = 'second'; break;
+      case 3: weekStr = 'third'; break;
+      case 4: weekStr = 'fourth'; break;
+      case 5: weekStr = 'last'; break;
+    }
+    
+    return [
+      { value: 'none', label: 'Does not repeat' },
+      { value: 'daily', label: 'Every day' },
+      { value: 'weekly', label: `Weekly on ${dayOfWeek}` },
+      { value: 'monthly', label: `Monthly on the ${weekStr} ${dayOfWeek}` },
+      { value: 'annually', label: `Annually on ${format(date, 'MMMM d')}` },
+      { value: 'weekdays', label: 'Every weekday (Monday to Friday)' },
+      { value: 'custom', label: 'Custom...' }
+    ];
   };
 
   return (
@@ -493,6 +542,144 @@ export function PlannerPage() {
               onChange={e => setNewEnd(e.target.value)}
             />
           </div>
+          <Select
+            label="Recurrence"
+            value={newRecurrence}
+            onChange={e => {
+              const val = e.target.value;
+              if (val === 'custom') setShowCustomRecurrence(true);
+              setNewRecurrence(val);
+            }}
+          >
+            {getRecurrenceOptions(newDate).map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </Select>
+          <Textarea
+            label="Observations"
+            value={newDescription}
+            onChange={e => setNewDescription(e.target.value)}
+            placeholder="Add some notes..."
+          />
+        </div>
+      </Modal>
+
+      {/* Custom Recurrence Modal */}
+      <Modal
+        isOpen={showCustomRecurrence}
+        onClose={() => setShowCustomRecurrence(false)}
+        title="Custom recurrence"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => {
+              setShowCustomRecurrence(false);
+              setNewRecurrence('none');
+              if (editBlock) setEditBlock({ ...editBlock, recurrence: 'none' });
+            }}>Cancel</Button>
+            <Button variant="primary" onClick={() => {
+              setShowCustomRecurrence(false);
+              if (editBlock) setEditBlock({ ...editBlock, customRecurrence: newCustomRecurrence });
+            }}>Done</Button>
+          </>
+        }
+      >
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-text font-medium">Repeat every</span>
+            <input
+              type="number"
+              min={1}
+              className="w-16 bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-sm text-text focus:outline-none focus:border-glow focus:ring-1 focus:ring-glow/50"
+              value={newCustomRecurrence.interval}
+              onChange={e => setNewCustomRecurrence({...newCustomRecurrence, interval: parseInt(e.target.value) || 1})}
+            />
+            <select
+              className="bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-sm text-text focus:outline-none focus:border-glow focus:ring-1 focus:ring-glow/50"
+              value={newCustomRecurrence.frequency}
+              onChange={e => setNewCustomRecurrence({...newCustomRecurrence, frequency: e.target.value as any})}
+            >
+              <option value="day">day</option>
+              <option value="week">week</option>
+              <option value="month">month</option>
+              <option value="year">year</option>
+            </select>
+          </div>
+
+          {newCustomRecurrence.frequency === 'week' && (
+            <div>
+              <div className="text-sm text-text font-medium mb-2">Repeat on</div>
+              <div className="flex items-center gap-1.5">
+                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      const days = newCustomRecurrence.daysOfWeek.includes(i)
+                        ? newCustomRecurrence.daysOfWeek.filter(d => d !== i)
+                        : [...newCustomRecurrence.daysOfWeek, i];
+                      setNewCustomRecurrence({...newCustomRecurrence, daysOfWeek: days});
+                    }}
+                    className={`w-8 h-8 rounded-full text-xs font-semibold flex items-center justify-center transition-colors ${
+                      newCustomRecurrence.daysOfWeek.includes(i)
+                        ? 'bg-[#818CF8] text-white'
+                        : 'bg-surface-2 text-text-muted hover:bg-surface-3'
+                    }`}
+                  >
+                    {day}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-3">
+            <div className="text-sm text-text font-medium">Ends</div>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="radio"
+                name="endType"
+                checked={newCustomRecurrence.endType === 'never'}
+                onChange={() => setNewCustomRecurrence({...newCustomRecurrence, endType: 'never'})}
+                className="w-4 h-4 text-glow bg-surface-2 border-border focus:ring-glow/50"
+              />
+              <span className="text-sm text-text">Never</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="radio"
+                name="endType"
+                checked={newCustomRecurrence.endType === 'on_date'}
+                onChange={() => setNewCustomRecurrence({...newCustomRecurrence, endType: 'on_date'})}
+                className="w-4 h-4 text-glow bg-surface-2 border-border focus:ring-glow/50"
+              />
+              <span className="text-sm text-text w-16">On</span>
+              <input
+                type="date"
+                disabled={newCustomRecurrence.endType !== 'on_date'}
+                value={newCustomRecurrence.endDate}
+                onChange={e => setNewCustomRecurrence({...newCustomRecurrence, endDate: e.target.value})}
+                className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-sm text-text focus:outline-none focus:border-glow disabled:opacity-50"
+              />
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="radio"
+                name="endType"
+                checked={newCustomRecurrence.endType === 'after_occurrences'}
+                onChange={() => setNewCustomRecurrence({...newCustomRecurrence, endType: 'after_occurrences'})}
+                className="w-4 h-4 text-glow bg-surface-2 border-border focus:ring-glow/50"
+              />
+              <span className="text-sm text-text w-16">After</span>
+              <input
+                type="number"
+                min={1}
+                disabled={newCustomRecurrence.endType !== 'after_occurrences'}
+                value={newCustomRecurrence.occurrences}
+                onChange={e => setNewCustomRecurrence({...newCustomRecurrence, occurrences: parseInt(e.target.value) || 1})}
+                className="w-20 bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-sm text-text focus:outline-none focus:border-glow disabled:opacity-50"
+              />
+              <span className="text-sm text-text">occurrences</span>
+            </label>
+          </div>
         </div>
       </Modal>
 
@@ -548,6 +735,36 @@ export function PlannerPage() {
                 onChange={e => setEditBlock({ ...editBlock, endTime: e.target.value })}
               />
             </div>
+            <Select
+              label="Recurrence"
+              value={editBlock.recurrence || 'none'}
+              onChange={e => {
+                const val = e.target.value;
+                if (val === 'custom') {
+                  const current = editBlock.customRecurrence;
+                  setNewCustomRecurrence({
+                    frequency: current?.frequency || 'week',
+                    interval: current?.interval || 1,
+                    daysOfWeek: current?.daysOfWeek || [],
+                    endType: current?.endType || 'never',
+                    endDate: current?.endDate || '',
+                    occurrences: current?.occurrences || 13,
+                  });
+                  setShowCustomRecurrence(true);
+                }
+                setEditBlock({ ...editBlock, recurrence: val });
+              }}
+            >
+              {getRecurrenceOptions(editBlock.date).map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </Select>
+            <Textarea
+              label="Observations"
+              value={editBlock.description || ''}
+              onChange={e => setEditBlock({ ...editBlock, description: e.target.value })}
+              placeholder="Add some notes..."
+            />
           </div>
         </Modal>
       )}

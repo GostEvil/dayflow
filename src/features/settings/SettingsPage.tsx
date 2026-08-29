@@ -328,28 +328,28 @@ export function SettingsPage() {
   return (
     <div className="min-h-full bg-void text-text transition-colors duration-200">
       {/* Container matching Untitled UI Layout */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-10">
         
         {/* Top Header: Title and Search Input with ⌘K */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-2">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-text font-display">
               Settings
             </h1>
-            <p className="text-sm text-text-muted mt-1">
+            <p className="text-sm text-text-muted mt-1.5">
               Manage your team preferences, personal details, integrations and workspace data.
             </p>
           </div>
 
           {/* Search bar */}
-          <div className="relative w-full sm:w-72">
+          <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search settings..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-9 pr-12 rounded-xl bg-surface border border-border text-sm text-text placeholder:text-text-muted/70 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/40 transition-all shadow-xs"
+              className="w-full h-11 pl-10 pr-12 rounded-xl bg-surface border border-border text-sm text-text placeholder:text-text-muted/70 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/40 transition-all shadow-xs"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-text-muted border border-border bg-surface-2 rounded-md shadow-xs pointer-events-none">
               <span>⌘</span>
@@ -383,26 +383,26 @@ export function SettingsPage() {
 
         {/* Horizontal Tab Navigation Bar */}
         <div className="border-b border-border">
-          <div className="flex items-center gap-1 overflow-x-auto pb-px no-scrollbar -mb-px">
+          <div className="flex items-center gap-6 sm:gap-8 overflow-x-auto no-scrollbar">
             {(searchQuery ? filteredTabs : SETTINGS_TABS).map(tab => {
               const isActive = activeTab === tab.key;
               return (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-all duration-150 rounded-lg group cursor-pointer ${
+                  className={`relative flex items-center gap-2 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200 group cursor-pointer border-b-2 -mb-px ${
                     isActive
-                      ? 'text-text font-semibold bg-surface-2/80 shadow-xs border border-border/80'
-                      : 'text-text-muted hover:text-text hover:bg-surface-2/40'
+                      ? 'text-text font-semibold border-pulse'
+                      : 'text-text-muted hover:text-text border-transparent hover:border-border'
                   }`}
                 >
                   <span>{tab.label}</span>
                   {tab.badge !== undefined && (
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold rounded-full ${
+                      className={`inline-flex items-center justify-center px-2 py-0.5 text-[11px] font-semibold rounded-full transition-colors ${
                         isActive
-                          ? 'bg-pulse/15 text-pulse border border-pulse/30'
-                          : 'bg-surface-3 text-text-muted border border-border/60'
+                          ? 'bg-pulse/10 text-pulse'
+                          : 'bg-surface-3 text-text-muted group-hover:bg-surface-3/80 group-hover:text-text'
                       }`}
                     >
                       {tab.badge}
@@ -418,9 +418,9 @@ export function SettingsPage() {
         {/* TAB 1: MY DETAILS (Exact Untitled UI Layout from screenshot)              */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'my-details' && (
-          <div className="space-y-6">
+          <div className="space-y-8 sm:space-y-10">
             {/* Subheader with Personal Info Title & Action Buttons */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Personal info</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -448,10 +448,10 @@ export function SettingsPage() {
             </div>
 
             {/* Form Fields: Row by Row Form Layout */}
-            <div className="space-y-6 divide-y divide-border">
+            <div className="divide-y divide-border">
               
               {/* Row 1: Name * (First name & Last name) */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="first-name-input" className="block text-sm font-medium text-text">
                     Name <span className="text-pulse">*</span>
@@ -483,7 +483,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 2: Email address * */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="email-input" className="block text-sm font-medium text-text">
                     Email address <span className="text-pulse">*</span>
@@ -505,7 +505,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 3: Your photo * (Avatar + Drag and Drop Dropzone) */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium text-text">
@@ -587,7 +587,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 4: Role */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="role-input" className="block text-sm font-medium text-text">
                     Role
@@ -606,7 +606,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 5: Country */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="country-select" className="block text-sm font-medium text-text">
                     Country
@@ -634,7 +634,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 6: Timezone */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <div className="flex items-center gap-1.5">
                     <label htmlFor="timezone-select" className="text-sm font-medium text-text">
@@ -672,7 +672,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 7: Working Hours */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="work-start-input" className="block text-sm font-medium text-text">
                     Working hours
@@ -707,7 +707,7 @@ export function SettingsPage() {
               </div>
 
               {/* Row 8: Bio */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="bio-input" className="block text-sm font-medium text-text">
                     Bio
@@ -734,7 +734,7 @@ export function SettingsPage() {
             </div>
 
             {/* Bottom Sticky-ready Action Footer */}
-            <div className="flex items-center justify-end gap-3 pt-6 border-t border-border">
+            <div className="flex items-center justify-end gap-4 pt-8 mt-2 border-t border-border">
               <button
                 type="button"
                 onClick={handleCancel}
@@ -758,8 +758,8 @@ export function SettingsPage() {
         {/* TAB 2: PROFILE & PREFERENCES                                            */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'profile' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Profile & Goals</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -775,9 +775,9 @@ export function SettingsPage() {
               </button>
             </div>
 
-            <div className="space-y-6 divide-y divide-border">
+            <div className="divide-y divide-border">
               {/* Primary Goal */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <label htmlFor="primary-goal-input" className="block text-sm font-medium text-text">
                     Primary Goal
@@ -799,7 +799,7 @@ export function SettingsPage() {
               </div>
 
               {/* Energy Pattern */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <span className="block text-sm font-medium text-text">
                     Peak Energy Pattern
@@ -833,7 +833,7 @@ export function SettingsPage() {
               </div>
 
               {/* Restart Onboarding Wizard */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8">
                 <div>
                   <span className="block text-sm font-medium text-text">
                     Onboarding Wizard
@@ -861,8 +861,8 @@ export function SettingsPage() {
         {/* TAB 3: APPEARANCE (Untitled UI Theme Cards)                              */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'appearance' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Appearance Theme</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -872,7 +872,7 @@ export function SettingsPage() {
             </div>
 
             {/* Theme Selector Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl">
               {[
                 {
                   id: 'dark',
@@ -963,8 +963,8 @@ export function SettingsPage() {
         {/* TAB 4: NAVIGATION MODULES                                                */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'navigation' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Navigation Modules</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -973,7 +973,7 @@ export function SettingsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl">
               {NAV_ITEMS.map(item => {
                 const Icon = item.icon;
                 const isEnabled = visibleTabs[item.key] !== false;
@@ -1033,8 +1033,8 @@ export function SettingsPage() {
         {/* TAB 5: NOTIFICATIONS                                                     */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'notifications' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Notification Preferences</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -1050,7 +1050,7 @@ export function SettingsPage() {
               </button>
             </div>
 
-            <div className="space-y-4 max-w-3xl divide-y divide-border">
+            <div className="max-w-3xl divide-y divide-border">
               {[
                 {
                   key: 'taskReminders',
@@ -1084,7 +1084,7 @@ export function SettingsPage() {
                 return (
                   <div
                     key={item.key}
-                    className="flex items-center justify-between pt-4 first:pt-0"
+                    className="flex items-center justify-between py-5"
                   >
                     <div>
                       <div className="text-sm font-medium text-text">{item.title}</div>
@@ -1122,8 +1122,8 @@ export function SettingsPage() {
         {/* TAB 6: INTEGRATIONS                                                      */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'integrations' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Integrations & Sync</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -1140,7 +1140,7 @@ export function SettingsPage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl">
               {/* Google Calendar Card */}
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
@@ -1228,8 +1228,8 @@ export function SettingsPage() {
         {/* TAB 7: DATA & BACKUPS                                                    */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'data' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Data & Backups</h2>
                 <p className="text-sm text-text-muted mt-0.5">
@@ -1238,7 +1238,7 @@ export function SettingsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl">
               {/* Export Card */}
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
@@ -1367,8 +1367,8 @@ export function SettingsPage() {
         {/* TAB 8: PLAN & USAGE (Matches Untitled UI 80% Space Widget in image)       */}
         {/* ──────────────────────────────────────────────────────────────────────── */}
         {activeTab === 'plan' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+          <div className="space-y-8 sm:space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-border">
               <div>
                 <h2 className="text-lg font-semibold text-text">Plan & Storage Usage</h2>
                 <p className="text-sm text-text-muted mt-0.5">

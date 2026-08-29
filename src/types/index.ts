@@ -95,10 +95,20 @@ export type TimeBlockCategory = 'deep-work' | 'meeting' | 'exercise' | 'personal
 export interface TimeBlock {
   id: string;
   title: string;
+  description?: string;
   category: TimeBlockCategory;
   date: string; // YYYY-MM-DD
   startTime: string; // HH:mm
   endTime: string; // HH:mm
+  recurrence?: string; // e.g., 'none', 'daily', 'weekly', 'custom', or RRULE string
+  customRecurrence?: {
+    frequency: 'day' | 'week' | 'month' | 'year';
+    interval: number;
+    daysOfWeek: number[]; // 0=Sun, 6=Sat
+    endType: 'never' | 'on_date' | 'after_occurrences';
+    endDate: string;
+    occurrences: number;
+  };
   isGoogleEvent: boolean;
   googleEventId: string | null;
   googleEtag?: string | null;
