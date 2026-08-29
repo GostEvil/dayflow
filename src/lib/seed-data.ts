@@ -62,11 +62,29 @@ function seedProfile(): UserProfile {
 
 // ─── Load Initial Clean Data ─────────────────────────────────────────
 export function loadSeedData(): void {
-  const cleanInitialized = getStorageItem<boolean>(STORAGE_KEYS.CLEAN_INITIALIZED, false);
-  if (cleanInitialized) return;
+  const WIPE_KEY = 'dayflow_wipe_v5';
+  const alreadyWiped = localStorage.getItem(WIPE_KEY) === 'true';
 
-  // Clear demo data
-  localStorage.removeItem(STORAGE_KEYS.SEED_LOADED);
+  if (!alreadyWiped) {
+    // Clear entire localStorage to eliminate any lingering demo data
+    localStorage.clear();
+
+    localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(seedTasks()));
+    localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(seedHabits()));
+    localStorage.setItem(STORAGE_KEYS.GOALS, JSON.stringify(seedGoals()));
+    localStorage.setItem(STORAGE_KEYS.JOURNAL, JSON.stringify(seedJournal()));
+    localStorage.setItem(STORAGE_KEYS.FOCUS_SESSIONS, JSON.stringify(seedFocusSessions()));
+    localStorage.setItem(STORAGE_KEYS.WELLBEING, JSON.stringify(seedWellbeing()));
+    localStorage.setItem(STORAGE_KEYS.TIME_BLOCKS, JSON.stringify(seedTimeBlocks()));
+    localStorage.setItem(STORAGE_KEYS.GAMIFICATION, JSON.stringify(seedGamification()));
+    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(seedProfile()));
+    localStorage.setItem(STORAGE_KEYS.CLEAN_INITIALIZED, JSON.stringify(true));
+    localStorage.setItem(WIPE_KEY, 'true');
+  }
+}
+
+export function resetToSeedData(): void {
+  localStorage.clear();
   localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(seedTasks()));
   localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(seedHabits()));
   localStorage.setItem(STORAGE_KEYS.GOALS, JSON.stringify(seedGoals()));
@@ -75,17 +93,7 @@ export function loadSeedData(): void {
   localStorage.setItem(STORAGE_KEYS.WELLBEING, JSON.stringify(seedWellbeing()));
   localStorage.setItem(STORAGE_KEYS.TIME_BLOCKS, JSON.stringify(seedTimeBlocks()));
   localStorage.setItem(STORAGE_KEYS.GAMIFICATION, JSON.stringify(seedGamification()));
-
-  const existingProfile = getStorageItem<UserProfile | null>(STORAGE_KEYS.PROFILE, null);
-  if (!existingProfile || existingProfile.name === 'Alex') {
-    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(seedProfile()));
-  }
-
+  localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(seedProfile()));
   localStorage.setItem(STORAGE_KEYS.CLEAN_INITIALIZED, JSON.stringify(true));
-}
-
-export function resetToSeedData(): void {
-  localStorage.removeItem(STORAGE_KEYS.CLEAN_INITIALIZED);
-  localStorage.removeItem(STORAGE_KEYS.SEED_LOADED);
-  loadSeedData();
+  localStorage.setItem('dayflow_wipe_v5', 'true');
 }

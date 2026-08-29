@@ -56,9 +56,7 @@ export function importAllData(jsonStr: string): { success: boolean; error?: stri
 }
 
 export function clearAllData(): void {
-  for (const key of Object.values(STORAGE_KEYS)) {
-    localStorage.removeItem(key);
-  }
+  localStorage.clear();
 }
 
 // ─── Backup System ───────────────────────────────────────────────────
