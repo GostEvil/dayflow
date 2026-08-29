@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
@@ -7,6 +7,7 @@ import type { TimeBlock, TimeBlockCategory } from '../../types';
 import { STORAGE_KEYS } from '../../types';
 import { getWeekDates, format, addDays, formatTime, dateStr } from '../../lib/date-utils';
 import { deleteGoogleEvent, syncGoogleBlock } from '../../lib/sync-api';
+import { Button } from '../../components/ui/Button';
 
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 6); // 6am - 9pm
 const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
@@ -19,10 +20,33 @@ const CATEGORY_COLORS: Record<TimeBlockCategory, string> = {
   other: 'bg-surface-2 border-border text-text-secondary',
 };
 
+const minutesToTimeStr = (minsFrom6AM: number): string => {
+  const totalMins = Math.max(0, Math.min(16 * 60, minsFrom6AM)) + 6 * 60;
+  const h = Math.floor(totalMins / 60);
+  const m = totalMins % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+};
+
+const formatDuration = (mins: number): string => {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
+};
+
 export function PlannerPage() {
+  const [now, setNow] = useState(() => new Date());
   const [timeBlocks, setTimeBlocks] = useLocalStorage<TimeBlock[]>(STORAGE_KEYS.TIME_BLOCKS, []);
   const [syncNotice, setSyncNotice] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const currentMinutesFrom6 = (now.getHours() - 6) * 60 + now.getMinutes();
   const [showNew, setShowNew] = useState(false);
   const [editBlock, setEditBlock] = useState<TimeBlock | null>(null);
   const [newTitle, setNewTitle] = useState('');
@@ -30,6 +54,12 @@ export function PlannerPage() {
   const [newDate, setNewDate] = useState('');
   const [newStart, setNewStart] = useState('09:00');
   const [newEnd, setNewEnd] = useState('10:00');
+
+  const [dragSelection, setDragSelection] = useState<{
+    date: string;
+    startMins: number;
+    currentMins: number;
+  } | null>(null);
 
   const baseDate = useMemo(() => addDays(new Date(), weekOffset * 7), [weekOffset]);
   const weekDates = useMemo(() => getWeekDates(baseDate), [baseDate]);
@@ -99,6 +129,59 @@ export function PlannerPage() {
     return { top: startMinutes, height: Math.max(endMinutes - startMinutes, 15) };
   };
 
+  const getMinuteOffsetFromPointer = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetY = e.clientY - rect.top;
+    const clampedY = Math.max(0, Math.min(rect.height, offsetY));
+    const snappedY = Math.round(clampedY / 15) * 15;
+    return Math.max(0, Math.min(HOURS.length * 60, snappedY));
+  };
+
+  const handlePointerDown = (ds: string, e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const mins = getMinuteOffsetFromPointer(e);
+    setDragSelection({
+      date: ds,
+      startMins: mins,
+      currentMins: mins,
+    });
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragSelection) return;
+    const mins = getMinuteOffsetFromPointer(e);
+    setDragSelection(prev => (prev ? { ...prev, currentMins: mins } : null));
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragSelection) return;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+
+    const minMins = Math.min(dragSelection.startMins, dragSelection.currentMins);
+    let maxMins = Math.max(dragSelection.startMins, dragSelection.currentMins);
+
+    if (maxMins - minMins < 15) {
+      maxMins = Math.min(HOURS.length * 60, minMins + 60);
+    }
+
+    const startStr = minutesToTimeStr(minMins);
+    const endStr = minutesToTimeStr(maxMins);
+
+    setNewDate(dragSelection.date);
+    setNewStart(startStr);
+    setNewEnd(endStr);
+    setNewTitle('');
+    setShowNew(true);
+    setDragSelection(null);
+  };
+
+  const handlePointerCancel = () => {
+    setDragSelection(null);
+  };
+
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
       {syncNotice && (
@@ -114,13 +197,16 @@ export function PlannerPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setWeekOffset(0)} className="px-3 py-2 text-xs font-mono bg-surface border border-border rounded-lg hover:bg-surface-2 text-text-muted transition-colors">Today</button>
-          <button onClick={() => setWeekOffset(w => w - 1)} className="p-2 hover:bg-surface-2 rounded-lg text-text-muted"><ChevronLeft className="w-4 h-4" /></button>
-          <button onClick={() => setWeekOffset(w => w + 1)} className="p-2 hover:bg-surface-2 rounded-lg text-text-muted"><ChevronRight className="w-4 h-4" /></button>
-          <button onClick={() => { setNewDate(dateStr(weekDates[0])); setShowNew(true); }}
-            className="px-4 py-2 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 transition-colors flex items-center gap-2">
-            <Plus className="w-4 h-4" /> Add Block
-          </button>
+          <Button onClick={() => setWeekOffset(0)} variant="outline" size="sm">Today</Button>
+          <Button onClick={() => setWeekOffset(w => w - 1)} variant="ghost" size="icon" aria-label="Previous week">
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          <Button onClick={() => setWeekOffset(w => w + 1)} variant="ghost" size="icon" aria-label="Next week">
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+          <Button onClick={() => { setNewDate(dateStr(weekDates[0])); setShowNew(true); }} variant="secondary" icon={<Plus className="w-4 h-4" />}>
+            Add Block
+          </Button>
         </div>
       </div>
 
@@ -155,13 +241,60 @@ export function PlannerPage() {
           {weekDates.map(date => {
             const ds = dateStr(date);
             const blocks = getBlocksForDate(ds);
-            const isToday = ds === dateStr(new Date());
+            const isToday = ds === dateStr(now);
             return (
-              <div key={ds} className={`relative border-l border-border ${isToday ? 'bg-glow/[0.02]' : ''}`}>
+              <div
+                key={ds}
+                className={`relative border-l border-border select-none touch-none cursor-crosshair ${isToday ? 'bg-glow/[0.02]' : ''}`}
+                onPointerDown={e => handlePointerDown(ds, e)}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerCancel}
+              >
                 {/* Hour lines */}
                 {HOURS.map(h => (
-                  <div key={h} className="absolute left-0 right-0 border-t border-border/30" style={{ top: (h - 6) * 60 }} />
+                  <div key={h} className="absolute left-0 right-0 border-t border-border/30 pointer-events-none" style={{ top: (h - 6) * 60 }} />
                 ))}
+
+                {/* Current time indicator line */}
+                {isToday && currentMinutesFrom6 >= 0 && currentMinutesFrom6 <= HOURS.length * 60 && (
+                  <div
+                    className="absolute left-0 right-0 border-t-2 border-danger z-30 pointer-events-none flex items-center -mt-[1px]"
+                    style={{ top: currentMinutesFrom6 }}
+                  >
+                    <div className="w-2.5 h-2.5 rounded-full bg-danger -ml-1.25 shrink-0 shadow-sm shadow-danger/50" />
+                  </div>
+                )}
+
+                {/* Live Drag Selection Preview */}
+                {dragSelection && dragSelection.date === ds && (() => {
+                  const minMins = Math.min(dragSelection.startMins, dragSelection.currentMins);
+                  const rawDiff = Math.abs(dragSelection.currentMins - dragSelection.startMins);
+                  const durationMins = rawDiff < 15 ? 60 : rawDiff;
+                  const maxMins = Math.min(HOURS.length * 60, minMins + durationMins);
+                  const height = Math.max(durationMins, 15);
+                  const startStr = minutesToTimeStr(minMins);
+                  const endStr = minutesToTimeStr(maxMins);
+
+                  return (
+                    <div
+                      className="absolute left-1 right-1 rounded-lg border-2 border-glow bg-glow/20 text-glow px-2.5 py-1.5 z-20 pointer-events-none overflow-hidden shadow-lg shadow-glow/10"
+                      style={{ top: minMins, height }}
+                    >
+                      <div className="flex items-center justify-between text-[11px] font-semibold">
+                        <span className="truncate">New Block</span>
+                        <span className="text-[9px] font-mono font-bold bg-glow/30 text-glow px-1.5 py-0.5 rounded ml-1 shrink-0">
+                          {formatDuration(durationMins)}
+                        </span>
+                      </div>
+                      {height >= 30 && (
+                        <div className="text-[10px] font-mono font-medium opacity-90 mt-0.5">
+                          {formatTime(startStr)} – {formatTime(endStr)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {/* Blocks */}
                 {blocks.map(block => {
@@ -171,7 +304,11 @@ export function PlannerPage() {
                       key={block.id}
                       className={`absolute left-1 right-1 rounded-lg border px-2 py-1 cursor-pointer transition-opacity hover:opacity-90 overflow-hidden ${CATEGORY_COLORS[block.category]}`}
                       style={{ top: pos.top, height: pos.height }}
-                      onClick={() => setEditBlock(block)}
+                      onPointerDown={e => e.stopPropagation()}
+                      onClick={e => {
+                        e.stopPropagation();
+                        setEditBlock(block);
+                      }}
                     >
                       <div className="text-[11px] font-medium truncate">{block.title}</div>
                       {pos.height >= 30 && (

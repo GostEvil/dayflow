@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { JournalEntry, GamificationState } from '../../types';
 import { STORAGE_KEYS } from '../../types';
+import { Button } from '../../components/ui/Button';
 import { todayStr, formatDate, format, subDays } from '../../lib/date-utils';
 import { XP_VALUES, getLevel, checkBadges } from '../../lib/xp';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
@@ -72,10 +73,14 @@ export function JournalPage() {
           <h1 className="font-display text-2xl font-bold text-text">Journal</h1>
           <p className="text-sm text-text-muted mt-1">{entries.length} entries</p>
         </div>
-        <button onClick={() => setShowNew(true)} disabled={hasToday && !showNew}
-          className="px-4 py-2 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 disabled:opacity-40 transition-colors flex items-center gap-2">
-          <Plus className="w-4 h-4" /> {hasToday ? 'Already wrote today' : 'Write Today'}
-        </button>
+        <Button
+          onClick={() => setShowNew(true)}
+          disabled={hasToday && !showNew}
+          variant="secondary"
+          icon={<Plus className="w-4 h-4" />}
+        >
+          {hasToday ? 'Already wrote today' : 'Write Today'}
+        </Button>
       </div>
 
       {/* Mood/Energy Trend */}
@@ -189,10 +194,9 @@ export function JournalPage() {
                   </div>
                   <input type="text" value={tags} onChange={e => setTags(e.target.value)} placeholder="Tags (comma-separated)"
                     className="w-full bg-surface-2 border border-border rounded-xl px-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30" />
-                  <button onClick={saveEntry} disabled={!content.trim()}
-                    className="w-full py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 disabled:opacity-40 transition-colors">
+                  <Button onClick={saveEntry} disabled={!content.trim()} variant="primary" size="lg" className="w-full">
                     Save Entry
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>

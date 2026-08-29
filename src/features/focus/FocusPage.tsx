@@ -7,6 +7,7 @@ import type { FocusSession, Task, Goal, GamificationState } from '../../types';
 import { STORAGE_KEYS } from '../../types';
 import { startAmbientSound, stopAmbientSound, isAmbientPlaying, SOUND_OPTIONS, type SoundType } from '../../lib/sounds';
 import { XP_VALUES, getLevel, checkBadges } from '../../lib/xp';
+import { Button } from '../../components/ui/Button';
 
 const PRESETS = [
   { label: '25 min', minutes: 25 },
@@ -122,11 +123,11 @@ export function FocusPage() {
 
         {/* Presets */}
         {!running && !completed && elapsed === 0 && (
-          <div className="flex gap-2 justify-center mb-6">
+          <div className="flex gap-2.5 justify-center mb-8">
             {PRESETS.map(p => (
               <button key={p.minutes} onClick={() => setDuration(p.minutes)}
-                className={`px-4 py-2 rounded-xl text-sm font-mono transition-colors ${
-                  duration === p.minutes ? 'bg-glow/10 text-glow border border-glow/30' : 'bg-surface border border-border text-text-muted hover:text-text'
+                className={`px-5 py-2.5 rounded-2xl text-sm font-mono transition-all duration-200 ${
+                  duration === p.minutes ? 'bg-glow/15 text-glow border border-glow/30 shadow-sm font-semibold' : 'bg-surface border border-border text-text-muted hover:text-text hover:bg-surface-2'
                 }`}>
                 {p.label}
               </button>
@@ -135,50 +136,50 @@ export function FocusPage() {
         )}
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="flex items-center justify-center gap-4 mb-8">
           {!running && elapsed === 0 && !completed && (
-            <button onClick={start} className="px-8 py-3 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 transition-colors flex items-center gap-2">
-              <Play className="w-5 h-5" /> Start
-            </button>
+            <Button onClick={start} variant="primary" size="lg" icon={<Play className="w-5 h-5 fill-current" />}>
+              Start Session
+            </Button>
           )}
           {running && (
-            <button onClick={pause} className="px-6 py-3 bg-surface border border-border text-text rounded-xl hover:bg-surface-2 transition-colors flex items-center gap-2">
-              <Pause className="w-5 h-5" /> Pause
-            </button>
+            <Button onClick={pause} variant="outline" size="lg" icon={<Pause className="w-5 h-5" />}>
+              Pause Session
+            </Button>
           )}
           {!running && elapsed > 0 && !completed && (
             <>
-              <button onClick={resume} className="px-6 py-3 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 transition-colors flex items-center gap-2">
-                <Play className="w-5 h-5" /> Resume
-              </button>
-              <button onClick={reset} className="p-3 bg-surface border border-border text-text-muted rounded-xl hover:bg-surface-2 transition-colors">
+              <Button onClick={resume} variant="primary" size="lg" icon={<Play className="w-5 h-5 fill-current" />}>
+                Resume
+              </Button>
+              <Button onClick={reset} variant="outline" size="icon">
                 <RotateCcw className="w-5 h-5" />
-              </button>
+              </Button>
             </>
           )}
           {completed && (
-            <button onClick={reset} className="px-8 py-3 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 transition-colors flex items-center gap-2">
-              <RotateCcw className="w-5 h-5" /> New Session
-            </button>
+            <Button onClick={reset} variant="primary" size="lg" icon={<RotateCcw className="w-5 h-5" />}>
+              New Session
+            </Button>
           )}
         </div>
 
         {/* Link & Sound */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {!running && elapsed === 0 && (
             <>
               <div className="flex items-center gap-2">
-                <Link className="w-4 h-4 text-text-muted flex-shrink-0" />
+                <Link className="w-4 h-4 text-text-muted" />
                 <select value={linkedTaskId || ''} onChange={e => setLinkedTaskId(e.target.value || null)}
-                  className="flex-1 bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text outline-none">
+                  className="flex-1 bg-surface border border-border rounded-xl px-3.5 py-2.5 text-xs text-text outline-none focus:border-glow/30">
                   <option value="">Link to task (optional)</option>
-                  {activeTasks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+                  {uncompletedTasks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <Link className="w-4 h-4 text-text-muted flex-shrink-0" />
+                <Link className="w-4 h-4 text-text-muted" />
                 <select value={linkedGoalId || ''} onChange={e => setLinkedGoalId(e.target.value || null)}
-                  className="flex-1 bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text outline-none">
+                  className="flex-1 bg-surface border border-border rounded-xl px-3.5 py-2.5 text-xs text-text outline-none focus:border-glow/30">
                   <option value="">Link to goal (optional)</option>
                   {activeGoals.map(g => <option key={g.id} value={g.id}>{g.title}</option>)}
                 </select>
@@ -188,20 +189,26 @@ export function FocusPage() {
 
           {/* Sound controls */}
           <div className="flex items-center justify-center gap-3">
-            <button onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`p-2 rounded-lg transition-colors ${soundEnabled ? 'bg-glow/10 text-glow' : 'bg-surface text-text-muted hover:text-text'}`}>
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
+            <Button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              variant={soundEnabled ? 'secondary' : 'outline'}
+              size="icon"
+            >
+              {soundEnabled ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
+            </Button>
             {soundEnabled && (
               <select value={soundType} onChange={e => setSoundType(e.target.value as SoundType)}
-                className="bg-surface border border-border rounded-lg px-3 py-1.5 text-xs text-text outline-none">
+                className="bg-surface border border-border rounded-xl px-3.5 py-2.5 text-xs text-text outline-none">
                 {SOUND_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             )}
-            <button onClick={() => setIsFullscreen(!isFullscreen)}
-              className="p-2 rounded-lg bg-surface text-text-muted hover:text-text transition-colors">
-              <Square className="w-4 h-4" />
-            </button>
+            <Button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              variant="outline"
+              size="icon"
+            >
+              <Square className="w-4.5 h-4.5" />
+            </Button>
           </div>
         </div>
 

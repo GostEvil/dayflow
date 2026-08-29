@@ -11,6 +11,7 @@ import { STORAGE_KEYS } from '../../types';
 import { formatDate, todayStr } from '../../lib/date-utils';
 import { XP_VALUES, getLevel, checkBadges } from '../../lib/xp';
 import { deleteNotionTask, syncNotionTask } from '../../lib/sync-api';
+import { Button } from '../../components/ui/Button';
 
 const STATUS_LABELS: Record<TaskStatus, string> = {
   backlog: 'Backlog',
@@ -165,18 +166,29 @@ export function TasksPage() {
             {tasks.filter(t => t.status !== 'done').length} open · {tasks.filter(t => t.completedAt && t.completedAt.startsWith(todayStr())).length} completed today
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button
+        <div className="flex items-center gap-3">
+          <Button
             onClick={() => setShowNewTask(true)}
-            className="px-4 py-2 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 transition-colors flex items-center gap-2"
+            variant="secondary"
+            icon={<Plus className="w-4.5 h-4.5" />}
           >
-            <Plus className="w-4 h-4" /> New Task
-          </button>
-          <div className="flex bg-surface border border-border rounded-lg">
-            <button onClick={() => setView('board')} className={`p-2 rounded-l-lg transition-colors ${view === 'board' ? 'bg-surface-2 text-glow' : 'text-text-muted hover:text-text'}`}>
+            New Task
+          </Button>
+          <div className="flex bg-surface border border-border rounded-xl p-1 gap-1">
+            <button
+              onClick={() => setView('board')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center ${
+                view === 'board' ? 'bg-surface-2 text-glow shadow-sm' : 'text-text-muted hover:text-text'
+              }`}
+            >
               <LayoutGrid className="w-4 h-4" />
             </button>
-            <button onClick={() => setView('list')} className={`p-2 rounded-r-lg transition-colors ${view === 'list' ? 'bg-surface-2 text-glow' : 'text-text-muted hover:text-text'}`}>
+            <button
+              onClick={() => setView('list')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center ${
+                view === 'list' ? 'bg-surface-2 text-glow shadow-sm' : 'text-text-muted hover:text-text'
+              }`}
+            >
               <List className="w-4 h-4" />
             </button>
           </div>
@@ -186,25 +198,22 @@ export function TasksPage() {
       {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search tasks..."
-            className="w-full bg-surface border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30 transition-colors"
+            className="w-full bg-surface border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30 transition-colors min-h-[42px]"
           />
         </div>
-        <button
+        <Button
           onClick={() => setShowFilters(!showFilters)}
-          className={`px-4 py-2.5 border rounded-xl text-sm flex items-center gap-2 transition-colors ${
-            showFilters || filterPriority !== 'all' || filterCategory !== 'all'
-              ? 'border-glow/30 bg-glow/5 text-glow'
-              : 'border-border text-text-muted hover:text-text'
-          }`}
+          variant={showFilters || filterPriority !== 'all' || filterCategory !== 'all' ? 'secondary' : 'outline'}
+          icon={<Filter className="w-4 h-4" />}
         >
-          <Filter className="w-4 h-4" /> Filters
-        </button>
+          Filters
+        </Button>
       </div>
 
       {showFilters && (
@@ -379,10 +388,9 @@ export function TasksPage() {
                     <input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)}
                       className="bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text outline-none" />
                   </div>
-                  <button onClick={addTask} disabled={!newTitle.trim()}
-                    className="w-full py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 disabled:opacity-40 transition-colors">
+                  <Button onClick={addTask} disabled={!newTitle.trim()} variant="primary" size="lg" className="w-full">
                     Create Task
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -402,7 +410,7 @@ export function TasksPage() {
               <div className="h-full bg-surface border-l border-border p-6 overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="font-display text-lg font-bold text-text">Edit Task</h2>
-                  <button onClick={() => setEditingTask(null)} className="p-1 hover:bg-surface-2 rounded-lg text-text-muted"><X className="w-4 h-4" /></button>
+                  <button onClick={() => setEditingTask(null)} className="p-2 hover:bg-surface-2 rounded-xl text-text-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
                 <div className="space-y-4">
                   <div>
@@ -452,14 +460,12 @@ export function TasksPage() {
                     </div>
                   </div>
                   <div className="flex gap-3 pt-4">
-                    <button onClick={saveEdit}
-                      className="flex-1 py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 transition-colors">
+                    <Button onClick={saveEdit} variant="primary" size="md" className="flex-1">
                       Save Changes
-                    </button>
-                    <button onClick={() => deleteTask(editingTask.id)}
-                      className="px-4 py-2.5 bg-danger-muted text-danger rounded-xl hover:bg-danger/20 transition-colors">
+                    </Button>
+                    <Button onClick={() => deleteTask(editingTask.id)} variant="danger" size="icon">
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

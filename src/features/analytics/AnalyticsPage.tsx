@@ -81,9 +81,9 @@ export function AnalyticsPage() {
             <h1 className="font-display text-2xl font-bold text-text">Analytics</h1>
             <p className="text-sm text-text-muted mt-1">Your productivity trends</p>
           </div>
-          <div className="flex bg-surface border border-border rounded-lg">
-            <button onClick={() => setPeriod('7')} className={`px-3 py-1.5 text-sm rounded-l-lg transition-colors ${period === '7' ? 'bg-surface-2 text-glow' : 'text-text-muted'}`}>7 Days</button>
-            <button onClick={() => setPeriod('30')} className={`px-3 py-1.5 text-sm rounded-r-lg transition-colors ${period === '30' ? 'bg-surface-2 text-glow' : 'text-text-muted'}`}>30 Days</button>
+          <div className="flex gap-1.5 bg-surface border border-border rounded-2xl p-1.5 shadow-sm">
+            <button onClick={() => setPeriod('7')} className={`px-4 py-2 text-sm rounded-xl font-medium transition-all duration-200 ${period === '7' ? 'bg-glow/15 text-glow shadow-sm border border-glow/30' : 'text-text-muted hover:text-text'}`}>7 Days</button>
+            <button onClick={() => setPeriod('30')} className={`px-4 py-2 text-sm rounded-xl font-medium transition-all duration-200 ${period === '30' ? 'bg-glow/15 text-glow shadow-sm border border-glow/30' : 'text-text-muted hover:text-text'}`}>30 Days</button>
           </div>
         </motion.div>
 

@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { Habit, HabitFrequency, GamificationState } from '../../types';
 import { STORAGE_KEYS } from '../../types';
+import { Button } from '../../components/ui/Button';
 import { todayStr, format, subDays, getLast7Days } from '../../lib/date-utils';
 import { XP_VALUES, getLevel, checkBadges } from '../../lib/xp';
 
@@ -92,9 +93,9 @@ export function HabitsPage() {
           <h1 className="font-display text-2xl font-bold text-text">Habits</h1>
           <p className="text-sm text-text-muted mt-1">{habits.filter(h => h.completions[today]).length}/{habits.length} completed today</p>
         </div>
-        <button onClick={() => setShowNew(true)} className="px-4 py-2 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 transition-colors flex items-center gap-2">
-          <Plus className="w-4 h-4" /> New Habit
-        </button>
+        <Button onClick={() => setShowNew(true)} variant="secondary" icon={<Plus className="w-4 h-4" />}>
+          New Habit
+        </Button>
       </div>
 
       {/* Habit Grid */}
@@ -119,8 +120,8 @@ export function HabitsPage() {
                 </div>
                 <button
                   onClick={e => { e.stopPropagation(); toggleCompletion(habit.id); }}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                    isComplete ? 'bg-success/20 text-success' : 'bg-surface-2 text-text-muted hover:text-glow hover:bg-glow/10'
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95 ${
+                    isComplete ? 'bg-success/20 text-success border border-success/30' : 'bg-surface-2 text-text-muted hover:text-glow hover:bg-glow/10 border border-transparent'
                   }`}
                 >
                   <Check className="w-5 h-5" />
@@ -145,11 +146,11 @@ export function HabitsPage() {
 
               <div className="flex items-center gap-4 text-xs text-text-muted">
                 <div className="flex items-center gap-1">
-                  <Flame className="w-3 h-3 text-ember" />
+                  <Flame className="w-3.5 h-3.5 text-ember" />
                   <span className="font-mono font-bold text-ember">{streak}</span> streak
                 </div>
                 <div className="flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
+                  <TrendingUp className="w-3.5 h-3.5" />
                   <span className="font-mono">{getCompletionPct(habit)}%</span> rate
                 </div>
               </div>
@@ -163,7 +164,9 @@ export function HabitsPage() {
           <div className="text-4xl mb-3">🧘</div>
           <h3 className="font-display text-lg text-text mb-2">No habits yet</h3>
           <p className="text-sm text-text-muted mb-4">Start building consistency by adding your first habit.</p>
-          <button onClick={() => setShowNew(true)} className="px-4 py-2 bg-glow/10 text-glow text-sm rounded-xl hover:bg-glow/20">Add Habit</button>
+          <Button onClick={() => setShowNew(true)} variant="secondary" icon={<Plus className="w-4 h-4" />}>
+            Add Habit
+          </Button>
         </div>
       )}
 
@@ -177,9 +180,9 @@ export function HabitsPage() {
               <div className="bg-surface border border-border rounded-2xl p-6 m-4">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-display text-lg font-bold text-text">New Habit</h2>
-                  <button onClick={() => setShowNew(false)} className="p-1 hover:bg-surface-2 rounded-lg text-text-muted"><X className="w-4 h-4" /></button>
+                  <button onClick={() => setShowNew(false)} className="p-2 hover:bg-surface-2 rounded-xl text-text-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <input type="text" value={newName} onChange={e => setNewName(e.target.value)} placeholder="Habit name" autoFocus
                     className="w-full bg-surface-2 border border-border rounded-xl px-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30" />
                   <div>
@@ -187,7 +190,7 @@ export function HabitsPage() {
                     <div className="flex flex-wrap gap-2">
                       {ICONS.map(icon => (
                         <button key={icon} onClick={() => setNewIcon(icon)}
-                          className={`w-9 h-9 rounded-lg flex items-center justify-center text-lg transition-colors ${newIcon === icon ? 'bg-glow/10 ring-1 ring-glow' : 'bg-surface-2 hover:bg-surface-3'}`}>
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl transition-all ${newIcon === icon ? 'bg-glow/15 ring-2 ring-glow scale-105' : 'bg-surface-2 hover:bg-surface-3'}`}>
                           {icon}
                         </button>
                       ))}
@@ -201,12 +204,11 @@ export function HabitsPage() {
                   </select>
                   <div>
                     <label className="text-xs font-mono uppercase text-text-muted mb-2 block">Color</label>
-                    <input type="color" value={newColor} onChange={e => setNewColor(e.target.value)} className="w-10 h-10 rounded-lg border border-border cursor-pointer" />
+                    <input type="color" value={newColor} onChange={e => setNewColor(e.target.value)} className="w-12 h-12 rounded-xl border border-border cursor-pointer" />
                   </div>
-                  <button onClick={addHabit} disabled={!newName.trim()}
-                    className="w-full py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 disabled:opacity-40 transition-colors">
+                  <Button onClick={addHabit} disabled={!newName.trim()} variant="primary" size="lg" className="w-full">
                     Create Habit
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -257,10 +259,9 @@ export function HabitsPage() {
                     })}
                   </div>
                 </div>
-                <button onClick={() => deleteHabit(detailHabit.id)}
-                  className="w-full py-2.5 bg-danger-muted text-danger rounded-xl hover:bg-danger/20 transition-colors text-sm">
+                <Button onClick={() => deleteHabit(detailHabit.id)} variant="danger" className="w-full mt-2">
                   Delete Habit
-                </button>
+                </Button>
               </div>
             </motion.div>
           </>

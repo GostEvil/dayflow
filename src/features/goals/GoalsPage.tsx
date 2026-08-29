@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { Goal, GoalStatus, GoalCategory, Milestone } from '../../types';
 import { STORAGE_KEYS } from '../../types';
+import { Button } from '../../components/ui/Button';
 import { formatDate } from '../../lib/date-utils';
 
 const CATEGORY_COLORS: Record<GoalCategory, string> = {
@@ -81,16 +82,16 @@ export function GoalsPage() {
           <h1 className="font-display text-2xl font-bold text-text">Goals</h1>
           <p className="text-sm text-text-muted mt-1">{goals.filter(g => g.status === 'active').length} active goals</p>
         </div>
-        <button onClick={() => setShowNew(true)} className="px-4 py-2 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 transition-colors flex items-center gap-2">
-          <Plus className="w-4 h-4" /> New Goal
-        </button>
+        <Button onClick={() => setShowNew(true)} variant="secondary" icon={<Plus className="w-4 h-4" />}>
+          New Goal
+        </Button>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-surface border border-border rounded-xl p-1 mb-6 w-fit">
+      <div className="flex gap-1.5 bg-surface border border-border rounded-2xl p-1.5 mb-6 w-fit shadow-sm">
         {(['active', 'completed', 'paused'] as GoalStatus[]).map(s => (
           <button key={s} onClick={() => setTab(s)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === s ? 'bg-surface-2 text-text' : 'text-text-muted hover:text-text'}`}>
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${tab === s ? 'bg-glow/15 text-glow shadow-sm border border-glow/30' : 'text-text-muted hover:text-text'}`}>
             {s.charAt(0).toUpperCase() + s.slice(1)}
           </button>
         ))}
@@ -186,12 +187,13 @@ export function GoalsPage() {
                         )}
                       </div>
                     ))}
-                    <button onClick={() => setNewMilestones(prev => [...prev, ''])} className="text-xs text-glow hover:underline">+ Add milestone</button>
+                    <Button onClick={() => setNewMilestones(prev => [...prev, ''])} variant="ghost" size="sm" className="mt-1 text-glow">
+                      + Add milestone
+                    </Button>
                   </div>
-                  <button onClick={addGoal} disabled={!newTitle.trim()}
-                    className="w-full py-2.5 bg-glow text-void font-semibold rounded-xl hover:bg-glow/90 disabled:opacity-40 transition-colors">
+                  <Button onClick={addGoal} disabled={!newTitle.trim()} variant="primary" size="lg" className="w-full">
                     Create Goal
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -207,8 +209,8 @@ export function GoalsPage() {
             <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="fixed top-0 right-0 bottom-0 w-full max-w-lg z-50">
               <div className="h-full bg-surface border-l border-border p-6 overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
-                  <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${CATEGORY_COLORS[detailGoal.category]}`}>{detailGoal.category}</span>
-                  <button onClick={() => setDetailGoal(null)} className="p-1 hover:bg-surface-2 rounded-lg text-text-muted"><X className="w-4 h-4" /></button>
+                  <span className={`px-2.5 py-1 rounded-lg text-xs font-mono ${CATEGORY_COLORS[detailGoal.category]}`}>{detailGoal.category}</span>
+                  <button onClick={() => setDetailGoal(null)} className="p-2 hover:bg-surface-2 rounded-xl text-text-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-text mb-2">{detailGoal.title}</h2>
                 {detailGoal.description && <p className="text-sm text-text-secondary mb-6">{detailGoal.description}</p>}
@@ -231,7 +233,7 @@ export function GoalsPage() {
                   <div className="text-xs font-mono uppercase text-text-muted mb-3">Milestones</div>
                   <div className="space-y-2">
                     {detailGoal.milestones.map(m => (
-                      <div key={m.id} className="flex items-center gap-3 p-3 bg-surface-2 rounded-xl cursor-pointer hover:bg-surface-3 transition-colors"
+                      <div key={m.id} className="flex items-center gap-3 p-3.5 bg-surface-2 rounded-xl cursor-pointer hover:bg-surface-3 transition-colors"
                         onClick={() => toggleMilestone(detailGoal.id, m.id)}>
                         {m.completed ? <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" /> : <Circle className="w-5 h-5 text-text-muted flex-shrink-0" />}
                         <span className={`text-sm ${m.completed ? 'text-text-muted line-through' : 'text-text'}`}>{m.title}</span>
@@ -241,23 +243,20 @@ export function GoalsPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {detailGoal.status === 'active' && (
-                    <button onClick={() => updateGoalStatus(detailGoal.id, 'paused')}
-                      className="w-full py-2.5 bg-surface-2 text-text-secondary rounded-xl hover:bg-surface-3 transition-colors text-sm">
+                    <Button onClick={() => updateGoalStatus(detailGoal.id, 'paused')} variant="outline" className="w-full">
                       Pause Goal
-                    </button>
+                    </Button>
                   )}
                   {detailGoal.status === 'paused' && (
-                    <button onClick={() => updateGoalStatus(detailGoal.id, 'active')}
-                      className="w-full py-2.5 bg-glow/10 text-glow rounded-xl hover:bg-glow/20 transition-colors text-sm">
+                    <Button onClick={() => updateGoalStatus(detailGoal.id, 'active')} variant="secondary" className="w-full">
                       Resume Goal
-                    </button>
+                    </Button>
                   )}
-                  <button onClick={() => deleteGoal(detailGoal.id)}
-                    className="w-full py-2.5 bg-danger-muted text-danger rounded-xl hover:bg-danger/20 transition-colors text-sm">
+                  <Button onClick={() => deleteGoal(detailGoal.id)} variant="danger" className="w-full">
                     Delete Goal
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>

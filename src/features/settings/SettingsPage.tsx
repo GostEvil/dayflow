@@ -5,6 +5,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useTheme } from '../../hooks/useTheme';
 import type { UserProfile, ThemeMode, Task, TimeBlock } from '../../types';
 import { STORAGE_KEYS } from '../../types';
+import { Button } from '../../components/ui/Button';
 import { exportAllData, importAllData, clearAllData, getBackups, restoreBackup, createBackup } from '../../lib/storage';
 import { resetToSeedData } from '../../lib/seed-data';
 import { connectGoogle, getSyncStatus, pullGoogleEvents, pullNotionPages, type SyncStatus } from '../../lib/sync-api';
@@ -156,13 +157,13 @@ export function SettingsPage() {
       {/* Theme */}
       <div className="bg-surface border border-border rounded-2xl p-5 mb-4">
         <div className="text-xs font-mono uppercase text-text-muted mb-3 tracking-wider">Theme</div>
-        <div className="flex gap-2">
+        <div className="flex gap-2.5">
           {THEME_OPTIONS.map(opt => {
             const Icon = opt.icon;
             return (
               <button key={opt.value} onClick={() => { setTheme(opt.value); if (profile) setProfile({ ...profile, theme: opt.value }); }}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-colors ${
-                  theme === opt.value ? 'bg-glow/10 text-glow border border-glow/30' : 'bg-surface-2 text-text-muted hover:text-text border border-transparent'
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  theme === opt.value ? 'bg-glow/15 text-glow border border-glow/30 shadow-sm font-semibold' : 'bg-surface-2 text-text-muted hover:text-text border border-transparent'
                 }`}>
                 <Icon className="w-4 h-4" /> {opt.label}
               </button>
@@ -192,9 +193,9 @@ export function SettingsPage() {
                 className="w-full bg-surface-2 border border-border rounded-xl px-3 py-2.5 text-sm text-text font-mono outline-none" />
             </div>
           </div>
-          <button onClick={saveProfile} className="px-4 py-2 bg-glow/10 text-glow text-sm rounded-xl hover:bg-glow/20 transition-colors">
+          <Button onClick={saveProfile} variant="secondary">
             Save Profile
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -207,13 +208,13 @@ export function SettingsPage() {
           Connect your Google Calendar to sync events with the Planner.
           The free local sync service uses server-side OAuth credentials.
         </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <button onClick={connectGoogle} disabled={!syncStatus?.google.configured} className="px-4 py-2 bg-surface-2 text-text-muted text-sm rounded-xl hover:bg-surface-3 transition-colors disabled:opacity-40">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button onClick={connectGoogle} disabled={!syncStatus?.google.configured} variant="outline">
             {syncStatus?.google.connected ? 'Reconnect Google Calendar' : 'Connect Google Calendar'}
-          </button>
-          <button onClick={refreshSyncStatus} aria-label="Refresh sync status" className="p-2 text-text-muted hover:text-text rounded-lg hover:bg-surface-2">
+          </Button>
+          <Button onClick={refreshSyncStatus} aria-label="Refresh sync status" variant="ghost" size="icon">
             <RefreshCw className="w-4 h-4" />
-          </button>
+          </Button>
           <span className={`text-xs ${syncStatus?.google.connected ? 'text-success' : 'text-text-muted'}`}>
             {syncStatus?.google.connected ? 'Connected' : syncStatus?.google.configured ? 'Not connected' : 'Sync service not configured'}
           </span>

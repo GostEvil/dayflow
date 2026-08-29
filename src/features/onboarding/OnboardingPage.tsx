@@ -55,6 +55,7 @@ export function OnboardingPage() {
     loadSeedData();
     const profile = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROFILE) || '{}');
     setProfile({ ...profile, onboardingCompleted: true });
+    setTimeout(() => window.location.reload(), 100);
   };
 
   const complete = () => {
@@ -87,6 +88,7 @@ export function OnboardingPage() {
       theme: 'dark',
       createdAt: new Date().toISOString(),
     });
+    setTimeout(() => window.location.reload(), 100);
   };
 
   const toggleHabit = (h: string) => {

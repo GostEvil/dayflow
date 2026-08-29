@@ -55,9 +55,9 @@ export function ReviewPage() {
           <h1 className="font-display text-2xl font-bold text-text">Review</h1>
           <p className="text-sm text-text-muted mt-1">Reflect on your progress</p>
         </div>
-        <div className="flex bg-surface border border-border rounded-lg">
-          <button onClick={() => setPeriod('weekly')} className={`px-3 py-1.5 text-sm rounded-l-lg transition-colors ${period === 'weekly' ? 'bg-surface-2 text-glow' : 'text-text-muted'}`}>Weekly</button>
-          <button onClick={() => setPeriod('monthly')} className={`px-3 py-1.5 text-sm rounded-r-lg transition-colors ${period === 'monthly' ? 'bg-surface-2 text-glow' : 'text-text-muted'}`}>Monthly</button>
+        <div className="flex gap-1.5 bg-surface border border-border rounded-2xl p-1.5 shadow-sm">
+          <button onClick={() => setPeriod('weekly')} className={`px-4 py-2 text-sm rounded-xl font-medium transition-all duration-200 ${period === 'weekly' ? 'bg-glow/15 text-glow shadow-sm border border-glow/30' : 'text-text-muted hover:text-text'}`}>Weekly</button>
+          <button onClick={() => setPeriod('monthly')} className={`px-4 py-2 text-sm rounded-xl font-medium transition-all duration-200 ${period === 'monthly' ? 'bg-glow/15 text-glow shadow-sm border border-glow/30' : 'text-text-muted hover:text-text'}`}>Monthly</button>
         </div>
       </div>
 

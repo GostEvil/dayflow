@@ -14,6 +14,7 @@ import { LifeWheel } from './LifeWheel';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
+import { Button } from '../../components/ui/Button';
 
 const container = {
   hidden: { opacity: 0 },
@@ -183,12 +184,15 @@ export function DashboardPage() {
               <span className="text-xs text-text-muted font-mono">MIN</span>
             </div>
             <div className="mt-auto">
-              <button
+              <Button
                 onClick={() => navigate('/focus')}
-                className="w-full py-2.5 bg-glow/10 text-glow text-sm font-medium rounded-xl hover:bg-glow/20 transition-colors flex items-center justify-center gap-2"
+                variant="secondary"
+                size="md"
+                className="w-full"
+                icon={<Timer className="w-4 h-4" />}
               >
-                <Timer className="w-4 h-4" /> Start Session
-              </button>
+                Start Session
+              </Button>
             </div>
           </motion.div>
 
@@ -196,12 +200,15 @@ export function DashboardPage() {
           <motion.div variants={item} className="lg:col-span-2 bg-surface border border-border rounded-2xl p-5 spotlight-card">
             <div className="flex items-center justify-between mb-4">
               <div className="text-xs font-mono uppercase tracking-wider text-text-muted">Today's Tasks</div>
-              <button
+              <Button
                 onClick={() => navigate('/tasks')}
-                className="text-xs text-text-muted hover:text-glow transition-colors flex items-center gap-1"
+                variant="ghost"
+                size="sm"
+                icon={<ChevronRight className="w-3.5 h-3.5" />}
+                iconPosition="right"
               >
-                View all <ChevronRight className="w-3 h-3" />
-              </button>
+                View all
+              </Button>
             </div>
 
             {/* Quick add */}
@@ -212,15 +219,16 @@ export function DashboardPage() {
                 onChange={e => setNewTaskTitle(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addQuickTask()}
                 placeholder="Add a task..."
-                className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30 transition-colors"
+                className="flex-1 bg-surface-2 border border-border rounded-xl px-4 py-2.5 text-sm text-text outline-none placeholder:text-text-muted focus:border-glow/30 transition-colors"
               />
-              <button
+              <Button
                 onClick={addQuickTask}
                 disabled={!newTaskTitle.trim()}
-                className="p-2 bg-glow/10 text-glow rounded-lg hover:bg-glow/20 disabled:opacity-30 transition-colors"
+                variant="secondary"
+                size="icon"
               >
                 <Plus className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
 
             {/* Task list */}
