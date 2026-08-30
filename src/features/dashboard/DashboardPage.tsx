@@ -138,448 +138,323 @@ export function DashboardPage() {
     totalTasksCount > 0 ? Math.round((completedToday.length / totalTasksCount) * 100) : 0;
 
   return (
-    <div className="p-5 sm:p-8 lg:p-10 max-w-[1440px] mx-auto space-y-8">
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-        {/* Top Greeting Header */}
-        <motion.div
-          variants={item}
-          className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2"
-        >
-          <div>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-text tracking-tight flex items-center gap-3">
-              {getGreeting()}, <span className="text-glow">{profile?.name || 'User'}</span>
-            </h1>
-            <p className="text-text-muted text-sm mt-1.5 font-mono tracking-wide">
-              {format(new Date(), 'EEEE, MMMM d, yyyy')}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              onClick={() => navigate('/focus')}
-              variant="outline"
-              size="md"
-              icon={<Timer className="w-4 h-4 text-glow" />}
-            >
-              Focus Timer
-            </Button>
-            <Button
-              onClick={() => navigate('/tasks')}
-              variant="primary"
-              size="md"
-              icon={<Plus className="w-4 h-4" />}
-            >
-              New Task
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Top Summary Bento Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {/* Focus Today Card */}
-          <motion.div
-            variants={item}
-            className="bg-surface/95 border border-border/80 rounded-2xl shadow-sm flex flex-col group hover:border-border transition-all duration-200"
-          >
-            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border/40">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow flex-shrink-0">
-                  <Timer className="w-4 h-4" />
-                </div>
-                <span className="text-sm font-semibold text-text tracking-tight">Focus Today</span>
-              </div>
-              <span className="text-[11px] font-mono font-medium text-text-muted bg-surface-2 px-2 py-0.5 rounded-lg border border-border/40 flex-shrink-0 ml-3">
-                Deep Work
-              </span>
+    <div className="min-h-full bg-void text-text transition-colors duration-200">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12 space-y-10">
+        <motion.div variants={container} initial="hidden" animate="show" className="space-y-10">
+          {/* Header */}
+          <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+            <div>
+              <p className="text-pulse text-sm font-semibold tracking-wider uppercase mb-1.5 font-mono">
+                {format(new Date(), 'EEEE, MMMM d')}
+              </p>
+              <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-text">
+                {getGreeting()}, <span className="text-white/90">{profile?.name || 'User'}</span>
+              </h1>
             </div>
-
-            <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
-              <div className="flex items-baseline gap-2">
-                <span className="font-mono text-5xl font-extrabold text-glow tracking-tight">
-                  {focusMinutesToday}
-                </span>
-                <span className="text-xs text-text-muted font-mono uppercase tracking-widest font-semibold">
-                  MIN
-                </span>
-              </div>
-              <p className="text-xs text-text-muted mt-2">Deep work session output</p>
-            </div>
-
-            <div className="px-6 pb-6">
+            <div className="flex items-center gap-3">
               <Button
                 onClick={() => navigate('/focus')}
-                variant="secondary"
+                variant="outline"
                 size="md"
-                className="w-full"
-                icon={<Timer className="w-4 h-4" />}
+                className="bg-surface/50 backdrop-blur-xl border-white/10 hover:bg-surface-2"
+                icon={<Timer className="w-4 h-4 text-glow" />}
               >
-                Start Session
+                Focus Timer
               </Button>
-            </div>
-          </motion.div>
-
-          {/* Today's Task Progress Card */}
-          <motion.div
-            variants={item}
-            className="bg-surface/95 border border-border/80 rounded-2xl shadow-sm flex flex-col group hover:border-border transition-all duration-200"
-          >
-            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border/40">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center text-success flex-shrink-0">
-                  <CheckSquare className="w-4 h-4" />
-                </div>
-                <span className="text-sm font-semibold text-text tracking-tight">
-                  Task Progress
-                </span>
-              </div>
-              <span className="text-[11px] font-mono font-bold text-success bg-success/10 border border-success/20 px-2 py-0.5 rounded-lg flex-shrink-0 ml-3">
-                {taskCompletionPct}%
-              </span>
-            </div>
-
-            <div className="flex-1 px-6 py-6">
-              <div className="flex items-baseline justify-between mb-4">
-                <div className="flex items-baseline gap-1">
-                  <span className="font-mono text-4xl font-extrabold text-text">
-                    {completedToday.length}
-                  </span>
-                  <span className="text-xl text-text-muted font-mono font-medium">
-                    /{totalTasksCount}
-                  </span>
-                </div>
-                <span className="text-xs text-text-muted font-mono font-medium">completed</span>
-              </div>
-
-              <div className="w-full h-2.5 bg-surface-2 rounded-full overflow-hidden mb-4 border border-border/40">
-                <motion.div
-                  className="h-full bg-success rounded-full shadow-sm shadow-success/30"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${taskCompletionPct}%` }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
-              </div>
-
-              <p className="text-xs text-text-muted font-medium">
-                {totalTasksCount === 0
-                  ? 'No tasks scheduled for today'
-                  : `${todayTasks.length} tasks remaining to finish today`}
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Top Habit Streaks Card */}
-          <motion.div
-            variants={item}
-            className="bg-surface/95 border border-border/80 rounded-2xl shadow-sm flex flex-col group hover:border-border transition-all duration-200"
-          >
-            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border/40">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember flex-shrink-0">
-                  <Flame className="w-4 h-4" />
-                </div>
-                <span className="text-sm font-semibold text-text tracking-tight">Top Habits</span>
-              </div>
-              <span className="text-[11px] font-mono font-medium text-text-muted bg-surface-2 px-2 py-0.5 rounded-lg border border-border/40 flex-shrink-0 ml-3">
-                Streaks
-              </span>
-            </div>
-
-            <div className="flex-1 px-6 py-5 space-y-2.5">
-              {habitStreaks.slice(0, 3).map(h => (
-                <div
-                  key={h.id}
-                  className="flex items-center justify-between p-3 bg-surface-2/60 border border-border/50 rounded-xl hover:border-border transition-colors"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0 overflow-hidden">
-                    <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{
-                        backgroundColor: `${h.color || '#00E5FF'}18`,
-                        border: `1px solid ${h.color || '#00E5FF'}35`,
-                        color: h.color || '#00E5FF',
-                      }}
-                    >
-                      <HabitIcon icon={h.icon} className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-sm text-text font-medium truncate">{h.name}</span>
-                  </div>
-                  <div className="flex items-center gap-1 font-mono text-[11px] font-bold text-ember bg-ember/10 border border-ember/20 px-2 py-0.5 rounded-lg flex-shrink-0 ml-2">
-                    <Flame className="w-3 h-3 fill-current" />
-                    <span>{h.streak}d</span>
-                  </div>
-                </div>
-              ))}
-              {habitStreaks.length === 0 && (
-                <div className="py-6 text-center text-xs text-text-muted border border-dashed border-border/60 rounded-xl">
-                  No habits configured yet
-                </div>
-              )}
-            </div>
-
-            <div className="px-6 pb-5">
               <Button
-                onClick={() => navigate('/habits')}
-                variant="ghost"
-                size="sm"
-                className="w-full"
-                icon={<ChevronRight className="w-4 h-4" />}
-                iconPosition="right"
+                onClick={() => navigate('/tasks')}
+                variant="primary"
+                size="md"
+                className="shadow-pulse/20"
+                icon={<Plus className="w-4 h-4" />}
               >
-                View all habits
+                New Task
               </Button>
             </div>
           </motion.div>
-        </div>
 
-        {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {/* Today's Tasks Column (2 cols) */}
-          <motion.div
-            variants={item}
-            className="lg:col-span-2 bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
-                    <CheckSquare className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-lg font-semibold text-text tracking-tight">
-                      Today's Tasks
-                    </h2>
-                    <p className="text-xs text-text-muted mt-0.5">
-                      {todayTasks.length} pending · {completedToday.length} completed
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => navigate('/tasks')}
-                  variant="ghost"
-                  size="sm"
-                  icon={<ChevronRight className="w-4 h-4" />}
-                  iconPosition="right"
-                >
-                  View all tasks
-                </Button>
+          {/* Top Metrics Row - Glassmorphism */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Focus Metric */}
+            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Timer className="w-16 h-16 text-glow" />
               </div>
-
-              {/* Quick Add Task Field */}
-              <div className="flex gap-3 mb-6">
-                <Input
-                  value={newTaskTitle}
-                  onChange={e => setNewTaskTitle(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addQuickTask()}
-                  placeholder="What's your next priority task today?"
-                  containerClassName="flex-1"
-                />
-                <Button
-                  onClick={addQuickTask}
-                  disabled={!newTaskTitle.trim()}
-                  variant="primary"
-                  size="icon"
-                  className="mt-auto h-11 w-11 flex-shrink-0"
-                >
-                  <Plus className="w-5 h-5" />
-                </Button>
-              </div>
-
-              {/* Task Items List */}
-              <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
-                {[...todayTasks, ...completedToday].map(task => (
-                  <div
-                    key={task.id}
-                    className="flex items-center gap-3.5 p-4 bg-surface-2/60 border border-border/60 rounded-2xl hover:border-border transition-all duration-150 group"
-                  >
-                    <button
-                      onClick={() => toggleTask(task.id)}
-                      className="flex-shrink-0 transition-transform active:scale-90 p-0.5 cursor-pointer"
-                    >
-                      {task.status === 'done' ? (
-                        <CheckCircle2 className="w-5 h-5 text-success" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-text-muted group-hover:text-glow transition-colors" />
-                      )}
-                    </button>
-                    <span
-                      className={`text-sm flex-1 truncate ${
-                        task.status === 'done'
-                          ? 'text-text-muted line-through'
-                          : 'text-text font-medium'
-                      }`}
-                    >
-                      {task.title}
-                    </span>
-                    {task.dueTime && task.status !== 'done' && (
-                      <span className="text-xs font-mono text-text-muted flex items-center gap-1.5 bg-surface-3/80 px-2.5 py-1 rounded-xl border border-border/40">
-                        <Clock className="w-3.5 h-3.5" /> {formatTime(task.dueTime)}
-                      </span>
-                    )}
-                    {task.priority === 'urgent' && task.status !== 'done' && (
-                      <span className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase bg-danger/15 text-danger border border-danger/30 rounded-xl">
-                        urgent
-                      </span>
-                    )}
-                  </div>
-                ))}
-
-                {todayTasks.length === 0 && completedToday.length === 0 && (
-                  <div className="py-16 text-center text-sm text-text-muted border border-dashed border-border/70 rounded-3xl flex flex-col items-center justify-center space-y-2">
-                    <Sparkles className="w-6 h-6 text-text-muted/60 mb-1" />
-                    <p className="font-medium text-text-secondary">No tasks scheduled for today</p>
-                    <p className="text-xs text-text-muted">
-                      Type a task title above to quickly add one to your day
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Schedule Column (1 col) */}
-          <motion.div
-            variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-surface-2 flex items-center justify-center text-text-muted">
-                    <CalendarIcon className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-lg font-semibold text-text tracking-tight">
-                      Schedule
-                    </h2>
-                    <p className="text-xs text-text-muted mt-0.5">Time blocks for today</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
-                {todayBlocks.map(block => (
-                  <div
-                    key={block.id}
-                    className="flex items-start gap-3.5 p-4 bg-surface-2/60 border border-border/60 rounded-2xl"
-                  >
-                    <div
-                      className={`w-1.5 h-10 rounded-full flex-shrink-0 mt-0.5 ${
-                        block.category === 'deep-work'
-                          ? 'bg-glow'
-                          : block.category === 'meeting'
-                          ? 'bg-pulse'
-                          : block.category === 'exercise'
-                          ? 'bg-success'
-                          : block.category === 'break'
-                          ? 'bg-drift'
-                          : 'bg-ember'
-                      }`}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-text truncate">{block.title}</div>
-                      <div className="text-xs font-mono text-text-muted mt-1">
-                        {formatTime(block.startTime)} – {formatTime(block.endTime)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {todayBlocks.length === 0 && (
-                  <div className="py-16 text-center text-sm text-text-muted border border-dashed border-border/70 rounded-3xl flex flex-col items-center justify-center space-y-2">
-                    <CalendarIcon className="w-6 h-6 text-text-muted/60 mb-1" />
-                    <p className="font-medium text-text-secondary">No blocks scheduled</p>
-                    <p className="text-xs text-text-muted">Add time blocks in Planner</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <Button
-              onClick={() => navigate('/planner')}
-              variant="outline"
-              size="md"
-              className="w-full mt-6"
-              icon={<ChevronRight className="w-4 h-4" />}
-              iconPosition="right"
-            >
-              Open Planner
-            </Button>
-          </motion.div>
-
-          {/* Active Goals Section (3 cols) */}
-          <motion.div
-            variants={item}
-            className="lg:col-span-3 bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
-          >
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse">
-                  <Target className="w-4 h-4" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-2xl bg-glow/10 flex items-center justify-center text-glow">
+                  <Timer className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-display text-lg font-semibold text-text tracking-tight">
-                    Active Goals
-                  </h2>
-                  <p className="text-xs text-text-muted mt-0.5">Key targets & milestone progress</p>
+                  <h3 className="font-medium text-text">Deep Work</h3>
+                  <p className="text-xs text-text-muted">Focus sessions today</p>
                 </div>
               </div>
-              <Button
-                onClick={() => navigate('/goals')}
-                variant="ghost"
-                size="sm"
-                icon={<ChevronRight className="w-4 h-4" />}
-                iconPosition="right"
-              >
-                View all goals
-              </Button>
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-5xl font-bold text-white">{focusMinutesToday}</span>
+                <span className="text-sm font-medium text-text-muted uppercase tracking-widest font-mono">min</span>
+              </div>
+            </motion.div>
+
+            {/* Task Metric */}
+            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                <CheckSquare className="w-16 h-16 text-success" />
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-2xl bg-success/10 flex items-center justify-center text-success">
+                  <CheckSquare className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-text">Task Progress</h3>
+                  <p className="text-xs text-text-muted">{totalTasksCount === 0 ? 'No tasks today' : `${todayTasks.length} tasks remaining`}</p>
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between mb-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="font-display text-4xl font-bold text-white">{completedToday.length}</span>
+                  <span className="text-xl font-medium text-text-muted">/{totalTasksCount}</span>
+                </div>
+                <span className="text-xs font-mono font-bold text-success bg-success/10 px-2.5 py-1 rounded-xl">{taskCompletionPct}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
+                <motion.div className="h-full bg-success" initial={{ width: 0 }} animate={{ width: `${taskCompletionPct}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} />
+              </div>
+            </motion.div>
+
+            {/* Habits Metric */}
+            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Flame className="w-16 h-16 text-ember" />
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-2xl bg-ember/10 flex items-center justify-center text-ember">
+                  <Flame className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-text">Habit Streaks</h3>
+                  <p className="text-xs text-text-muted">Active daily habits</p>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-5xl font-bold text-white">{habitStreaks.filter(h => h.streak > 0).length}</span>
+                <span className="text-sm font-medium text-text-muted uppercase tracking-widest font-mono">active</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Main Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+            {/* Left Column (2 span) - Agenda */}
+            <div className="lg:col-span-2 space-y-8">
+              
+              {/* Today's Tasks */}
+              <motion.div variants={item}>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                    <CheckSquare className="w-5 h-5 text-pulse" />
+                    Today's Tasks
+                  </h2>
+                  <button onClick={() => navigate('/tasks')} className="text-sm font-medium text-text-muted hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
+                    View all <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                {/* Quick Add */}
+                <div className="relative mb-6">
+                  <Plus className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                  <input 
+                    type="text" 
+                    value={newTaskTitle}
+                    onChange={e => setNewTaskTitle(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && addQuickTask()}
+                    placeholder="What's your next priority task?"
+                    className="w-full h-14 pl-12 pr-14 rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10 text-white placeholder:text-text-muted/60 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/30 transition-all shadow-sm"
+                  />
+                  <button 
+                    onClick={addQuickTask}
+                    disabled={!newTaskTitle.trim()}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-pulse text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <Plus className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  {[...todayTasks, ...completedToday].map(task => (
+                    <div
+                      key={task.id}
+                      className="group flex items-center gap-4 p-4 rounded-2xl bg-surface/20 border border-transparent hover:border-white/5 hover:bg-surface/40 transition-all"
+                    >
+                      <button
+                        onClick={() => toggleTask(task.id)}
+                        className="flex-shrink-0 transition-transform active:scale-90 cursor-pointer"
+                      >
+                        {task.status === 'done' ? (
+                          <CheckCircle2 className="w-6 h-6 text-success" />
+                        ) : (
+                          <Circle className="w-6 h-6 text-text-muted group-hover:text-pulse transition-colors" />
+                        )}
+                      </button>
+                      <div className="flex-1 min-w-0">
+                        <span className={`block text-base truncate ${task.status === 'done' ? 'text-text-muted line-through' : 'text-white font-medium'}`}>
+                          {task.title}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                         {task.priority === 'urgent' && task.status !== 'done' && (
+                          <span className="w-2 h-2 rounded-full bg-danger shadow-[0_0_8px_rgba(239,68,68,0.6)]" title="Urgent" />
+                        )}
+                        {task.dueTime && task.status !== 'done' && (
+                          <span className="text-xs font-mono font-medium text-text-muted flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-xl border border-white/5">
+                            <Clock className="w-3.5 h-3.5" /> {formatTime(task.dueTime)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {todayTasks.length === 0 && completedToday.length === 0 && (
+                    <div className="py-12 text-center flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-surface/10">
+                       <Sparkles className="w-8 h-8 text-text-muted/40 mb-3" />
+                       <p className="text-white font-medium">No tasks scheduled</p>
+                       <p className="text-sm text-text-muted mt-1">Add a task above to start your day</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* Today's Schedule */}
+              <motion.div variants={item} className="pt-4">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                    <CalendarIcon className="w-5 h-5 text-glow" />
+                    Today's Schedule
+                  </h2>
+                  <button onClick={() => navigate('/planner')} className="text-sm font-medium text-text-muted hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
+                    Open Planner <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="relative pl-6 space-y-6 before:absolute before:inset-y-2 before:left-[11px] before:w-[2px] before:bg-white/5">
+                  {todayBlocks.map(block => (
+                    <div key={block.id} className="relative flex items-start gap-6">
+                      <div className={`absolute -left-6 top-1.5 w-6 h-6 rounded-full border-4 border-void flex items-center justify-center
+                        ${block.category === 'deep-work' ? 'bg-glow shadow-[0_0_10px_rgba(0,229,255,0.4)]' 
+                          : block.category === 'meeting' ? 'bg-pulse shadow-[0_0_10px_rgba(189,0,255,0.4)]'
+                          : block.category === 'exercise' ? 'bg-success'
+                          : block.category === 'break' ? 'bg-drift' : 'bg-ember'}
+                      `} />
+                      <div className="flex-1 bg-surface/20 border border-white/5 rounded-2xl p-5 hover:bg-surface/30 transition-all">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h4 className="font-semibold text-white">{block.title}</h4>
+                            <div className="text-xs font-mono font-medium text-text-muted mt-1.5 flex items-center gap-1.5">
+                              <Clock className="w-3.5 h-3.5" />
+                              {formatTime(block.startTime)} – {formatTime(block.endTime)}
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted bg-black/30 px-2.5 py-1 rounded-lg">
+                            {block.category.replace('-', ' ')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {todayBlocks.length === 0 && (
+                     <div className="py-8 ml-4 text-sm text-text-muted italic">No time blocks scheduled for today.</div>
+                  )}
+                </div>
+              </motion.div>
+
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {activeGoals.map(g => {
-                const completed = g.milestones.filter(m => m.completed).length;
-                const total = g.milestones.length;
-                const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-                return (
-                  <div
-                    key={g.id}
-                    className="p-5 bg-surface-2/60 border border-border/60 rounded-2xl hover:border-border transition-all"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-bold text-text truncate pr-2">{g.title}</span>
-                      <span className="text-xs font-mono font-extrabold text-glow bg-glow/10 border border-glow/20 px-2.5 py-0.5 rounded-xl">
-                        {pct}%
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 bg-surface-3 rounded-full overflow-hidden mb-3 border border-border/40">
-                      <motion.div
-                        className="h-full bg-glow rounded-full shadow-sm shadow-glow/30"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${pct}%` }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-text-muted font-mono">
-                      <span>
-                        {completed}/{total} milestones
-                      </span>
-                      <span className="uppercase tracking-wider font-semibold text-[10px] bg-surface-3 px-2.5 py-0.5 rounded-lg border border-border/40">
-                        {g.category}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-              {activeGoals.length === 0 && (
-                <div className="col-span-2 py-14 text-center text-sm text-text-muted border border-dashed border-border/70 rounded-3xl flex flex-col items-center justify-center space-y-2">
-                  <Target className="w-6 h-6 text-text-muted/60 mb-1" />
-                  <p className="font-medium text-text-secondary">No active goals set</p>
-                  <p className="text-xs text-text-muted">
-                    Start tracking a new target in Goals page
-                  </p>
+            {/* Right Column (1 span) - Goals & Habits */}
+            <div className="space-y-8">
+              
+              {/* Active Goals */}
+              <motion.div variants={item}>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                    <Target className="w-5 h-5 text-ember" />
+                    Active Goals
+                  </h2>
+                  <button onClick={() => navigate('/goals')} className="text-text-muted hover:text-white transition-colors p-1 cursor-pointer">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
                 </div>
-              )}
+                
+                <div className="space-y-4">
+                  {activeGoals.map(g => {
+                    const completed = g.milestones.filter(m => m.completed).length;
+                    const total = g.milestones.length;
+                    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+                    return (
+                      <div key={g.id} className="p-5 rounded-2xl bg-surface/30 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-white truncate pr-4">{g.title}</h4>
+                          <span className="text-xs font-mono font-bold text-white bg-black/40 px-2.5 py-1 rounded-xl">{pct}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-black/30 rounded-full overflow-hidden mb-3">
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-ember to-pulse" 
+                            initial={{ width: 0 }} 
+                            animate={{ width: `${pct}%` }} 
+                            transition={{ duration: 0.8, ease: 'easeOut' }} 
+                          />
+                        </div>
+                        <p className="text-[11px] font-mono font-medium text-text-muted tracking-wide">
+                          {completed} of {total} milestones
+                        </p>
+                      </div>
+                    );
+                  })}
+                  {activeGoals.length === 0 && (
+                    <div className="p-6 rounded-2xl border border-dashed border-white/10 bg-surface/10 text-center">
+                      <p className="text-sm text-text-muted">No active goals</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* Top Habits */}
+              <motion.div variants={item}>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                    <Flame className="w-5 h-5 text-ember" />
+                    Top Habits
+                  </h2>
+                  <button onClick={() => navigate('/habits')} className="text-text-muted hover:text-white transition-colors p-1 cursor-pointer">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="bg-surface/30 backdrop-blur-xl border border-white/5 rounded-3xl p-3">
+                  {habitStreaks.slice(0, 4).map(h => (
+                    <div key={h.id} className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/5 transition-colors group">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: `${h.color || '#00E5FF'}15`, color: h.color || '#00E5FF' }}
+                        >
+                          <HabitIcon icon={h.icon} className="w-5 h-5" />
+                        </div>
+                        <span className="text-sm font-medium text-white group-hover:text-glow transition-colors">{h.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-ember bg-ember/10 border border-ember/20 px-2.5 py-1.5 rounded-xl">
+                        <Flame className="w-3.5 h-3.5 fill-current" />
+                        {h.streak}d
+                      </div>
+                    </div>
+                  ))}
+                  {habitStreaks.length === 0 && (
+                     <div className="p-6 text-center text-sm text-text-muted">No habits tracked</div>
+                  )}
+                </div>
+              </motion.div>
+
             </div>
-          </motion.div>
-        </div>
-      </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
