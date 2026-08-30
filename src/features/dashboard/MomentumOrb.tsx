@@ -97,7 +97,7 @@ export function MomentumOrb({ score }: MomentumOrbProps) {
     <div className="w-full h-full min-h-[200px] relative">
       <Suspense fallback={
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-24 h-24 rounded-full bg-glow/10 animate-pulse-glow" />
+          <div className="w-24 h-24 rounded-full bg-surface-2 animate-pulse-glow" />
         </div>
       }>
         <Canvas

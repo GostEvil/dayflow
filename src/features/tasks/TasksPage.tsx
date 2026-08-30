@@ -226,7 +226,7 @@ export function TasksPage() {
           >
             New Task
           </Button>
-          <div className="flex bg-surface-2/80 border border-border/80 rounded-2xl p-1 shadow-sm">
+          <div className="flex bg-surface-2 border border-border/80 rounded-2xl p-1 shadow-sm">
             <button
               onClick={() => setView('board')}
               className={`px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-150 flex items-center justify-center cursor-pointer ${
@@ -274,7 +274,7 @@ export function TasksPage() {
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: 'auto', opacity: 1 }}
-          className="flex flex-wrap items-center gap-4 p-5 bg-surface-2/40 border border-border/60 rounded-2xl"
+          className="flex flex-wrap items-center gap-4 p-5 bg-surface-2 border border-border/60 rounded-2xl"
         >
           <Select
             value={filterPriority}
@@ -321,7 +321,7 @@ export function TasksPage() {
           {(['backlog', 'today', 'in-progress', 'done'] as TaskStatus[]).map(status => (
             <div
               key={status}
-              className="bg-surface/95 border border-border/80 rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between min-h-[420px]"
+              className="bg-surface border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col justify-between min-h-[420px]"
             >
               <div>
                 {/* Column Header */}
@@ -355,7 +355,7 @@ export function TasksPage() {
                       layout
                       initial={{ opacity: 0, scale: 0.96 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-border hover:bg-surface-2 transition-all duration-200 shadow-xs group"
+                      className="bg-surface-2 border border-border/60 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-border hover:bg-surface-2 transition-all duration-200 shadow-xs group"
                       onClick={() => setEditingTask(task)}
                     >
                       <div className="flex items-start gap-4.5">
@@ -421,8 +421,8 @@ export function TasksPage() {
 
       {/* List View */}
       {view === 'list' && (
-        <div className="bg-surface/95 border border-border/80 rounded-3xl overflow-hidden shadow-sm">
-          <div className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 border-b border-border/60 text-xs font-mono uppercase tracking-wider text-text-muted bg-surface-2/40">
+        <div className="bg-surface border border-border/80 rounded-2xl overflow-hidden shadow-sm">
+          <div className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 border-b border-border/60 text-xs font-mono uppercase tracking-wider text-text-muted bg-surface-2">
             <div className="w-5" />
             <div>Task Title</div>
             <div className="hidden sm:block">Status</div>
@@ -434,7 +434,7 @@ export function TasksPage() {
             {filtered.map(task => (
               <div
                 key={task.id}
-                className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 items-center hover:bg-surface-2/60 transition-colors cursor-pointer"
+                className="grid grid-cols-[auto_1fr_auto_auto_auto_auto] gap-5 px-7 py-4 items-center hover:bg-surface-2 transition-colors cursor-pointer"
                 onClick={() => setEditingTask(task)}
               >
                 <button

@@ -125,7 +125,7 @@ export function OnboardingPage() {
             animate="center"
             exit="exit"
             transition={{ duration: 0.25 }}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-2xl backdrop-blur-md"
+            className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-2xl backdrop-blur-md"
           >
             {/* Welcome Step */}
             {step === 'welcome' && (
@@ -134,7 +134,7 @@ export function OnboardingPage() {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.1, type: 'spring' }}
-                  className="w-20 h-20 rounded-3xl bg-glow/15 border border-glow/30 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-glow/10 text-glow"
+                  className="w-20 h-20 rounded-2xl bg-glow/15 border border-glow/30 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-glow/10 text-glow"
                 >
                   <Zap className="w-10 h-10" />
                 </motion.div>
@@ -242,8 +242,8 @@ export function OnboardingPage() {
                         onClick={() => setEnergy(opt.value)}
                         className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all text-left cursor-pointer ${
                           isSelected
-                            ? 'border-glow bg-glow/10 shadow-sm'
-                            : 'border-border/60 bg-surface-2/60 hover:border-border hover:bg-surface-2'
+                            ? 'border-glow bg-surface-2 shadow-sm'
+                            : 'border-border/60 bg-surface-2 hover:border-border hover:bg-surface-2'
                         }`}
                       >
                         <div
@@ -283,8 +283,8 @@ export function OnboardingPage() {
                         onClick={() => toggleHabit(h.name)}
                         className={`flex items-center gap-4 p-4.5 rounded-2xl border transition-all text-left cursor-pointer ${
                           isSelected
-                            ? 'border-glow bg-glow/10 shadow-sm'
-                            : 'border-border/60 bg-surface-2/60 hover:border-border hover:bg-surface-2'
+                            ? 'border-glow bg-surface-2 shadow-sm'
+                            : 'border-border/60 bg-surface-2 hover:border-border hover:bg-surface-2'
                         }`}
                       >
                         <div
@@ -313,7 +313,7 @@ export function OnboardingPage() {
                   initial={{ scale: 0.8, rotate: -45 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                  className="w-20 h-20 rounded-3xl bg-glow/15 border border-glow/30 flex items-center justify-center mx-auto mb-6 text-glow shadow-xl shadow-glow/10"
+                  className="w-20 h-20 rounded-2xl bg-glow/15 border border-glow/30 flex items-center justify-center mx-auto mb-6 text-glow shadow-xl shadow-glow/10"
                 >
                   <Sparkles className="w-10 h-10" />
                 </motion.div>

@@ -138,7 +138,7 @@ export function GoalsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1.5 bg-surface-2/80 border border-border/80 rounded-2xl p-1.5 w-fit shadow-sm">
+      <div className="flex gap-1.5 bg-surface-2 border border-border/80 rounded-2xl p-1.5 w-fit shadow-sm">
         {(['active', 'completed', 'paused'] as GoalStatus[]).map(s => (
           <button
             key={s}
@@ -164,7 +164,7 @@ export function GoalsPage() {
             <motion.div
               key={goal.id}
               layout
-              className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
+              className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
               onClick={() => setDetailGoal(goal)}
             >
               <div>
@@ -211,8 +211,8 @@ export function GoalsPage() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="bg-surface/95 border border-dashed border-border/80 rounded-3xl p-16 text-center flex flex-col items-center justify-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+        <div className="bg-surface border border-dashed border-border/80 rounded-2xl p-16 text-center flex flex-col items-center justify-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
             <Target className="w-8 h-8" />
           </div>
           <div>
@@ -348,7 +348,7 @@ export function GoalsPage() {
               transition={{ duration: 0.2 }}
               className="fixed top-0 right-0 bottom-0 w-full max-w-lg z-50"
             >
-              <div className="h-full bg-surface/98 border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
+              <div className="h-full bg-surface border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
                     <span
@@ -374,7 +374,7 @@ export function GoalsPage() {
                   )}
 
                   {/* Progress Bento */}
-                  <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-5 mb-6">
+                  <div className="bg-surface-2 border border-border/60 rounded-2xl p-5 mb-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-xs font-mono uppercase text-text-muted font-semibold">
                         Progress
@@ -416,7 +416,7 @@ export function GoalsPage() {
                       {detailGoal.milestones.map(m => (
                         <div
                           key={m.id}
-                          className="flex items-center gap-4.5 p-4 bg-surface-2/60 border border-border/60 rounded-xl cursor-pointer hover:bg-surface-2 transition-all"
+                          className="flex items-center gap-4.5 p-4 bg-surface-2 border border-border/60 rounded-xl cursor-pointer hover:bg-surface-2 transition-all"
                           onClick={() => toggleMilestone(detailGoal.id, m.id)}
                         >
                           {m.completed ? (

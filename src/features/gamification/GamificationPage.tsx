@@ -40,7 +40,7 @@ export function GamificationPage() {
         {/* Level Progression Card */}
         <motion.div
           variants={item}
-          className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm relative overflow-hidden group hover:border-border transition-all duration-200"
+          className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm relative overflow-hidden group hover:border-border transition-all duration-200"
         >
           <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
             <div className="w-24 h-24 rounded-2xl bg-pulse/15 border border-pulse/30 flex flex-col items-center justify-center flex-shrink-0 shadow-lg shadow-pulse/10">
@@ -81,15 +81,15 @@ export function GamificationPage() {
         {/* Lifetime Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {[
-            { label: 'Tasks Completed', value: gamification.totalTasksCompleted, icon: CheckSquare, color: 'text-glow', bg: 'bg-glow/10', border: 'border-glow/20' },
-            { label: 'Focus Minutes', value: gamification.totalFocusMinutes, icon: Timer, color: 'text-pulse', bg: 'bg-pulse/10', border: 'border-pulse/20' },
-            { label: 'Journal Entries', value: gamification.totalJournalEntries, icon: BookOpen, color: 'text-ember', bg: 'bg-ember/10', border: 'border-ember/20' },
-            { label: 'Longest Streak', value: `${gamification.longestHabitStreak}d`, icon: Flame, color: 'text-success', bg: 'bg-success/10', border: 'border-success/20' },
+            { label: 'Tasks Completed', value: gamification.totalTasksCompleted, icon: CheckSquare, color: 'text-glow', bg: 'bg-surface-2', border: 'border-glow/20' },
+            { label: 'Focus Minutes', value: gamification.totalFocusMinutes, icon: Timer, color: 'text-pulse', bg: 'bg-surface-2', border: 'border-pulse/20' },
+            { label: 'Journal Entries', value: gamification.totalJournalEntries, icon: BookOpen, color: 'text-ember', bg: 'bg-surface-2', border: 'border-ember/20' },
+            { label: 'Longest Streak', value: `${gamification.longestHabitStreak}d`, icon: Flame, color: 'text-success', bg: 'bg-surface-2', border: 'border-success/20' },
           ].map((stat, i) => (
             <motion.div
               key={i}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+              className="bg-surface border border-border/80 rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -105,10 +105,10 @@ export function GamificationPage() {
         </div>
 
         {/* Quests Section */}
-        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
+        <motion.div variants={item} className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
             <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+              <div className="w-8 h-8 rounded-xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
                 <Zap className="w-4 h-4" />
               </div>
               <div>
@@ -125,7 +125,7 @@ export function GamificationPage() {
             {gamification.quests.filter(q => !q.completed).map(quest => (
               <div
                 key={quest.id}
-                className="flex items-center justify-between p-4 bg-surface-2/60 border border-border/60 rounded-xl hover:border-border transition-all"
+                className="flex items-center justify-between p-4 bg-surface-2 border border-border/60 rounded-xl hover:border-border transition-all"
               >
                 <div className="flex-1 pr-4">
                   <div className="text-sm text-text font-semibold">{quest.title}</div>
@@ -135,7 +135,7 @@ export function GamificationPage() {
                   <div className="font-mono text-sm font-bold text-glow">
                     {quest.current} / {quest.target}
                   </div>
-                  <div className="text-xs font-mono font-bold text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-md mt-1">
+                  <div className="text-xs font-mono font-bold text-pulse bg-surface-2 border border-pulse/20 px-3 py-1.5 rounded-md mt-1">
                     +{quest.xpReward} XP
                   </div>
                 </div>
@@ -150,10 +150,10 @@ export function GamificationPage() {
         </motion.div>
 
         {/* Achievement Badges Section */}
-        <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
+        <motion.div variants={item} className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
             <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
+              <div className="w-8 h-8 rounded-xl bg-surface-2 border border-ember/20 flex items-center justify-center text-ember">
                 <Trophy className="w-4 h-4" />
               </div>
               <div>
@@ -173,8 +173,8 @@ export function GamificationPage() {
                   key={badge.id}
                   className={`p-5 rounded-2xl border transition-all duration-200 flex flex-col justify-between text-center relative overflow-hidden group ${
                     unlocked
-                      ? 'bg-surface-2/80 border-border hover:border-glow/40 shadow-sm'
-                      : 'bg-surface-2/30 border-border/40 opacity-45'
+                      ? 'bg-surface-2 border-border hover:border-glow/40 shadow-sm'
+                      : 'bg-surface-2 border-border/40 opacity-45'
                   }`}
                 >
                   <div className="flex flex-col items-center">

@@ -275,7 +275,7 @@ export function PlannerPage() {
           className={`px-4 py-3 rounded-2xl text-sm border font-medium ${
             syncNotice.type === 'error'
               ? 'bg-danger/10 text-danger border-danger/30'
-              : 'bg-success/10 text-success border-success/30'
+              : 'bg-surface-2 text-success border-success/30'
           }`}
         >
           {syncNotice.text}
@@ -291,7 +291,7 @@ export function PlannerPage() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center bg-surface-2/80 border border-border/80 rounded-2xl p-1 shadow-sm">
+          <div className="flex items-center bg-surface-2 border border-border/80 rounded-2xl p-1 shadow-sm">
             <button
               onClick={() => setWeekOffset(0)}
               className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold text-text hover:bg-surface-3 transition-colors"
@@ -329,9 +329,9 @@ export function PlannerPage() {
       </div>
 
       {/* Weekly Grid Board */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl overflow-hidden shadow-sm">
+      <div className="bg-surface border border-border/80 rounded-2xl overflow-hidden shadow-sm">
         {/* Day Header Row */}
-        <div className="grid grid-cols-[72px_repeat(7,1fr)] border-b border-border/70 bg-surface-2/30">
+        <div className="grid grid-cols-[72px_repeat(7,1fr)] border-b border-border/70 bg-surface-2">
           <div className="p-4 border-r border-border/50" />
           {weekDates.map(date => {
             const isToday = dateStr(date) === dateStr(new Date());
@@ -339,7 +339,7 @@ export function PlannerPage() {
               <div
                 key={date.toISOString()}
                 className={`py-3.5 px-2 text-center border-l border-border/50 first:border-l-0 ${
-                  isToday ? 'bg-glow/10' : ''
+                  isToday ? 'bg-surface-2' : ''
                 }`}
               >
                 <div
@@ -367,7 +367,7 @@ export function PlannerPage() {
           style={{ height: HOURS.length * 60 }}
         >
           {/* Left Hour Gutter */}
-          <div className="relative border-r border-border/50 bg-surface-2/15">
+          <div className="relative border-r border-border/50 bg-surface-2">
             {HOURS.map(h => (
               <div
                 key={h}

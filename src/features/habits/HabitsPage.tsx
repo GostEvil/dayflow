@@ -151,7 +151,7 @@ export function HabitsPage() {
             <motion.div
               key={habit.id}
               layout
-              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
+              className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm cursor-pointer hover:border-border transition-all duration-200 flex flex-col justify-between group"
               onClick={() => setDetailHabit(habit)}
             >
               <div>
@@ -186,7 +186,7 @@ export function HabitsPage() {
                     className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-90 flex-shrink-0 ${
                       isComplete
                         ? 'bg-success/20 text-success border border-success/40 shadow-sm shadow-success/10'
-                        : 'bg-surface-2 text-text-muted hover:text-glow hover:bg-glow/10 border border-border/60 hover:border-glow/30'
+                        : 'bg-surface-2 text-text-muted hover:text-glow hover:bg-surface-2 border border-border/60 hover:border-glow/30'
                     }`}
                   >
                     <Check className="w-5 h-5 stroke-[2.5]" />
@@ -219,7 +219,7 @@ export function HabitsPage() {
                             className={`w-full h-8 rounded-xl transition-all flex items-center justify-center border ${
                               done
                                 ? 'shadow-sm'
-                                : 'bg-surface-2/60 border-border/50 hover:border-border'
+                                : 'bg-surface-2 border-border/50 hover:border-border'
                             }`}
                             style={
                               done
@@ -242,11 +242,11 @@ export function HabitsPage() {
 
               {/* Stats Footer */}
               <div className="flex items-center justify-between pt-4 border-t border-border/50 font-mono text-xs">
-                <div className="flex items-center gap-1.5 bg-ember/10 border border-ember/25 px-3 py-1 rounded-xl text-ember font-bold">
+                <div className="flex items-center gap-1.5 bg-surface-2 border border-ember/25 px-3 py-1 rounded-xl text-ember font-bold">
                   <Flame className="w-4 h-4 fill-current" />
                   <span>{streak}d streak</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-text-muted bg-surface-2/80 px-3 py-1 rounded-xl border border-border/40">
+                <div className="flex items-center gap-1.5 text-text-muted bg-surface-2 px-3 py-1 rounded-xl border border-border/40">
                   <TrendingUp className="w-4 h-4 text-glow" />
                   <span>{getCompletionPct(habit)}% completion</span>
                 </div>
@@ -258,8 +258,8 @@ export function HabitsPage() {
 
       {/* Empty State */}
       {habits.length === 0 && (
-        <div className="bg-surface/95 border border-dashed border-border/80 rounded-3xl p-16 text-center flex flex-col items-center justify-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+        <div className="bg-surface border border-dashed border-border/80 rounded-2xl p-16 text-center flex flex-col items-center justify-center space-y-4 shadow-sm">
+          <div className="w-16 h-16 rounded-2xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
             <Sparkles className="w-8 h-8" />
           </div>
           <div>
@@ -310,7 +310,7 @@ export function HabitsPage() {
             <label className="text-xs font-medium text-text-secondary tracking-wide mb-2.5 block select-none">
               Choose Icon
             </label>
-            <div className="grid grid-cols-6 gap-3.5 max-h-48 overflow-y-auto p-1 bg-surface-2/40 rounded-2xl border border-border/60">
+            <div className="grid grid-cols-6 gap-3.5 max-h-48 overflow-y-auto p-1 bg-surface-2 rounded-2xl border border-border/60">
               {HABIT_ICON_DEFINITIONS.map(def => {
                 const IconComponent = def.icon;
                 const isSelected = newIcon === def.id;
@@ -380,7 +380,7 @@ export function HabitsPage() {
               transition={{ duration: 0.2 }}
               className="fixed top-0 right-0 bottom-0 w-full max-w-md z-50"
             >
-              <div className="h-full bg-surface/98 border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
+              <div className="h-full bg-surface border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
                 <div>
                   <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/60">
                     <div className="flex items-center gap-4">
@@ -413,7 +413,7 @@ export function HabitsPage() {
 
                   {/* Summary Metric Bento */}
                   <div className="grid grid-cols-3 gap-4.5 mb-8">
-                    <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
+                    <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="font-mono text-2xl font-extrabold text-ember">
                         {getStreak(detailHabit)}d
                       </div>
@@ -421,7 +421,7 @@ export function HabitsPage() {
                         Current
                       </div>
                     </div>
-                    <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
+                    <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="font-mono text-2xl font-extrabold text-glow">
                         {getBestStreak(detailHabit)}d
                       </div>
@@ -429,7 +429,7 @@ export function HabitsPage() {
                         Best
                       </div>
                     </div>
-                    <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
+                    <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="font-mono text-2xl font-extrabold text-pulse">
                         {getCompletionPct(detailHabit)}%
                       </div>
@@ -444,7 +444,7 @@ export function HabitsPage() {
                     <div className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold mb-3">
                       Last 30 Days Activity
                     </div>
-                    <div className="grid grid-cols-7 gap-4 p-4 bg-surface-2/40 border border-border/60 rounded-2xl">
+                    <div className="grid grid-cols-7 gap-4 p-4 bg-surface-2 border border-border/60 rounded-2xl">
                       {Array.from({ length: 30 }, (_, i) => {
                         const d = format(subDays(new Date(), 29 - i), 'yyyy-MM-dd');
                         const isDone = detailHabit.completions[d];
@@ -452,7 +452,7 @@ export function HabitsPage() {
                           <div
                             key={d}
                             className={`w-full aspect-square rounded-lg transition-all flex items-center justify-center border ${
-                              isDone ? 'border-transparent' : 'bg-surface-2/80 border-border/40'
+                              isDone ? 'border-transparent' : 'bg-surface-2 border-border/40'
                             }`}
                             style={
                               isDone

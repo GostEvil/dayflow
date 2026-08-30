@@ -201,11 +201,11 @@ export function InsightsPage() {
             <motion.div
               key={insight.id}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm hover:border-border transition-all duration-200"
+              className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm hover:border-border transition-all duration-200"
             >
               <div className="flex items-start gap-5">
                 <div
-                  className={`w-12 h-12 rounded-2xl bg-surface-2/90 border border-border/60 flex items-center justify-center flex-shrink-0 ${insight.color} shadow-sm`}
+                  className={`w-12 h-12 rounded-2xl bg-surface-2 border border-border/60 flex items-center justify-center flex-shrink-0 ${insight.color} shadow-sm`}
                 >
                   <Icon className="w-6 h-6" />
                 </div>
@@ -238,8 +238,8 @@ export function InsightsPage() {
         })}
 
         {insights.length === 0 && (
-          <div className="bg-surface/95 border border-dashed border-border/80 rounded-3xl p-16 text-center flex flex-col items-center justify-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+          <div className="bg-surface border border-dashed border-border/80 rounded-2xl p-16 text-center flex flex-col items-center justify-center space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
               <Lightbulb className="w-8 h-8" />
             </div>
             <div>

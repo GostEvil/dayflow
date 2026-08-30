@@ -128,7 +128,7 @@ export function JournalPage() {
       </div>
 
       {/* Mood & Energy Trend Chart Card */}
-      <div className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm">
+      <div className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/60">
           <div>
             <h3 className="font-display text-lg font-semibold text-text">Mood & Energy Trend</h3>
@@ -175,22 +175,22 @@ export function JournalPage() {
             <motion.div
               key={entry.id}
               layout
-              className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 cursor-pointer hover:border-border transition-all duration-200 shadow-sm group"
+              className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 cursor-pointer hover:border-border transition-all duration-200 shadow-sm group"
               onClick={() => setSelectedEntry(entry)}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-border/50">
-                <div className="flex items-center gap-4 text-xs font-mono font-semibold text-text bg-surface-2/80 px-3 py-1.5 rounded-xl border border-border/50 w-fit">
+                <div className="flex items-center gap-4 text-xs font-mono font-semibold text-text bg-surface-2 px-3 py-1.5 rounded-xl border border-border/50 w-fit">
                   <Calendar className="w-3.5 h-3.5 text-text-muted" />
                   {formatDate(entry.date)}
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-4 px-3 py-1 rounded-xl bg-surface-2/80 border border-border/50">
+                  <div className="flex items-center gap-4 px-3 py-1 rounded-xl bg-surface-2 border border-border/50">
                     <MoodIcon className={`w-4 h-4 ${MOOD_COLORS[entry.mood - 1]}`} />
                     <span className="text-xs font-mono font-medium text-text-secondary">
                       Mood {entry.mood}/5
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-medium text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1 rounded-xl">
+                  <span className="text-xs font-mono font-medium text-pulse bg-surface-2 border border-pulse/20 px-3 py-1 rounded-xl">
                     Energy {entry.energy}/5
                   </span>
                 </div>
@@ -216,8 +216,8 @@ export function JournalPage() {
       </div>
 
       {entries.length === 0 && (
-        <div className="bg-surface/95 border border-dashed border-border/80 rounded-3xl p-16 text-center flex flex-col items-center justify-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+        <div className="bg-surface border border-dashed border-border/80 rounded-2xl p-16 text-center flex flex-col items-center justify-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
             <BookOpen className="w-8 h-8" />
           </div>
           <div>
@@ -255,7 +255,7 @@ export function JournalPage() {
         }
       >
         <div className="space-y-5">
-          <div className="bg-surface-2/60 border border-border/80 rounded-2xl p-4">
+          <div className="bg-surface-2 border border-border/80 rounded-2xl p-4">
             <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-glow mb-1 select-none flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Reflection Prompt
             </div>
@@ -288,7 +288,7 @@ export function JournalPage() {
                       className={`flex-1 p-4 rounded-xl transition-all flex items-center justify-center ${
                         isSelected
                           ? `bg-glow/20 ring-2 ring-glow ${MOOD_COLORS[v - 1]} shadow-sm`
-                          : 'text-text-muted hover:text-text hover:bg-surface-2 bg-surface-2/50'
+                          : 'text-text-muted hover:text-text hover:bg-surface-2 bg-surface-2'
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -311,7 +311,7 @@ export function JournalPage() {
                     className={`flex-1 py-3 rounded-xl text-sm font-mono font-bold transition-all ${
                       energy === v
                         ? 'bg-pulse/20 text-pulse ring-2 ring-pulse shadow-sm'
-                        : 'bg-surface-2/50 text-text-muted hover:text-text hover:bg-surface-2'
+                        : 'bg-surface-2 text-text-muted hover:text-text hover:bg-surface-2'
                     }`}
                   >
                     {v}
@@ -348,7 +348,7 @@ export function JournalPage() {
               transition={{ duration: 0.2 }}
               className="fixed top-0 right-0 bottom-0 w-full max-w-lg z-50"
             >
-              <div className="h-full bg-surface/98 border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
+              <div className="h-full bg-surface border-l border-border/80 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between shadow-2xl">
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
                     <div className="text-xs font-mono font-semibold text-text bg-surface-2 px-3 py-1.5 rounded-xl border border-border/50">
@@ -363,13 +363,13 @@ export function JournalPage() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
+                    <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="text-xs text-text-muted font-medium mb-1">Mood Rating</div>
                       <div className={`text-2xl font-mono font-extrabold ${MOOD_COLORS[selectedEntry.mood - 1]}`}>
                         {selectedEntry.mood} / 5
                       </div>
                     </div>
-                    <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
+                    <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="text-xs text-text-muted font-medium mb-1">Energy Level</div>
                       <div className="text-2xl font-mono font-extrabold text-pulse">
                         {selectedEntry.energy} / 5
@@ -377,7 +377,7 @@ export function JournalPage() {
                     </div>
                   </div>
 
-                  <div className="bg-surface-2/50 border border-border/60 rounded-2xl p-4 mb-6">
+                  <div className="bg-surface-2 border border-border/60 rounded-2xl p-4 mb-6">
                     <div className="text-[11px] font-mono uppercase tracking-wider text-text-muted mb-1 font-semibold">
                       Reflection Prompt
                     </div>

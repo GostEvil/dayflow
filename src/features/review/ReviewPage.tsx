@@ -95,7 +95,7 @@ export function ReviewPage() {
             Reflect on your achievements, habits, and set clear upcoming intentions
           </p>
         </div>
-        <div className="flex gap-1.5 bg-surface-2/80 border border-border/80 rounded-2xl p-1.5 shadow-sm">
+        <div className="flex gap-1.5 bg-surface-2 border border-border/80 rounded-2xl p-1.5 shadow-sm">
           <button
             onClick={() => setPeriod('weekly')}
             className={`px-4 py-2 text-xs rounded-xl font-medium transition-all duration-150 ${
@@ -122,19 +122,19 @@ export function ReviewPage() {
       {/* Summary Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         {[
-          { icon: CheckCircle2, label: 'Tasks Done', value: stats.completedTasks, color: 'text-glow', bg: 'bg-glow/10', border: 'border-glow/20' },
-          { icon: Flame, label: 'Focus Minutes', value: stats.focusMin, color: 'text-pulse', bg: 'bg-pulse/10', border: 'border-pulse/20' },
-          { icon: TrendingUp, label: 'Habit Consistency', value: `${stats.habitConsistency}%`, color: 'text-ember', bg: 'bg-ember/10', border: 'border-ember/20' },
-          { icon: Target, label: 'Milestones Done', value: stats.milestonesCompleted, color: 'text-success', bg: 'bg-success/10', border: 'border-success/20' },
-          { icon: Sparkles, label: 'Avg Mood Rating', value: `${stats.avgMood}/5`, color: 'text-glow', bg: 'bg-glow/10', border: 'border-glow/20' },
-          { icon: ClipboardList, label: 'Avg Sleep Duration', value: `${stats.avgSleep}h`, color: 'text-pulse', bg: 'bg-pulse/10', border: 'border-pulse/20' },
+          { icon: CheckCircle2, label: 'Tasks Done', value: stats.completedTasks, color: 'text-glow', bg: 'bg-surface-2', border: 'border-glow/20' },
+          { icon: Flame, label: 'Focus Minutes', value: stats.focusMin, color: 'text-pulse', bg: 'bg-surface-2', border: 'border-pulse/20' },
+          { icon: TrendingUp, label: 'Habit Consistency', value: `${stats.habitConsistency}%`, color: 'text-ember', bg: 'bg-surface-2', border: 'border-ember/20' },
+          { icon: Target, label: 'Milestones Done', value: stats.milestonesCompleted, color: 'text-success', bg: 'bg-surface-2', border: 'border-success/20' },
+          { icon: Sparkles, label: 'Avg Mood Rating', value: `${stats.avgMood}/5`, color: 'text-glow', bg: 'bg-surface-2', border: 'border-glow/20' },
+          { icon: ClipboardList, label: 'Avg Sleep Duration', value: `${stats.avgSleep}h`, color: 'text-pulse', bg: 'bg-surface-2', border: 'border-pulse/20' },
         ].map((stat, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04 }}
-            className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+            className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -154,10 +154,10 @@ export function ReviewPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
+        className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
         <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border/60">
-          <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
+          <div className="w-8 h-8 rounded-xl bg-surface-2 border border-ember/20 flex items-center justify-center text-ember">
             <Trophy className="w-4 h-4" />
           </div>
           <div>
@@ -173,7 +173,7 @@ export function ReviewPage() {
             {stats.wins.map((win, i) => (
               <li
                 key={i}
-                className="flex items-center gap-4.5 text-sm text-text font-medium bg-surface-2/60 border border-border/60 rounded-xl p-4 hover:border-border transition-all"
+                className="flex items-center gap-4.5 text-sm text-text font-medium bg-surface-2 border border-border/60 rounded-xl p-4 hover:border-border transition-all"
               >
                 <div className="w-6 h-6 rounded-lg bg-success/15 border border-success/30 flex items-center justify-center text-success flex-shrink-0">
                   <CheckCircle2 className="w-4 h-4" />
@@ -194,10 +194,10 @@ export function ReviewPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
+        className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
         <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border/60">
-          <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+          <div className="w-8 h-8 rounded-xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
             <Target className="w-4 h-4" />
           </div>
           <div>

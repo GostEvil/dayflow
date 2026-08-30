@@ -105,7 +105,7 @@ export function FocusPage() {
         )}
 
         {/* Timer Card Container */}
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm text-center">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm text-center">
           {/* Timer Circle */}
           <div className="relative w-64 h-64 mx-auto mb-8">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 256 256">
@@ -123,7 +123,7 @@ export function FocusPage() {
               <div className="font-mono text-6xl font-extrabold text-text tracking-tight tabular-nums">
                 {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
               </div>
-              <div className="text-xs font-mono font-semibold text-text-muted mt-2 uppercase tracking-widest bg-surface-2/80 border border-border/50 px-3 py-1 rounded-lg">
+              <div className="text-xs font-mono font-semibold text-text-muted mt-2 uppercase tracking-widest bg-surface-2 border border-border/50 px-3 py-1 rounded-lg">
                 {completed ? 'Session Complete!' : running ? 'Focusing...' : elapsed > 0 ? 'Paused' : 'Ready'}
               </div>
             </div>
@@ -140,7 +140,7 @@ export function FocusPage() {
                   className={`px-5 py-2.5 rounded-xl text-xs font-mono font-semibold transition-all duration-150 ${
                     duration === p.minutes
                       ? 'bg-glow/15 text-glow border border-glow/40 shadow-sm'
-                      : 'bg-surface-2/60 border border-border/60 text-text-muted hover:text-text hover:bg-surface-2'
+                      : 'bg-surface-2 border border-border/60 text-text-muted hover:text-text hover:bg-surface-2'
                   }`}
                 >
                   {p.label}
@@ -246,11 +246,11 @@ export function FocusPage() {
 
         {/* Recent Sessions */}
         {!isFullscreen && (
-          <div className="mt-8 bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm">
+          <div className="mt-8 bg-surface border border-border/80 rounded-2xl p-7 shadow-sm">
             <div className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">Recent Focus Sessions</div>
             <div className="space-y-4.5">
               {sessions.slice(0, 5).map(s => (
-                <div key={s.id} className="flex items-center justify-between p-4 bg-surface-2/60 border border-border/60 rounded-xl text-xs">
+                <div key={s.id} className="flex items-center justify-between p-4 bg-surface-2 border border-border/60 rounded-xl text-xs">
                   <span className="font-mono text-text font-semibold">{Math.round(s.elapsed / 60)} min session</span>
                   <span className="font-mono text-text-muted">{new Date(s.completedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>

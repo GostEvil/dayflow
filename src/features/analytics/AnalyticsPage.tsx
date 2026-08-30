@@ -140,7 +140,7 @@ export function AnalyticsPage() {
               Productivity velocity, focus volume, and habit execution metrics
             </p>
           </div>
-          <div className="flex gap-1.5 bg-surface-2/80 border border-border/80 rounded-2xl p-1.5 shadow-sm">
+          <div className="flex gap-1.5 bg-surface-2 border border-border/80 rounded-2xl p-1.5 shadow-sm">
             <button
               onClick={() => setPeriod('7')}
               className={`px-4 py-2 text-xs rounded-xl font-medium transition-all duration-150 cursor-pointer ${
@@ -167,16 +167,16 @@ export function AnalyticsPage() {
         {/* Summary Bento Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
           {[
-            { icon: CheckCircle2, label: 'Tasks Completed', value: totalCompleted, color: 'text-glow', bg: 'bg-glow/10', border: 'border-glow/20' },
-            { icon: Timer, label: 'Focus Minutes', value: totalFocusMin, color: 'text-pulse', bg: 'bg-pulse/10', border: 'border-pulse/20' },
-            { icon: Flame, label: 'Habit Rate', value: `${avgHabitPct}%`, color: 'text-ember', bg: 'bg-ember/10', border: 'border-ember/20' },
-            { icon: Target, label: 'Goal Progress', value: `${goalsProgress}%`, color: 'text-success', bg: 'bg-success/10', border: 'border-success/20' },
+            { icon: CheckCircle2, label: 'Tasks Completed', value: totalCompleted, color: 'text-glow', bg: 'bg-surface-2', border: 'border-glow/20' },
+            { icon: Timer, label: 'Focus Minutes', value: totalFocusMin, color: 'text-pulse', bg: 'bg-surface-2', border: 'border-pulse/20' },
+            { icon: Flame, label: 'Habit Rate', value: `${avgHabitPct}%`, color: 'text-ember', bg: 'bg-surface-2', border: 'border-ember/20' },
+            { icon: Target, label: 'Goal Progress', value: `${goalsProgress}%`, color: 'text-success', bg: 'bg-surface-2', border: 'border-success/20' },
             { icon: TrendingUp, label: 'Peak Day', value: bestDay, color: 'text-text', bg: 'bg-surface-2', border: 'border-border/50' },
           ].map((stat, i) => (
             <motion.div
               key={i}
               variants={item}
-              className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
+              className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all"
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-medium text-text-secondary">{stat.label}</span>
@@ -195,14 +195,14 @@ export function AnalyticsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
+            className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
                 <h3 className="font-display text-lg font-semibold text-text">Task Velocity</h3>
                 <p className="text-xs text-text-muted">Completed items per day</p>
               </div>
-              <span className="text-xs font-mono text-glow bg-glow/10 border border-glow/20 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-mono text-glow bg-surface-2 border border-glow/20 px-3 py-1.5 rounded-lg">
                 Tasks
               </span>
             </div>
@@ -220,14 +220,14 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
+            className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
                 <h3 className="font-display text-lg font-semibold text-text">Focus Minutes</h3>
                 <p className="text-xs text-text-muted">Deep work output volume</p>
               </div>
-              <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-mono text-pulse bg-surface-2 border border-pulse/20 px-3 py-1.5 rounded-lg">
                 Minutes
               </span>
             </div>
@@ -245,14 +245,14 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
+            className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>
                 <h3 className="font-display text-lg font-semibold text-text">Habit Consistency</h3>
                 <p className="text-xs text-text-muted">Completion rate percentage</p>
               </div>
-              <span className="text-xs font-mono text-ember bg-ember/10 border border-ember/20 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-mono text-ember bg-surface-2 border border-ember/20 px-3 py-1.5 rounded-lg">
                 % Consistency
               </span>
             </div>
@@ -270,7 +270,7 @@ export function AnalyticsPage() {
 
           <motion.div
             variants={item}
-            className="bg-surface/95 border border-border/80 rounded-3xl p-7 sm:p-8 shadow-sm"
+            className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
           >
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
               <div>

@@ -47,7 +47,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             disabled={disabled}
-            className={`w-full h-11 bg-surface-2/70 border border-border/80 rounded-xl text-sm text-text appearance-none transition-all duration-150 ease-out focus:border-glow/60 focus:bg-surface-2 focus:ring-1 focus:ring-glow/30 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
+            className={`w-full h-11 bg-surface-2 border border-border/80 rounded-xl text-sm text-text appearance-none transition-all duration-150 ease-out focus:border-glow/60 focus:bg-surface-2 focus:ring-1 focus:ring-glow/30 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
               icon ? 'pl-10 pr-9' : 'pl-3.5 pr-9'
             } ${error ? 'border-danger/60 focus:border-danger focus:ring-danger/20' : ''} ${className}`}
             style={{ colorScheme: 'dark' }}

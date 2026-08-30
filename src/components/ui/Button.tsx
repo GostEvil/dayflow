@@ -30,7 +30,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         'bg-glow text-void font-semibold hover:bg-glow/90 shadow-sm shadow-glow/20 border border-transparent',
       secondary:
-        'bg-glow/10 text-glow hover:bg-glow/20 border border-glow/25 shadow-sm',
+        'bg-surface-2 text-glow hover:bg-glow/20 border border-glow/25 shadow-sm',
       ghost:
         'bg-transparent text-text-muted hover:text-text hover:bg-surface-2 border border-transparent',
       outline:

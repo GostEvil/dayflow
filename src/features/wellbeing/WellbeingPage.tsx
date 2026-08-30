@@ -92,10 +92,10 @@ export function WellbeingPage() {
 
       {/* Summary Bento Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Sleep</span>
-            <div className="w-8 h-8 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse">
+            <div className="w-8 h-8 rounded-xl bg-surface-2 border border-pulse/20 flex items-center justify-center text-pulse">
               <Moon className="w-4 h-4" />
             </div>
           </div>
@@ -105,10 +105,10 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Energy</span>
-            <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
+            <div className="w-8 h-8 rounded-xl bg-surface-2 border border-ember/20 flex items-center justify-center text-ember">
               <Zap className="w-4 h-4" />
             </div>
           </div>
@@ -118,10 +118,10 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Avg Hydration</span>
-            <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+            <div className="w-8 h-8 rounded-xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
               <Droplets className="w-4 h-4" />
             </div>
           </div>
@@ -131,10 +131,10 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 shadow-sm flex flex-col justify-between hover:border-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-medium text-text-secondary">Total Entries</span>
-            <div className="w-8 h-8 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center text-success">
+            <div className="w-8 h-8 rounded-xl bg-surface-2 border border-success/20 flex items-center justify-center text-success">
               <Activity className="w-4 h-4" />
             </div>
           </div>
@@ -147,13 +147,13 @@ export function WellbeingPage() {
 
       {/* Analytics Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
             <div>
               <h3 className="font-display text-lg font-semibold text-text">Sleep Duration</h3>
               <p className="text-xs text-text-muted">Recorded sleep hours over the last 14 days</p>
             </div>
-            <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-lg">
+            <span className="text-xs font-mono text-pulse bg-surface-2 border border-pulse/20 px-3 py-1.5 rounded-lg">
               Hours / Night
             </span>
           </div>
@@ -169,7 +169,7 @@ export function WellbeingPage() {
           </div>
         </div>
 
-        <div className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
+        <div className="bg-surface border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-border/60">
             <div>
               <h3 className="font-display text-lg font-semibold text-text">Energy & Sleep Quality</h3>
@@ -217,7 +217,7 @@ export function WellbeingPage() {
               <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold">
                 Sleep Duration
               </label>
-              <span className="text-sm font-mono font-bold text-pulse bg-pulse/10 px-3 py-1.5 rounded-lg border border-pulse/20">
+              <span className="text-sm font-mono font-bold text-pulse bg-surface-2 px-3 py-1.5 rounded-lg border border-pulse/20">
                 {sleepHours}h
               </span>
             </div>
@@ -281,7 +281,7 @@ export function WellbeingPage() {
               <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold">
                 Water Intake
               </label>
-              <span className="text-sm font-mono font-bold text-glow bg-glow/10 px-3 py-1.5 rounded-lg border border-glow/20">
+              <span className="text-sm font-mono font-bold text-glow bg-surface-2 px-3 py-1.5 rounded-lg border border-glow/20">
                 {waterIntake} glasses
               </span>
             </div>

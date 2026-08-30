@@ -48,7 +48,7 @@ export function Modal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className={`relative z-10 w-full ${maxWidthClasses[maxWidth]} bg-surface/95 border border-border/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] ${className}`}
+            className={`relative z-10 w-full ${maxWidthClasses[maxWidth]} bg-surface border border-border/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] ${className}`}
           >
             {/* Header */}
             {title && (
@@ -77,7 +77,7 @@ export function Modal({
 
             {/* Footer */}
             {footer && (
-              <div className="px-6 py-4 bg-surface-2/40 border-t border-border/60 flex items-center justify-end gap-4 flex-shrink-0">
+              <div className="px-6 py-4 bg-surface-2 border-t border-border/60 flex items-center justify-end gap-4 flex-shrink-0">
                 {footer}
               </div>
             )}

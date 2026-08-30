@@ -367,7 +367,7 @@ export function SettingsPage() {
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium border shadow-md ${
                 message.type === 'success'
-                  ? 'bg-success/10 text-success border-success/30'
+                  ? 'bg-surface-2 text-success border-success/30'
                   : 'bg-danger/10 text-danger border-danger/30'
               }`}
             >
@@ -401,7 +401,7 @@ export function SettingsPage() {
                     <span
                       className={`inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-semibold rounded-full transition-colors ${
                         isActive
-                          ? 'bg-pulse/10 text-pulse'
+                          ? 'bg-surface-2 text-pulse'
                           : 'bg-surface-3 text-text-muted group-hover:bg-surface-3/80 group-hover:text-text'
                       }`}
                     >
@@ -554,8 +554,8 @@ export function SettingsPage() {
                     onClick={() => avatarInputRef.current?.click()}
                     className={`flex-1 w-full max-w-xl border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 ${
                       isDragging
-                        ? 'border-pulse bg-pulse/10 ring-2 ring-pulse/20'
-                        : 'border-border/80 hover:border-pulse/60 bg-surface/50 hover:bg-surface'
+                        ? 'border-pulse bg-surface-2 ring-2 ring-pulse/20'
+                        : 'border-border/80 hover:border-pulse/60 bg-surface hover:bg-surface'
                     }`}
                   >
                     <div className="w-10 h-10 rounded-xl bg-surface-2 border border-border/80 flex items-center justify-center text-text-muted mb-2.5 shadow-xs">
@@ -821,7 +821,7 @@ export function SettingsPage() {
                       onClick={() => setEnergyPattern(pattern.id as any)}
                       className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
                         energyPattern === pattern.id
-                          ? 'border-pulse bg-pulse/10 text-text ring-1 ring-pulse'
+                          ? 'border-pulse bg-surface-2 text-text ring-1 ring-pulse'
                           : 'border-border bg-surface hover:bg-surface-2 text-text-muted'
                       }`}
                     >
@@ -984,7 +984,7 @@ export function SettingsPage() {
                     key={item.key}
                     className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
                       isSettings
-                        ? 'border-border/60 bg-surface/40 opacity-70'
+                        ? 'border-border/60 bg-surface opacity-70'
                         : 'border-border bg-surface hover:border-border-2 hover:bg-surface-2'
                     }`}
                   >
@@ -1145,13 +1145,13 @@ export function SettingsPage() {
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
+                    <div className="w-10 h-10 rounded-xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow">
                       <Calendar className="w-5 h-5" />
                     </div>
                     <span
                       className={`text-xs font-mono font-medium px-3 py-1.5 rounded-full border ${
                         syncStatus?.google.connected
-                          ? 'text-success bg-success/10 border-success/30'
+                          ? 'text-success bg-surface-2 border-success/30'
                           : 'text-text-muted bg-surface-2 border-border'
                       }`}
                     >
@@ -1169,7 +1169,7 @@ export function SettingsPage() {
                   <button
                     type="button"
                     onClick={connectGoogle}
-                    className="px-3.5 py-2 text-xs font-semibold text-glow bg-glow/10 hover:bg-glow/20 border border-glow/30 rounded-xl transition-all shadow-xs cursor-pointer"
+                    className="px-3.5 py-2 text-xs font-semibold text-glow bg-surface-2 hover:bg-glow/20 border border-glow/30 rounded-xl transition-all shadow-xs cursor-pointer"
                   >
                     {syncStatus?.google.connected ? 'Reconnect' : 'Connect Calendar'}
                   </button>
@@ -1187,13 +1187,13 @@ export function SettingsPage() {
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse">
+                    <div className="w-10 h-10 rounded-xl bg-surface-2 border border-pulse/20 flex items-center justify-center text-pulse">
                       <Compass className="w-5 h-5" />
                     </div>
                     <span
                       className={`text-xs font-mono font-medium px-3 py-1.5 rounded-full border ${
                         syncStatus?.notion.configured
-                          ? 'text-success bg-success/10 border-success/30'
+                          ? 'text-success bg-surface-2 border-success/30'
                           : 'text-text-muted bg-surface-2 border-border'
                       }`}
                     >
@@ -1211,7 +1211,7 @@ export function SettingsPage() {
                   <button
                     type="button"
                     onClick={handleImportNotion}
-                    className="px-3.5 py-2 text-xs font-semibold text-pulse bg-pulse/10 hover:bg-pulse/20 border border-pulse/30 rounded-xl transition-all shadow-xs cursor-pointer"
+                    className="px-3.5 py-2 text-xs font-semibold text-pulse bg-surface-2 hover:bg-pulse/20 border border-pulse/30 rounded-xl transition-all shadow-xs cursor-pointer"
                   >
                     Pull Notion Tasks
                   </button>
@@ -1242,7 +1242,7 @@ export function SettingsPage() {
               {/* Export Card */}
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-surface-2 border border-glow/20 flex items-center justify-center text-glow mb-3">
                     <Download className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-semibold text-text">Export Workspace</h3>
@@ -1253,7 +1253,7 @@ export function SettingsPage() {
                 <button
                   type="button"
                   onClick={handleExport}
-                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-glow bg-glow/10 hover:bg-glow/20 border border-glow/30 rounded-xl transition-all shadow-xs cursor-pointer"
+                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-glow bg-surface-2 hover:bg-glow/20 border border-glow/30 rounded-xl transition-all shadow-xs cursor-pointer"
                 >
                   Download JSON Backup
                 </button>
@@ -1262,7 +1262,7 @@ export function SettingsPage() {
               {/* Import Card */}
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-pulse/10 border border-pulse/20 flex items-center justify-center text-pulse mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-surface-2 border border-pulse/20 flex items-center justify-center text-pulse mb-3">
                     <Upload className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-semibold text-text">Import Workspace</h3>
@@ -1273,7 +1273,7 @@ export function SettingsPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-pulse bg-pulse/10 hover:bg-pulse/20 border border-pulse/30 rounded-xl transition-all shadow-xs cursor-pointer"
+                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-pulse bg-surface-2 hover:bg-pulse/20 border border-pulse/30 rounded-xl transition-all shadow-xs cursor-pointer"
                 >
                   Select File to Import
                 </button>
@@ -1290,7 +1290,7 @@ export function SettingsPage() {
               {/* Create Snapshot Backup */}
               <div className="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between shadow-xs">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-surface-2 border border-ember/20 flex items-center justify-center text-ember mb-3">
                     <Database className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-semibold text-text">Create Instant Snapshot</h3>
@@ -1301,7 +1301,7 @@ export function SettingsPage() {
                 <button
                   type="button"
                   onClick={handleBackup}
-                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-ember bg-ember/10 hover:bg-ember/20 border border-ember/30 rounded-xl transition-all shadow-xs cursor-pointer"
+                  className="mt-5 w-full py-2.5 px-4 text-xs font-semibold text-ember bg-surface-2 hover:bg-ember/20 border border-ember/30 rounded-xl transition-all shadow-xs cursor-pointer"
                 >
                   Save Snapshot Now
                 </button>
@@ -1310,7 +1310,7 @@ export function SettingsPage() {
               {/* Danger Zone: Reset Workspace */}
               <div className="p-6 rounded-2xl border border-danger/30 bg-danger/5 flex flex-col justify-between shadow-xs">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-danger/10 border border-danger/20 flex items-center justify-center text-danger mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-surface-2 border border-danger/20 flex items-center justify-center text-danger mb-3">
                     <Trash2 className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-semibold text-danger">Reset Workspace</h3>
@@ -1351,7 +1351,7 @@ export function SettingsPage() {
                       <button
                         type="button"
                         onClick={() => handleRestore(b.id)}
-                        className="px-3 py-1.5 text-xs font-semibold font-mono text-glow bg-glow/10 hover:bg-glow/20 border border-glow/30 rounded-lg transition-colors cursor-pointer"
+                        className="px-3 py-1.5 text-xs font-semibold font-mono text-glow bg-surface-2 hover:bg-glow/20 border border-glow/30 rounded-lg transition-colors cursor-pointer"
                       >
                         Restore
                       </button>

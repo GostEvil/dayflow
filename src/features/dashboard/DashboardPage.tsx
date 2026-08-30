@@ -156,7 +156,7 @@ export function DashboardPage() {
                 onClick={() => navigate('/focus')}
                 variant="outline"
                 size="md"
-                className="bg-surface/50 backdrop-blur-xl border-white/10 hover:bg-surface-2"
+                className="bg-surface border-border hover:bg-surface-2"
                 icon={<Timer className="w-4 h-4 text-glow" />}
               >
                 Focus Timer
@@ -176,16 +176,16 @@ export function DashboardPage() {
           {/* Top Metrics Row - Glassmorphism */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Focus Metric */}
-            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+            <motion.div variants={item} className="relative overflow-hidden bg-surface border border-border rounded-2xl p-6 group transition-all hover:bg-surface hover:border-border">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Timer className="w-16 h-16 text-glow" />
               </div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-glow/10 flex items-center justify-center text-glow">
+                <div className="w-10 h-10 rounded-xl bg-surface-2 bg-surface-2 flex items-center justify-center text-glow">
                   <Timer className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-text">Deep Work</h3>
+                  <h3 className="font-bold text-text">Deep Work</h3>
                   <p className="text-xs text-text-muted">Focus sessions today</p>
                 </div>
               </div>
@@ -196,16 +196,16 @@ export function DashboardPage() {
             </motion.div>
 
             {/* Task Metric */}
-            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+            <motion.div variants={item} className="relative overflow-hidden bg-surface border border-border rounded-2xl p-6 group transition-all hover:bg-surface hover:border-border">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <CheckSquare className="w-16 h-16 text-success" />
               </div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-success/10 flex items-center justify-center text-success">
+                <div className="w-10 h-10 rounded-xl bg-surface-2 bg-surface-2 flex items-center justify-center text-success">
                   <CheckSquare className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-text">Task Progress</h3>
+                  <h3 className="font-bold text-text">Task Progress</h3>
                   <p className="text-xs text-text-muted">{totalTasksCount === 0 ? 'No tasks today' : `${todayTasks.length} tasks remaining`}</p>
                 </div>
               </div>
@@ -214,7 +214,7 @@ export function DashboardPage() {
                   <span className="font-display text-4xl font-bold text-white">{completedToday.length}</span>
                   <span className="text-xl font-medium text-text-muted">/{totalTasksCount}</span>
                 </div>
-                <span className="text-xs font-mono font-bold text-success bg-success/10 px-3 py-1.5 rounded-xl">{taskCompletionPct}%</span>
+                <span className="text-xs font-mono font-bold text-success bg-surface-2 px-3 py-1.5 rounded-xl">{taskCompletionPct}%</span>
               </div>
               <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
                 <motion.div className="h-full bg-success" initial={{ width: 0 }} animate={{ width: `${taskCompletionPct}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} />
@@ -222,16 +222,16 @@ export function DashboardPage() {
             </motion.div>
 
             {/* Habits Metric */}
-            <motion.div variants={item} className="relative overflow-hidden bg-surface/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 group transition-all hover:bg-surface/40 hover:border-white/10">
+            <motion.div variants={item} className="relative overflow-hidden bg-surface border border-border rounded-2xl p-6 group transition-all hover:bg-surface hover:border-border">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Flame className="w-16 h-16 text-ember" />
               </div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-ember/10 flex items-center justify-center text-ember">
+                <div className="w-10 h-10 rounded-xl bg-surface-2 bg-surface-2 flex items-center justify-center text-ember">
                   <Flame className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-text">Habit Streaks</h3>
+                  <h3 className="font-bold text-text">Habit Streaks</h3>
                   <p className="text-xs text-text-muted">Active daily habits</p>
                 </div>
               </div>
@@ -268,7 +268,7 @@ export function DashboardPage() {
                     onChange={e => setNewTaskTitle(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && addQuickTask()}
                     placeholder="What's your next priority task?"
-                    className="w-full h-14 pl-12 pr-14 rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10 text-white placeholder:text-text-muted/60 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/30 transition-all shadow-sm"
+                    className="w-full h-14 pl-12 pr-14 rounded-2xl bg-surface border border-border text-white placeholder:text-text-muted/60 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/30 transition-all shadow-sm"
                   />
                   <button 
                     onClick={addQuickTask}
@@ -283,7 +283,7 @@ export function DashboardPage() {
                   {[...todayTasks, ...completedToday].map(task => (
                     <div
                       key={task.id}
-                      className="group flex items-center gap-4 p-4 rounded-2xl bg-surface/20 border border-transparent hover:border-white/5 hover:bg-surface/40 transition-all"
+                      className="group flex items-center gap-4 p-4 rounded-2xl bg-surface border border-transparent hover:border-border hover:bg-surface transition-all"
                     >
                       <button
                         onClick={() => toggleTask(task.id)}
@@ -305,7 +305,7 @@ export function DashboardPage() {
                           <span className="w-2 h-2 rounded-full bg-danger shadow-[0_0_8px_rgba(239,68,68,0.6)]" title="Urgent" />
                         )}
                         {task.dueTime && task.status !== 'done' && (
-                          <span className="text-xs font-mono font-medium text-text-muted flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-xl border border-white/5">
+                          <span className="text-xs font-mono font-medium text-text-muted flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-xl border border-border">
                             <Clock className="w-3.5 h-3.5" /> {formatTime(task.dueTime)}
                           </span>
                         )}
@@ -313,7 +313,7 @@ export function DashboardPage() {
                     </div>
                   ))}
                   {todayTasks.length === 0 && completedToday.length === 0 && (
-                    <div className="py-12 text-center flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-surface/10">
+                    <div className="py-12 text-center flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface">
                        <Sparkles className="w-8 h-8 text-text-muted/40 mb-3" />
                        <p className="text-white font-medium">No tasks scheduled</p>
                        <p className="text-sm text-text-muted mt-1">Add a task above to start your day</p>
@@ -343,10 +343,10 @@ export function DashboardPage() {
                           : block.category === 'exercise' ? 'bg-success'
                           : block.category === 'break' ? 'bg-drift' : 'bg-ember'}
                       `} />
-                      <div className="flex-1 bg-surface/20 border border-white/5 rounded-2xl p-5 hover:bg-surface/30 transition-all">
+                      <div className="flex-1 bg-surface border border-border rounded-2xl p-5 hover:bg-surface transition-all">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h4 className="font-semibold text-white">{block.title}</h4>
+                            <h4 className="font-bold text-white">{block.title}</h4>
                             <div className="text-xs font-mono font-medium text-text-muted mt-1.5 flex items-center gap-1.5">
                               <Clock className="w-3.5 h-3.5" />
                               {formatTime(block.startTime)} – {formatTime(block.endTime)}
@@ -388,9 +388,9 @@ export function DashboardPage() {
                     const total = g.milestones.length;
                     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
                     return (
-                      <div key={g.id} className="p-5 rounded-2xl bg-surface/30 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all">
+                      <div key={g.id} className="p-5 rounded-2xl bg-surface border border-border hover:border-border transition-all">
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="font-semibold text-white truncate pr-4">{g.title}</h4>
+                          <h4 className="font-bold text-white truncate pr-4">{g.title}</h4>
                           <span className="text-xs font-mono font-bold text-white bg-black/40 px-3 py-1.5 rounded-xl">{pct}%</span>
                         </div>
                         <div className="w-full h-1.5 bg-black/30 rounded-full overflow-hidden mb-3">
@@ -408,7 +408,7 @@ export function DashboardPage() {
                     );
                   })}
                   {activeGoals.length === 0 && (
-                    <div className="p-6 rounded-2xl border border-dashed border-white/10 bg-surface/10 text-center">
+                    <div className="p-6 rounded-2xl border border-dashed border-border bg-surface text-center">
                       <p className="text-sm text-text-muted">No active goals</p>
                     </div>
                   )}
@@ -427,7 +427,7 @@ export function DashboardPage() {
                   </button>
                 </div>
 
-                <div className="bg-surface/30 backdrop-blur-xl border border-white/5 rounded-3xl p-4">
+                <div className="bg-surface border border-border rounded-2xl p-4">
                   {habitStreaks.slice(0, 4).map(h => (
                     <div key={h.id} className="flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-colors group">
                       <div className="flex items-center gap-4">
@@ -439,7 +439,7 @@ export function DashboardPage() {
                         </div>
                         <span className="text-sm font-medium text-white group-hover:text-glow transition-colors">{h.name}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-ember bg-ember/10 border border-ember/20 px-3 py-1.5 rounded-xl">
+                      <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-ember bg-surface-2 border border-ember/20 px-3 py-1.5 rounded-xl">
                         <Flame className="w-3.5 h-3.5 fill-current" />
                         {h.streak}d
                       </div>
