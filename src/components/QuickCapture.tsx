@@ -47,7 +47,7 @@ export function QuickCapture({ open, onClose }: { open: boolean; onClose: () => 
       isOpen={open}
       onClose={onClose}
       title={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Plus className="w-4 h-4 text-glow" />
           <span className="font-display font-semibold text-base">Quick Capture</span>
         </div>
@@ -55,7 +55,7 @@ export function QuickCapture({ open, onClose }: { open: boolean; onClose: () => 
       footer={
         <div className="flex items-center justify-between w-full">
           <span className="text-xs text-text-muted">Added directly to inbox for triage</span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onClose}>
               Cancel
             </Button>

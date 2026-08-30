@@ -106,7 +106,7 @@ export function OnboardingPage() {
     <div className="min-h-screen bg-void flex items-center justify-center p-5 sm:p-8">
       <div className="w-full max-w-lg">
         {/* Progress Bar */}
-        <div className="flex gap-2 mb-10">
+        <div className="flex gap-4 mb-10">
           {STEPS.map((_, i) => (
             <div
               key={i}
@@ -144,10 +144,10 @@ export function OnboardingPage() {
                 <p className="text-text-secondary text-base mb-8 max-w-sm mx-auto leading-relaxed">
                   Your minimalist, deep-work productivity operating system. Let's configure your workspace for peak focus.
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                   <button
                     onClick={next}
-                    className="px-6 py-3.5 bg-glow text-void font-semibold rounded-2xl hover:bg-glow/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-glow/20 cursor-pointer"
+                    className="px-6 py-3.5 bg-glow text-void font-semibold rounded-2xl hover:bg-glow/90 transition-all flex items-center justify-center gap-4 shadow-lg shadow-glow/20 cursor-pointer"
                   >
                     Get Started <ArrowRight className="w-4 h-4" />
                   </button>
@@ -231,7 +231,7 @@ export function OnboardingPage() {
               <div className="py-2">
                 <h2 className="font-display text-2xl font-bold text-text mb-2">When is your peak energy?</h2>
                 <p className="text-text-secondary text-sm mb-6">We'll recommend deep work sessions during your highest output hours.</p>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {ENERGY_OPTIONS.map(opt => {
                     const IconComponent = opt.icon;
                     const isSelected = energy === opt.value;
@@ -273,7 +273,7 @@ export function OnboardingPage() {
               <div className="py-2">
                 <h2 className="font-display text-2xl font-bold text-text mb-2">Pick initial habits to track</h2>
                 <p className="text-text-secondary text-sm mb-6">Select a few daily rituals to build momentum.</p>
-                <div className="grid grid-cols-2 gap-3 max-h-64 overflow-y-auto pr-1">
+                <div className="grid grid-cols-2 gap-4 max-h-64 overflow-y-auto pr-1">
                   {HABIT_SUGGESTIONS.map(h => {
                     const isSelected = selectedHabits.includes(h.name);
                     return (
@@ -281,7 +281,7 @@ export function OnboardingPage() {
                         key={h.name}
                         type="button"
                         onClick={() => toggleHabit(h.name)}
-                        className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all text-left cursor-pointer ${
+                        className={`flex items-center gap-4 p-4.5 rounded-2xl border transition-all text-left cursor-pointer ${
                           isSelected
                             ? 'border-glow bg-glow/10 shadow-sm'
                             : 'border-border/60 bg-surface-2/60 hover:border-border hover:bg-surface-2'
@@ -335,13 +335,13 @@ export function OnboardingPage() {
               <div className="flex items-center justify-between mt-8 pt-4 border-t border-border/50">
                 <button
                   onClick={prev}
-                  className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-text transition-colors cursor-pointer px-3 py-2"
+                  className="flex items-center gap-4 text-sm font-medium text-text-muted hover:text-text transition-colors cursor-pointer px-3 py-2"
                 >
                   <ArrowLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   onClick={next}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-glow/15 text-glow text-sm font-semibold rounded-xl hover:bg-glow/25 transition-all border border-glow/25 cursor-pointer shadow-sm"
+                  className="flex items-center gap-4 px-6 py-2.5 bg-glow/15 text-glow text-sm font-semibold rounded-xl hover:bg-glow/25 transition-all border border-glow/25 cursor-pointer shadow-sm"
                 >
                   Continue <ArrowRight className="w-4 h-4" />
                 </button>

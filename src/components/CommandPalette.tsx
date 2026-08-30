@@ -88,7 +88,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
           >
             <div className="bg-surface border border-border rounded-xl shadow-2xl overflow-hidden">
               {/* Search input */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
+              <div className="flex items-center gap-4 px-4 py-3 border-b border-border">
                 <Search className="w-4 h-4 text-text-muted flex-shrink-0" />
                 <input
                   ref={inputRef}
@@ -102,7 +102,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                   placeholder="Type a command..."
                   className="flex-1 bg-transparent text-text text-sm outline-none placeholder:text-text-muted"
                 />
-                <kbd className="px-1.5 py-0.5 bg-surface-2 border border-border rounded text-text-muted text-[10px] font-mono">ESC</kbd>
+                <kbd className="px-3 py-1.5 bg-surface-2 border border-border rounded text-text-muted text-[10px] font-mono">ESC</kbd>
               </div>
 
               {/* Results */}
@@ -118,7 +118,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                         <button
                           key={item.id}
                           onClick={() => handleSelect(item)}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:bg-surface-2 hover:text-text transition-colors"
+                          className="w-full flex items-center gap-4 px-4 py-2.5 text-sm text-text-secondary hover:bg-surface-2 hover:text-text transition-colors"
                         >
                           <Icon className="w-4 h-4 text-text-muted" />
                           <span>{item.label}</span>

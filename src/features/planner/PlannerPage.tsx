@@ -290,7 +290,7 @@ export function PlannerPage() {
             {format(weekDates[0], 'MMMM d')} – {format(weekDates[6], 'MMMM d, yyyy')}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="flex items-center bg-surface-2/80 border border-border/80 rounded-2xl p-1 shadow-sm">
             <button
               onClick={() => setWeekOffset(0)}
@@ -332,7 +332,7 @@ export function PlannerPage() {
       <div className="bg-surface/95 border border-border/80 rounded-3xl overflow-hidden shadow-sm">
         {/* Day Header Row */}
         <div className="grid grid-cols-[72px_repeat(7,1fr)] border-b border-border/70 bg-surface-2/30">
-          <div className="p-3 border-r border-border/50" />
+          <div className="p-4 border-r border-border/50" />
           {weekDates.map(date => {
             const isToday = dateStr(date) === dateStr(new Date());
             return (
@@ -436,7 +436,7 @@ export function PlannerPage() {
                       >
                         <div className="flex items-center justify-between text-xs font-semibold leading-tight">
                           <span className="truncate">New Block</span>
-                          <span className="text-[10px] font-mono font-bold bg-glow/30 text-glow px-2 py-0.5 rounded-md ml-1 shrink-0">
+                          <span className="text-[10px] font-mono font-bold bg-glow/30 text-glow px-3 py-1.5 rounded-md ml-1 shrink-0">
                             {formatDuration(durationMins)}
                           </span>
                         </div>
@@ -584,12 +584,12 @@ export function PlannerPage() {
         }
       >
         <div className="space-y-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="text-sm text-text font-medium">Repeat every</span>
             <input
               type="number"
               min={1}
-              className="w-16 bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-sm text-text focus:outline-none focus:border-glow focus:ring-1 focus:ring-glow/50"
+              className="w-16 bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-sm text-text focus:outline-none focus:border-glow focus:ring-1 focus:ring-glow/50"
               value={newCustomRecurrence.interval}
               onChange={e => setNewCustomRecurrence({...newCustomRecurrence, interval: parseInt(e.target.value) || 1})}
             />
@@ -631,9 +631,9 @@ export function PlannerPage() {
             </div>
           )}
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="text-sm text-text font-medium">Ends</div>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-center gap-4 cursor-pointer">
               <input
                 type="radio"
                 name="endType"
@@ -643,7 +643,7 @@ export function PlannerPage() {
               />
               <span className="text-sm text-text">Never</span>
             </label>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-center gap-4 cursor-pointer">
               <input
                 type="radio"
                 name="endType"
@@ -660,7 +660,7 @@ export function PlannerPage() {
                 className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-sm text-text focus:outline-none focus:border-glow disabled:opacity-50"
               />
             </label>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-center gap-4 cursor-pointer">
               <input
                 type="radio"
                 name="endType"
@@ -675,7 +675,7 @@ export function PlannerPage() {
                 disabled={newCustomRecurrence.endType !== 'after_occurrences'}
                 value={newCustomRecurrence.occurrences}
                 onChange={e => setNewCustomRecurrence({...newCustomRecurrence, occurrences: parseInt(e.target.value) || 1})}
-                className="w-20 bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-sm text-text focus:outline-none focus:border-glow disabled:opacity-50"
+                className="w-20 bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-sm text-text focus:outline-none focus:border-glow disabled:opacity-50"
               />
               <span className="text-sm text-text">occurrences</span>
             </label>

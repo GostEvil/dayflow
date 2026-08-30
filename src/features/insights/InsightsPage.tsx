@@ -210,9 +210,9 @@ export function InsightsPage() {
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-4 mb-2">
                     <span
-                      className={`px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-semibold uppercase tracking-wider ${
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-mono font-semibold uppercase tracking-wider ${
                         insight.type === 'warning'
                           ? 'bg-ember/15 text-ember border border-ember/30'
                           : insight.type === 'suggestion'

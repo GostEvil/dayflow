@@ -185,7 +185,7 @@ export function GoalsPage() {
                   {goal.title}
                 </h3>
                 {goal.description && (
-                  <p className="text-sm text-text-secondary line-clamp-2 mb-6 leading-relaxed">
+                  <p className="text-sm text-text-secondary line-clamp-3 mb-6 leading-relaxed">
                     {goal.description}
                   </p>
                 )}
@@ -200,7 +200,7 @@ export function GoalsPage() {
                     transition={{ duration: 0.6 }}
                   />
                 </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-text-muted pt-2 border-t border-border/40">
+                <div className="flex items-center gap-4 text-xs font-mono text-text-muted pt-2 border-t border-border/40">
                   <Calendar className="w-3.5 h-3.5 text-text-muted" />
                   <span>Target Date: {formatDate(goal.targetDate)}</span>
                 </div>
@@ -293,9 +293,9 @@ export function GoalsPage() {
             <label className="text-xs font-medium text-text-secondary tracking-wide mb-2 block select-none">
               Milestones
             </label>
-            <div className="space-y-2.5">
+            <div className="space-y-4.5">
               {newMilestones.map((m, i) => (
-                <div key={i} className="flex gap-2 items-center">
+                <div key={i} className="flex gap-4 items-center">
                   <Input
                     value={m}
                     onChange={e => {
@@ -358,7 +358,7 @@ export function GoalsPage() {
                     </span>
                     <button
                       onClick={() => setDetailGoal(null)}
-                      className="p-2 hover:bg-surface-2 rounded-xl text-text-muted hover:text-text transition-colors"
+                      className="p-3 hover:bg-surface-2 rounded-xl text-text-muted hover:text-text transition-colors"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -412,11 +412,11 @@ export function GoalsPage() {
                       Milestones ({detailGoal.milestones.filter(m => m.completed).length}/
                       {detailGoal.milestones.length})
                     </div>
-                    <div className="space-y-2.5">
+                    <div className="space-y-4.5">
                       {detailGoal.milestones.map(m => (
                         <div
                           key={m.id}
-                          className="flex items-center gap-3.5 p-4 bg-surface-2/60 border border-border/60 rounded-xl cursor-pointer hover:bg-surface-2 transition-all"
+                          className="flex items-center gap-4.5 p-4 bg-surface-2/60 border border-border/60 rounded-xl cursor-pointer hover:bg-surface-2 transition-all"
                           onClick={() => toggleMilestone(detailGoal.id, m.id)}
                         >
                           {m.completed ? (
@@ -438,7 +438,7 @@ export function GoalsPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="space-y-3 pt-4 border-t border-border/60">
+                <div className="space-y-4 pt-4 border-t border-border/60">
                   {detailGoal.status === 'active' && (
                     <Button
                       onClick={() => updateGoalStatus(detailGoal.id, 'paused')}

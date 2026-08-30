@@ -36,7 +36,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative flex items-center w-full">
           {icon && (
-            <span className="absolute left-3.5 text-text-muted pointer-events-none flex items-center justify-center">
+            <span className="absolute left-4 text-text-muted pointer-events-none flex items-center justify-center">
               {icon}
             </span>
           )}
@@ -46,7 +46,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             disabled={disabled}
             className={`w-full h-11 bg-surface-2/70 border border-border/80 rounded-xl text-sm text-text placeholder:text-text-muted/60 transition-all duration-150 ease-out focus:border-glow/60 focus:bg-surface-2 focus:ring-1 focus:ring-glow/30 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed ${
-              icon ? 'pl-10 pr-3.5' : 'px-3.5'
+              icon ? 'pl-12 pr-4' : 'px-4'
             } ${error ? 'border-danger/60 focus:border-danger focus:ring-danger/20' : ''} ${className}`}
             style={{ colorScheme: 'dark' }}
             {...props}

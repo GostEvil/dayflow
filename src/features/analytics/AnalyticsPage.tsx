@@ -202,7 +202,7 @@ export function AnalyticsPage() {
                 <h3 className="font-display text-lg font-semibold text-text">Task Velocity</h3>
                 <p className="text-xs text-text-muted">Completed items per day</p>
               </div>
-              <span className="text-xs font-mono text-glow bg-glow/10 border border-glow/20 px-2.5 py-1 rounded-lg">
+              <span className="text-xs font-mono text-glow bg-glow/10 border border-glow/20 px-3 py-1.5 rounded-lg">
                 Tasks
               </span>
             </div>
@@ -227,7 +227,7 @@ export function AnalyticsPage() {
                 <h3 className="font-display text-lg font-semibold text-text">Focus Minutes</h3>
                 <p className="text-xs text-text-muted">Deep work output volume</p>
               </div>
-              <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-2.5 py-1 rounded-lg">
+              <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-lg">
                 Minutes
               </span>
             </div>
@@ -252,7 +252,7 @@ export function AnalyticsPage() {
                 <h3 className="font-display text-lg font-semibold text-text">Habit Consistency</h3>
                 <p className="text-xs text-text-muted">Completion rate percentage</p>
               </div>
-              <span className="text-xs font-mono text-ember bg-ember/10 border border-ember/20 px-2.5 py-1 rounded-lg">
+              <span className="text-xs font-mono text-ember bg-ember/10 border border-ember/20 px-3 py-1.5 rounded-lg">
                 % Consistency
               </span>
             </div>
@@ -277,7 +277,7 @@ export function AnalyticsPage() {
                 <h3 className="font-display text-lg font-semibold text-text">Task Categories</h3>
                 <p className="text-xs text-text-muted">Distribution across life areas</p>
               </div>
-              <span className="text-xs font-mono text-text-muted bg-surface-2 px-2.5 py-1 rounded-lg border border-border/40">
+              <span className="text-xs font-mono text-text-muted bg-surface-2 px-3 py-1.5 rounded-lg border border-border/40">
                 Breakdown
               </span>
             </div>

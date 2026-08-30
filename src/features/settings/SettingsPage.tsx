@@ -351,7 +351,7 @@ export function SettingsPage() {
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full h-11 pl-10 pr-12 rounded-xl bg-surface border border-border text-sm text-text placeholder:text-text-muted/70 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/40 transition-all shadow-xs"
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-text-muted border border-border bg-surface-2 rounded-md shadow-xs pointer-events-none">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-3 py-1.5 text-[10px] font-mono text-text-muted border border-border bg-surface-2 rounded-md shadow-xs pointer-events-none">
               <span>⌘</span>
               <span>K</span>
             </div>
@@ -365,7 +365,7 @@ export function SettingsPage() {
               initial={{ opacity: 0, y: -10, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium border shadow-md ${
+              className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium border shadow-md ${
                 message.type === 'success'
                   ? 'bg-success/10 text-success border-success/30'
                   : 'bg-danger/10 text-danger border-danger/30'
@@ -390,7 +390,7 @@ export function SettingsPage() {
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative flex items-center gap-2 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200 group cursor-pointer border-b-2 -mb-px ${
+                  className={`relative flex items-center gap-4 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200 group cursor-pointer border-b-2 -mb-px ${
                     isActive
                       ? 'text-text font-semibold border-pulse'
                       : 'text-text-muted hover:text-text border-transparent hover:border-border'
@@ -399,7 +399,7 @@ export function SettingsPage() {
                   <span>{tab.label}</span>
                   {tab.badge !== undefined && (
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-0.5 text-[11px] font-semibold rounded-full transition-colors ${
+                      className={`inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-semibold rounded-full transition-colors ${
                         isActive
                           ? 'bg-pulse/10 text-pulse'
                           : 'bg-surface-3 text-text-muted group-hover:bg-surface-3/80 group-hover:text-text'
@@ -428,7 +428,7 @@ export function SettingsPage() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 self-end sm:self-auto">
+              <div className="flex items-center gap-4 self-end sm:self-auto">
                 <button
                   type="button"
                   onClick={handleCancel}
@@ -723,7 +723,7 @@ export function SettingsPage() {
                     value={bio}
                     onChange={e => setBio(e.target.value)}
                     placeholder="Tell us a little bit about yourself..."
-                    className="w-full max-w-xl p-3.5 rounded-xl bg-surface border border-border text-sm text-text placeholder:text-text-muted/60 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/30 transition-all shadow-xs resize-y"
+                    className="w-full max-w-xl p-4.5 rounded-xl bg-surface border border-border text-sm text-text placeholder:text-text-muted/60 focus:outline-none focus:border-pulse focus:ring-1 focus:ring-pulse/30 transition-all shadow-xs resize-y"
                   />
                   <p className="text-[11px] text-text-muted mt-1.5">
                     {bio.length} characters • Shown on your profile and journal exports.
@@ -808,7 +808,7 @@ export function SettingsPage() {
                     Used by the smart planner to suggest optimal focus blocks.
                   </p>
                 </div>
-                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
+                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
                   {[
                     { id: 'morning', label: 'Morning Lark 🌅', desc: 'Highest focus 08:00 - 12:00' },
                     { id: 'afternoon', label: 'Afternoon Peak ☀️', desc: 'Highest focus 13:00 - 17:00' },
@@ -846,7 +846,7 @@ export function SettingsPage() {
                   <button
                     type="button"
                     onClick={handleRestartOnboarding}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-surface border border-border hover:bg-surface-2 rounded-xl text-sm font-medium text-text transition-all shadow-xs cursor-pointer"
+                    className="flex items-center gap-4 px-4 py-2.5 bg-surface border border-border hover:bg-surface-2 rounded-xl text-sm font-medium text-text transition-all shadow-xs cursor-pointer"
                   >
                     <RotateCcw className="w-4 h-4 text-pulse" />
                     Restart Initial Onboarding Flow
@@ -920,7 +920,7 @@ export function SettingsPage() {
                   >
                     {/* Visual UI Miniature Preview Card */}
                     <div
-                      className={`h-24 rounded-xl border p-2.5 mb-4 flex flex-col justify-between overflow-hidden ${opt.previewBg} ${opt.previewBorder}`}
+                      className={`h-24 rounded-xl border p-3.5 mb-4 flex flex-col justify-between overflow-hidden ${opt.previewBg} ${opt.previewBorder}`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
@@ -937,7 +937,7 @@ export function SettingsPage() {
                     </div>
 
                     <div className="flex items-center justify-between mt-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-4">
                         <Icon className={`w-4 h-4 ${isSelected ? 'text-pulse' : 'text-text-muted'}`} />
                         <span className="text-sm font-semibold text-text">{opt.label}</span>
                       </div>
@@ -988,7 +988,7 @@ export function SettingsPage() {
                         : 'border-border bg-surface hover:border-border-2 hover:bg-surface-2'
                     }`}
                   >
-                    <div className="flex items-center gap-3.5">
+                    <div className="flex items-center gap-4.5">
                       <div className="w-9 h-9 rounded-xl bg-surface-2 border border-border flex items-center justify-center text-text shadow-xs">
                         <Icon className="w-4 h-4 text-pulse" />
                       </div>
@@ -1149,7 +1149,7 @@ export function SettingsPage() {
                       <Calendar className="w-5 h-5" />
                     </div>
                     <span
-                      className={`text-xs font-mono font-medium px-2.5 py-1 rounded-full border ${
+                      className={`text-xs font-mono font-medium px-3 py-1.5 rounded-full border ${
                         syncStatus?.google.connected
                           ? 'text-success bg-success/10 border-success/30'
                           : 'text-text-muted bg-surface-2 border-border'
@@ -1191,7 +1191,7 @@ export function SettingsPage() {
                       <Compass className="w-5 h-5" />
                     </div>
                     <span
-                      className={`text-xs font-mono font-medium px-2.5 py-1 rounded-full border ${
+                      className={`text-xs font-mono font-medium px-3 py-1.5 rounded-full border ${
                         syncStatus?.notion.configured
                           ? 'text-success bg-success/10 border-success/30'
                           : 'text-text-muted bg-surface-2 border-border'
@@ -1334,11 +1334,11 @@ export function SettingsPage() {
                 <h3 className="text-sm font-semibold text-text uppercase tracking-wider font-mono mb-4">
                   Stored Snapshots ({backups.length})
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-4">
                   {backups.map(b => (
                     <div
                       key={b.id}
-                      className="flex items-center justify-between p-3.5 px-4 rounded-xl bg-surface border border-border shadow-xs"
+                      className="flex items-center justify-between p-4.5 px-4 rounded-xl bg-surface border border-border shadow-xs"
                     >
                       <div>
                         <div className="text-xs font-mono font-medium text-text">
@@ -1426,7 +1426,7 @@ export function SettingsPage() {
               <div className="md:col-span-2 p-6 rounded-2xl border border-border bg-surface shadow-xs space-y-4">
                 <h3 className="text-base font-semibold text-text">Workspace Capacity</h3>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-xs font-medium mb-1">
                       <span className="text-text">Tasks & Goals State</span>

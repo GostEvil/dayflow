@@ -201,7 +201,7 @@ export function HabitsPage() {
                     </span>
                     <span className="text-[11px] font-mono text-text-muted">Last 7 Days</span>
                   </div>
-                  <div className="grid grid-cols-7 gap-2">
+                  <div className="grid grid-cols-7 gap-4">
                     {last7.map(day => {
                       const key = format(day, 'yyyy-MM-dd');
                       const done = habit.completions[key];
@@ -310,7 +310,7 @@ export function HabitsPage() {
             <label className="text-xs font-medium text-text-secondary tracking-wide mb-2.5 block select-none">
               Choose Icon
             </label>
-            <div className="grid grid-cols-6 gap-2.5 max-h-48 overflow-y-auto p-1 bg-surface-2/40 rounded-2xl border border-border/60">
+            <div className="grid grid-cols-6 gap-3.5 max-h-48 overflow-y-auto p-1 bg-surface-2/40 rounded-2xl border border-border/60">
               {HABIT_ICON_DEFINITIONS.map(def => {
                 const IconComponent = def.icon;
                 const isSelected = newIcon === def.id;
@@ -348,7 +348,7 @@ export function HabitsPage() {
               <label className="text-xs font-medium text-text-secondary tracking-wide mb-2 block select-none">
                 Color Accent
               </label>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <input
                   type="color"
                   value={newColor}
@@ -405,14 +405,14 @@ export function HabitsPage() {
                     </div>
                     <button
                       onClick={() => setDetailHabit(null)}
-                      className="p-2 hover:bg-surface-2 rounded-xl text-text-muted hover:text-text transition-colors"
+                      className="p-3 hover:bg-surface-2 rounded-xl text-text-muted hover:text-text transition-colors"
                     >
                       <X className="w-5 h-5" />
                     </button>
                   </div>
 
                   {/* Summary Metric Bento */}
-                  <div className="grid grid-cols-3 gap-3.5 mb-8">
+                  <div className="grid grid-cols-3 gap-4.5 mb-8">
                     <div className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 text-center">
                       <div className="font-mono text-2xl font-extrabold text-ember">
                         {getStreak(detailHabit)}d
@@ -444,7 +444,7 @@ export function HabitsPage() {
                     <div className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold mb-3">
                       Last 30 Days Activity
                     </div>
-                    <div className="grid grid-cols-7 gap-2 p-4 bg-surface-2/40 border border-border/60 rounded-2xl">
+                    <div className="grid grid-cols-7 gap-4 p-4 bg-surface-2/40 border border-border/60 rounded-2xl">
                       {Array.from({ length: 30 }, (_, i) => {
                         const d = format(subDays(new Date(), 29 - i), 'yyyy-MM-dd');
                         const isDone = detailHabit.completions[d];

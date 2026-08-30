@@ -107,7 +107,7 @@ export function GamificationPage() {
         {/* Quests Section */}
         <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
                 <Zap className="w-4 h-4" />
               </div>
@@ -121,7 +121,7 @@ export function GamificationPage() {
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {gamification.quests.filter(q => !q.completed).map(quest => (
               <div
                 key={quest.id}
@@ -135,7 +135,7 @@ export function GamificationPage() {
                   <div className="font-mono text-sm font-bold text-glow">
                     {quest.current} / {quest.target}
                   </div>
-                  <div className="text-xs font-mono font-bold text-pulse bg-pulse/10 border border-pulse/20 px-2 py-0.5 rounded-md mt-1">
+                  <div className="text-xs font-mono font-bold text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-md mt-1">
                     +{quest.xpReward} XP
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export function GamificationPage() {
         {/* Achievement Badges Section */}
         <motion.div variants={item} className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/60">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
                 <Trophy className="w-4 h-4" />
               </div>
@@ -197,7 +197,7 @@ export function GamificationPage() {
 
                   <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-center">
                     {unlocked ? (
-                      <span className="text-[11px] font-mono text-emerald-400 font-semibold flex items-center gap-1.5 bg-emerald-400/10 px-2.5 py-0.5 rounded-md border border-emerald-400/20">
+                      <span className="text-[11px] font-mono text-emerald-400 font-semibold flex items-center gap-1.5 bg-emerald-400/10 px-3 py-1.5 rounded-md border border-emerald-400/20">
                         <Star className="w-3 h-3 fill-current" /> Unlocked
                       </span>
                     ) : (

@@ -156,7 +156,7 @@ export function ReviewPage() {
         transition={{ delay: 0.25 }}
         className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
+        <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-ember/10 border border-ember/20 flex items-center justify-center text-ember">
             <Trophy className="w-4 h-4" />
           </div>
@@ -169,11 +169,11 @@ export function ReviewPage() {
         </div>
 
         {stats.wins.length > 0 ? (
-          <ul className="space-y-3">
+          <ul className="space-y-4">
             {stats.wins.map((win, i) => (
               <li
                 key={i}
-                className="flex items-center gap-3.5 text-sm text-text font-medium bg-surface-2/60 border border-border/60 rounded-xl p-4 hover:border-border transition-all"
+                className="flex items-center gap-4.5 text-sm text-text font-medium bg-surface-2/60 border border-border/60 rounded-xl p-4 hover:border-border transition-all"
               >
                 <div className="w-6 h-6 rounded-lg bg-success/15 border border-success/30 flex items-center justify-center text-success flex-shrink-0">
                   <CheckCircle2 className="w-4 h-4" />
@@ -196,7 +196,7 @@ export function ReviewPage() {
         transition={{ delay: 0.3 }}
         className="bg-surface/95 border border-border/80 rounded-2xl p-7 sm:p-8 shadow-sm"
       >
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
+        <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border/60">
           <div className="w-8 h-8 rounded-xl bg-glow/10 border border-glow/20 flex items-center justify-center text-glow">
             <Target className="w-4 h-4" />
           </div>

@@ -151,7 +151,7 @@ export function DashboardPage() {
                 {getGreeting()}, <span className="text-white/90">{profile?.name || 'User'}</span>
               </h1>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Button
                 onClick={() => navigate('/focus')}
                 variant="outline"
@@ -180,7 +180,7 @@ export function DashboardPage() {
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Timer className="w-16 h-16 text-glow" />
               </div>
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-4 mb-6">
                 <div className="w-10 h-10 rounded-2xl bg-glow/10 flex items-center justify-center text-glow">
                   <Timer className="w-5 h-5" />
                 </div>
@@ -189,7 +189,7 @@ export function DashboardPage() {
                   <p className="text-xs text-text-muted">Focus sessions today</p>
                 </div>
               </div>
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-4">
                 <span className="font-display text-5xl font-bold text-white">{focusMinutesToday}</span>
                 <span className="text-sm font-medium text-text-muted uppercase tracking-widest font-mono">min</span>
               </div>
@@ -200,7 +200,7 @@ export function DashboardPage() {
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <CheckSquare className="w-16 h-16 text-success" />
               </div>
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-4 mb-6">
                 <div className="w-10 h-10 rounded-2xl bg-success/10 flex items-center justify-center text-success">
                   <CheckSquare className="w-5 h-5" />
                 </div>
@@ -214,7 +214,7 @@ export function DashboardPage() {
                   <span className="font-display text-4xl font-bold text-white">{completedToday.length}</span>
                   <span className="text-xl font-medium text-text-muted">/{totalTasksCount}</span>
                 </div>
-                <span className="text-xs font-mono font-bold text-success bg-success/10 px-2.5 py-1 rounded-xl">{taskCompletionPct}%</span>
+                <span className="text-xs font-mono font-bold text-success bg-success/10 px-3 py-1.5 rounded-xl">{taskCompletionPct}%</span>
               </div>
               <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
                 <motion.div className="h-full bg-success" initial={{ width: 0 }} animate={{ width: `${taskCompletionPct}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} />
@@ -226,7 +226,7 @@ export function DashboardPage() {
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Flame className="w-16 h-16 text-ember" />
               </div>
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-4 mb-6">
                 <div className="w-10 h-10 rounded-2xl bg-ember/10 flex items-center justify-center text-ember">
                   <Flame className="w-5 h-5" />
                 </div>
@@ -235,7 +235,7 @@ export function DashboardPage() {
                   <p className="text-xs text-text-muted">Active daily habits</p>
                 </div>
               </div>
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-4">
                 <span className="font-display text-5xl font-bold text-white">{habitStreaks.filter(h => h.streak > 0).length}</span>
                 <span className="text-sm font-medium text-text-muted uppercase tracking-widest font-mono">active</span>
               </div>
@@ -250,7 +250,7 @@ export function DashboardPage() {
               {/* Today's Tasks */}
               <motion.div variants={item}>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-4">
                     <CheckSquare className="w-5 h-5 text-pulse" />
                     Today's Tasks
                   </h2>
@@ -279,7 +279,7 @@ export function DashboardPage() {
                   </button>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {[...todayTasks, ...completedToday].map(task => (
                     <div
                       key={task.id}
@@ -300,7 +300,7 @@ export function DashboardPage() {
                           {task.title}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4">
                          {task.priority === 'urgent' && task.status !== 'done' && (
                           <span className="w-2 h-2 rounded-full bg-danger shadow-[0_0_8px_rgba(239,68,68,0.6)]" title="Urgent" />
                         )}
@@ -325,7 +325,7 @@ export function DashboardPage() {
               {/* Today's Schedule */}
               <motion.div variants={item} className="pt-4">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-4">
                     <CalendarIcon className="w-5 h-5 text-glow" />
                     Today's Schedule
                   </h2>
@@ -352,7 +352,7 @@ export function DashboardPage() {
                               {formatTime(block.startTime)} – {formatTime(block.endTime)}
                             </div>
                           </div>
-                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted bg-black/30 px-2.5 py-1 rounded-lg">
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted bg-black/30 px-3 py-1.5 rounded-lg">
                             {block.category.replace('-', ' ')}
                           </span>
                         </div>
@@ -373,7 +373,7 @@ export function DashboardPage() {
               {/* Active Goals */}
               <motion.div variants={item}>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-4">
                     <Target className="w-5 h-5 text-ember" />
                     Active Goals
                   </h2>
@@ -391,7 +391,7 @@ export function DashboardPage() {
                       <div key={g.id} className="p-5 rounded-2xl bg-surface/30 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all">
                         <div className="flex items-center justify-between mb-4">
                           <h4 className="font-semibold text-white truncate pr-4">{g.title}</h4>
-                          <span className="text-xs font-mono font-bold text-white bg-black/40 px-2.5 py-1 rounded-xl">{pct}%</span>
+                          <span className="text-xs font-mono font-bold text-white bg-black/40 px-3 py-1.5 rounded-xl">{pct}%</span>
                         </div>
                         <div className="w-full h-1.5 bg-black/30 rounded-full overflow-hidden mb-3">
                           <motion.div 
@@ -418,7 +418,7 @@ export function DashboardPage() {
               {/* Top Habits */}
               <motion.div variants={item}>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-4">
                     <Flame className="w-5 h-5 text-ember" />
                     Top Habits
                   </h2>
@@ -427,10 +427,10 @@ export function DashboardPage() {
                   </button>
                 </div>
 
-                <div className="bg-surface/30 backdrop-blur-xl border border-white/5 rounded-3xl p-3">
+                <div className="bg-surface/30 backdrop-blur-xl border border-white/5 rounded-3xl p-4">
                   {habitStreaks.slice(0, 4).map(h => (
-                    <div key={h.id} className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/5 transition-colors group">
-                      <div className="flex items-center gap-3">
+                    <div key={h.id} className="flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-colors group">
+                      <div className="flex items-center gap-4">
                         <div 
                           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                           style={{ backgroundColor: `${h.color || '#00E5FF'}15`, color: h.color || '#00E5FF' }}
@@ -439,7 +439,7 @@ export function DashboardPage() {
                         </div>
                         <span className="text-sm font-medium text-white group-hover:text-glow transition-colors">{h.name}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-ember bg-ember/10 border border-ember/20 px-2.5 py-1.5 rounded-xl">
+                      <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-ember bg-ember/10 border border-ember/20 px-3 py-1.5 rounded-xl">
                         <Flame className="w-3.5 h-3.5 fill-current" />
                         {h.streak}d
                       </div>

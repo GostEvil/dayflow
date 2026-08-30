@@ -218,7 +218,7 @@ export function TasksPage() {
             {tasks.filter(t => t.completedAt && t.completedAt.startsWith(todayStr())).length} completed today
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Button
             onClick={() => setShowNewTask(true)}
             variant="primary"
@@ -252,7 +252,7 @@ export function TasksPage() {
       </div>
 
       {/* Search & Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row gap-4">
         <Input
           icon={<Search className="w-4 h-4" />}
           value={search}
@@ -326,7 +326,7 @@ export function TasksPage() {
               <div>
                 {/* Column Header */}
                 <div className="flex items-center justify-between mb-5 pb-3 border-b border-border/60">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-3.5">
                     <div
                       className={`w-2.5 h-2.5 rounded-full ${
                         status === 'done'
@@ -342,13 +342,13 @@ export function TasksPage() {
                       {STATUS_LABELS[status]}
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-text-muted bg-surface-2 border border-border/50 px-2.5 py-0.5 rounded-lg">
+                  <span className="text-xs font-mono font-bold text-text-muted bg-surface-2 border border-border/50 px-3 py-1.5 rounded-lg">
                     {grouped[status].length}
                   </span>
                 </div>
 
                 {/* Column Task Cards */}
-                <div className="space-y-3.5">
+                <div className="space-y-4">
                   {grouped[status].map(task => (
                     <motion.div
                       key={task.id}
@@ -358,7 +358,7 @@ export function TasksPage() {
                       className="bg-surface-2/70 border border-border/60 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-border hover:bg-surface-2 transition-all duration-200 shadow-xs group"
                       onClick={() => setEditingTask(task)}
                     >
-                      <div className="flex items-start gap-3.5">
+                      <div className="flex items-start gap-4.5">
                         <button
                           onClick={e => {
                             e.stopPropagation();
@@ -381,7 +381,7 @@ export function TasksPage() {
                             {task.title}
                           </div>
                           {task.dueDate && (
-                            <div className="text-xs font-mono text-text-muted mt-2.5 flex items-center gap-1.5 bg-surface-3/70 px-2.5 py-1 rounded-lg w-max border border-border/40">
+                            <div className="text-xs font-mono text-text-muted mt-2.5 flex items-center gap-1.5 bg-surface-3/70 px-3 py-1.5 rounded-lg w-max border border-border/40">
                               <Clock className="w-3.5 h-3.5 text-text-muted" /> {formatDate(task.dueDate)}
                             </div>
                           )}
@@ -389,17 +389,17 @@ export function TasksPage() {
                       </div>
 
                       {/* Card Tags & Metadata */}
-                      <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border/40 flex-wrap">
+                      <div className="flex items-center gap-4 mt-4 pt-3 border-t border-border/40 flex-wrap">
                         <span
-                          className={`px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold uppercase ${PRIORITY_COLORS[task.priority]}`}
+                          className={`px-3 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase ${PRIORITY_COLORS[task.priority]}`}
                         >
                           {task.priority}
                         </span>
-                        <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-mono bg-surface-3 text-text-muted uppercase border border-border/40 font-medium">
+                        <span className="px-3 py-1.5 rounded-lg text-[10px] font-mono bg-surface-3 text-text-muted uppercase border border-border/40 font-medium">
                           {task.category}
                         </span>
                         {task.isInbox && (
-                          <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-mono bg-pulse/15 text-pulse border border-pulse/25 uppercase font-medium">
+                          <span className="px-3 py-1.5 rounded-lg text-[10px] font-mono bg-pulse/15 text-pulse border border-pulse/25 uppercase font-medium">
                             inbox
                           </span>
                         )}
@@ -461,7 +461,7 @@ export function TasksPage() {
                   {STATUS_LABELS[task.status]}
                 </span>
                 <span
-                  className={`hidden sm:block px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold uppercase ${PRIORITY_COLORS[task.priority]}`}
+                  className={`hidden sm:block px-3 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase ${PRIORITY_COLORS[task.priority]}`}
                 >
                   {task.priority}
                 </span>

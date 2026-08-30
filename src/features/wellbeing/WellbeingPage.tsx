@@ -153,7 +153,7 @@ export function WellbeingPage() {
               <h3 className="font-display text-lg font-semibold text-text">Sleep Duration</h3>
               <p className="text-xs text-text-muted">Recorded sleep hours over the last 14 days</p>
             </div>
-            <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-mono text-pulse bg-pulse/10 border border-pulse/20 px-3 py-1.5 rounded-lg">
               Hours / Night
             </span>
           </div>
@@ -175,7 +175,7 @@ export function WellbeingPage() {
               <h3 className="font-display text-lg font-semibold text-text">Energy & Sleep Quality</h3>
               <p className="text-xs text-text-muted">Correlation between rest quality and daytime alertness</p>
             </div>
-            <div className="flex gap-3 text-xs font-mono text-text-muted">
+            <div className="flex gap-4 text-xs font-mono text-text-muted">
               <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-ember rounded-full" /> Energy</span>
               <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-glow rounded-full" /> Quality</span>
             </div>
@@ -217,7 +217,7 @@ export function WellbeingPage() {
               <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold">
                 Sleep Duration
               </label>
-              <span className="text-sm font-mono font-bold text-pulse bg-pulse/10 px-2.5 py-0.5 rounded-lg border border-pulse/20">
+              <span className="text-sm font-mono font-bold text-pulse bg-pulse/10 px-3 py-1.5 rounded-lg border border-pulse/20">
                 {sleepHours}h
               </span>
             </div>
@@ -236,7 +236,7 @@ export function WellbeingPage() {
             <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold mb-2.5 block">
               Sleep Quality (1 to 5)
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-4">
               {[1, 2, 3, 4, 5].map(v => (
                 <button
                   key={v}
@@ -258,7 +258,7 @@ export function WellbeingPage() {
             <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold mb-2.5 block">
               Energy Level (1 to 5)
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-4">
               {[1, 2, 3, 4, 5].map(v => (
                 <button
                   key={v}
@@ -281,7 +281,7 @@ export function WellbeingPage() {
               <label className="text-xs font-mono uppercase tracking-wider text-text-secondary font-semibold">
                 Water Intake
               </label>
-              <span className="text-sm font-mono font-bold text-glow bg-glow/10 px-2.5 py-0.5 rounded-lg border border-glow/20">
+              <span className="text-sm font-mono font-bold text-glow bg-glow/10 px-3 py-1.5 rounded-lg border border-glow/20">
                 {waterIntake} glasses
               </span>
             </div>

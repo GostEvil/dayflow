@@ -55,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-border gap-2">
+        <div className="h-16 flex items-center px-5 border-b border-border gap-4">
           <div className="w-8 h-8 rounded-lg bg-glow/20 flex items-center justify-center">
             <Zap className="w-4 h-4 text-glow" />
           </div>
@@ -78,25 +78,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               to={item.path}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) => `
-                flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                flex items-center gap-4 px-3 py-2.5 rounded-lg text-sm font-medium
                 transition-all duration-200 group
                 ${isActive
-                  ? 'bg-glow/10 text-glow'
+                  ? 'bg-text text-void shadow-sm font-semibold'
                   : 'text-text-muted hover:text-text hover:bg-surface-2'
                 }
               `}
             >
               {({ isActive }) => (
                 <>
-                  <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? 'text-glow' : 'text-text-muted group-hover:text-text'}`} />
+                  <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? 'text-void' : 'text-text-muted group-hover:text-text'}`} />
                   <span>{item.label}</span>
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      className="ml-auto w-1.5 h-1.5 rounded-full bg-glow"
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    />
-                  )}
                 </>
               )}
             </NavLink>
@@ -110,11 +103,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <header className="h-14 lg:h-0 flex lg:hidden items-center px-4 border-b border-border bg-void-2 flex-shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-surface text-text-muted"
+            className="p-3 rounded-lg hover:bg-surface text-text-muted"
           >
             <Menu className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-2 ml-3">
+          <div className="flex items-center gap-4 ml-3">
             <Zap className="w-4 h-4 text-glow" />
             <span className="font-display font-bold text-text">DayFlow</span>
           </div>

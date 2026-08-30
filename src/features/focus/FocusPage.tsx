@@ -131,7 +131,7 @@ export function FocusPage() {
 
           {/* Presets */}
           {!running && !completed && elapsed === 0 && (
-            <div className="flex gap-3 justify-center mb-8">
+            <div className="flex gap-4 justify-center mb-8">
               {PRESETS.map(p => (
                 <button
                   key={p.minutes}
@@ -179,7 +179,7 @@ export function FocusPage() {
           </div>
 
           {/* Task & Goal Linking */}
-          <div className="space-y-3 pt-4 border-t border-border/60 text-left">
+          <div className="space-y-4 pt-4 border-t border-border/60 text-left">
             {!running && elapsed === 0 && (
               <>
                 <Select
@@ -210,8 +210,8 @@ export function FocusPage() {
             )}
 
             {/* Sound Controls */}
-            <div className="flex items-center justify-between gap-3 pt-2">
-              <div className="flex items-center gap-2 flex-1">
+            <div className="flex items-center justify-between gap-4 pt-2">
+              <div className="flex items-center gap-4 flex-1">
                 <Button
                   onClick={() => setSoundEnabled(!soundEnabled)}
                   variant={soundEnabled ? 'secondary' : 'outline'}
@@ -248,9 +248,9 @@ export function FocusPage() {
         {!isFullscreen && (
           <div className="mt-8 bg-surface/95 border border-border/80 rounded-2xl p-7 shadow-sm">
             <div className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">Recent Focus Sessions</div>
-            <div className="space-y-2.5">
+            <div className="space-y-4.5">
               {sessions.slice(0, 5).map(s => (
-                <div key={s.id} className="flex items-center justify-between p-3 bg-surface-2/60 border border-border/60 rounded-xl text-xs">
+                <div key={s.id} className="flex items-center justify-between p-4 bg-surface-2/60 border border-border/60 rounded-xl text-xs">
                   <span className="font-mono text-text font-semibold">{Math.round(s.elapsed / 60)} min session</span>
                   <span className="font-mono text-text-muted">{new Date(s.completedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
