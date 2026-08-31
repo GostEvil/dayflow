@@ -22,6 +22,8 @@ import { GamificationPage } from './features/gamification/GamificationPage';
 import { ReviewPage } from './features/review/ReviewPage';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { OnboardingPage } from './features/onboarding/OnboardingPage';
+import { GarminPage } from './features/garmin/GarminPage';
+import { GarminSubPage } from './features/garmin/GarminSubPage';
 import { useAutoSync } from './hooks/useAutoSync';
 import type { UserProfile } from './types';
 import { STORAGE_KEYS } from './types';
@@ -57,6 +59,8 @@ export default function App() {
           <Route path="/wellbeing" element={<WellbeingPage />} />
           <Route path="/gamification" element={<GamificationPage />} />
           <Route path="/review" element={<ReviewPage />} />
+          <Route path="/garmin" element={<GarminPage />} />
+          <Route path="/garmin/:type" element={<GarminSubPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

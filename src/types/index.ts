@@ -243,5 +243,6 @@ export const DEFAULT_VISIBLE_TABS: Record<string, boolean> = {
   gamification: true,
   review: true,
   settings: true,
+  garmin: true,
 };
 
