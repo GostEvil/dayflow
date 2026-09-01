@@ -9,8 +9,19 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(root, 'data');
 const stateFile = path.join(dataDir, 'sync-state.json');
 const redirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${port}/auth/google/callback`;
-let oauthStates = new Set();
+let oauthStates = new Map(); // state -> timestamp
 
+function addOauthState(state) {
+  if (oauthStates.size > 100) oauthStates.clear();
+  oauthStates.set(state, Date.now());
+}
+
+function verifyOauthState(state) {
+  if (!state || !oauthStates.has(state)) return false;
+  const time = oauthStates.get(state);
+  oauthStates.delete(state);
+  return Date.now() - time < 3600000; // 1 hour expiration
+}
 function defaultSyncChannel() {
   return { lastAttemptAt: null, lastSuccessAt: null, lastError: null };
 }
@@ -18,6 +29,7 @@ function defaultSyncChannel() {
 function defaultState() {
   return {
     googleTokens: null,
+    stravaTokens: null,
     sync: {
       lastSyncAt: null,
       lastError: null,
@@ -134,6 +146,30 @@ async function googleAccessToken(state) {
   return token.access_token;
 }
 
+async function stravaAccessToken(state) {
+  if (!state.stravaTokens) throw new Error('Strava is not connected');
+  if (state.stravaTokens.expiresAt > Date.now() + 60000) return state.stravaTokens.accessToken;
+  if (!state.stravaTokens.refreshToken) throw new Error('Strava session expired; reconnect required');
+  const params = new URLSearchParams({
+    client_id: process.env.STRAVA_CLIENT_ID,
+    client_secret: process.env.STRAVA_CLIENT_SECRET,
+    refresh_token: state.stravaTokens.refreshToken,
+    grant_type: 'refresh_token'
+  });
+  
+  const response = await fetch('https://www.strava.com/oauth/token', { method: 'POST', body: params });
+  const token = await response.json();
+  if (!response.ok) throw new Error(token.message || 'Failed to refresh Strava token');
+
+  state.stravaTokens = {
+    accessToken: token.access_token,
+    refreshToken: token.refresh_token,
+    expiresAt: token.expires_at * 1000 // Strava gives expires_at in seconds since epoch
+  };
+  await writeState(state);
+  return token.access_token;
+}
+
 function eventPayload(block) {
   const timezone = process.env.GOOGLE_TIMEZONE || 'UTC';
   return { summary: block.title, description: `Dayflow block ${block.id}`, start: { dateTime: `${block.date}T${block.startTime}:00`, timeZone: timezone }, end: { dateTime: `${block.date}T${block.endTime}:00`, timeZone: timezone }, extendedProperties: { private: { dayflowId: block.id } } };
@@ -170,7 +206,7 @@ async function handle(req, res) {
   if (req.method === 'GET' && url.pathname === '/auth/google') {
     if (!googleConfigured()) return send(res, 400, { error: 'Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET first' });
     const state = crypto.randomBytes(24).toString('hex');
-    oauthStates.add(state);
+    addOauthState(state);
     const params = new URLSearchParams({ client_id: process.env.GOOGLE_CLIENT_ID, redirect_uri: redirectUri, response_type: 'code', access_type: 'offline', prompt: 'consent', scope: 'https://www.googleapis.com/auth/calendar', state });
     res.writeHead(302, { location: `https://accounts.google.com/o/oauth2/v2/auth?${params}` });
     return res.end();
@@ -179,7 +215,7 @@ async function handle(req, res) {
   if (req.method === 'GET' && url.pathname === '/auth/google/callback') {
     const stateParam = url.searchParams.get('state');
     const code = url.searchParams.get('code');
-    if (!code || !stateParam || !oauthStates.delete(stateParam)) return send(res, 400, { error: 'Invalid OAuth callback' });
+    if (!code || !verifyOauthState(stateParam)) return send(res, 400, { error: 'Invalid OAuth callback or state expired' });
     try {
       const params = new URLSearchParams({ code, client_id: process.env.GOOGLE_CLIENT_ID, client_secret: process.env.GOOGLE_CLIENT_SECRET, redirect_uri: redirectUri, grant_type: 'authorization_code' });
       const token = await googleRequest('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: params });
@@ -187,6 +223,50 @@ async function handle(req, res) {
       current.googleTokens = { accessToken: token.access_token, refreshToken: token.refresh_token || current.googleTokens?.refreshToken || null, expiresAt: Date.now() + token.expires_in * 1000, scope: token.scope || '' };
       await writeState(current);
       res.writeHead(302, { location: process.env.FRONTEND_URL || 'http://localhost:5173/settings?google=connected' });
+      return res.end();
+    } catch (error) { return send(res, 502, { error: error.message }); }
+  }
+
+  if (req.method === 'GET' && url.pathname === '/auth/strava') {
+    if (!process.env.STRAVA_CLIENT_ID || !process.env.STRAVA_CLIENT_SECRET) return send(res, 400, { error: 'Set STRAVA_CLIENT_ID and STRAVA_CLIENT_SECRET in .env first' });
+    const redirectUrl = `http://localhost:${port}/auth/strava/callback`;
+    const state = crypto.randomBytes(24).toString('hex');
+    addOauthState(state);
+    const params = new URLSearchParams({
+      client_id: process.env.STRAVA_CLIENT_ID,
+      redirect_uri: redirectUrl,
+      response_type: 'code',
+      scope: 'activity:read_all',
+      state
+    });
+    res.writeHead(302, { location: `https://www.strava.com/oauth/authorize?${params}` });
+    return res.end();
+  }
+
+  if (req.method === 'GET' && url.pathname === '/auth/strava/callback') {
+    const stateParam = url.searchParams.get('state');
+    const code = url.searchParams.get('code');
+    if (!code || !verifyOauthState(stateParam)) return send(res, 400, { error: 'Invalid OAuth callback or state expired' });
+    try {
+      const redirectUrl = `http://localhost:${port}/auth/strava/callback`;
+      const params = new URLSearchParams({
+        client_id: process.env.STRAVA_CLIENT_ID,
+        client_secret: process.env.STRAVA_CLIENT_SECRET,
+        code,
+        grant_type: 'authorization_code'
+      });
+      const response = await fetch('https://www.strava.com/oauth/token', { method: 'POST', body: params });
+      const token = await response.json();
+      if (!response.ok) throw new Error(token.message || 'Failed to exchange Strava token');
+
+      const current = await readState();
+      current.stravaTokens = {
+        accessToken: token.access_token,
+        refreshToken: token.refresh_token,
+        expiresAt: token.expires_at * 1000
+      };
+      await writeState(current);
+      res.writeHead(302, { location: process.env.FRONTEND_URL || 'http://localhost:5173/garmin' });
       return res.end();
     } catch (error) { return send(res, 502, { error: error.message }); }
   }
@@ -241,6 +321,80 @@ async function handle(req, res) {
       await writeState(state);
       return send(res, 502, { error: error.message });
     }
+  }
+
+// Global Garmin Client to reuse session and prevent rate limits
+let globalGarminClient = null;
+
+async function getGarminClient() {
+  if (globalGarminClient) return globalGarminClient;
+  if (!process.env.GARMIN_USERNAME || !process.env.GARMIN_PASSWORD) return null;
+  
+  const gc = await import('garmin-connect');
+  const GarminConnect = gc.default.GarminConnect || gc.GarminConnect;
+  globalGarminClient = new GarminConnect({ username: process.env.GARMIN_USERNAME, password: process.env.GARMIN_PASSWORD });
+  await globalGarminClient.login();
+  return globalGarminClient;
+}
+
+  if (req.method === 'GET' && url.pathname === '/api/garmin/summary') {
+    let garminData = { profile: null, sleep: null, steps: null, hr: null, activities: null };
+    let stravaActivities = null;
+    let garminError = null;
+    let stravaError = null;
+
+    // 1. Fetch Garmin Data (if credentials exist)
+    if (process.env.GARMIN_USERNAME && process.env.GARMIN_PASSWORD) {
+      try {
+        const GCClient = await getGarminClient();
+        if (GCClient) {
+          const date = new Date();
+          const [profile, sleep, steps, hr, activities] = await Promise.all([
+            GCClient.getUserProfile().catch(e => { console.error('Profile Error:', e.message); return null; }),
+            GCClient.getSleepData(date).catch(e => { console.error('Sleep Error:', e.message); return null; }),
+            GCClient.getSteps(date).catch(e => { console.error('Steps Error:', e.message); return null; }),
+            GCClient.getHeartRate(date).catch(e => { console.error('HR Error:', e.message); return null; }),
+            GCClient.getActivities(0, 5).catch(e => { console.error('Activities Error:', e.message); return null; })
+          ]);
+          garminData = { profile, sleep, steps, hr, activities };
+          console.log('Garmin sync completed.');
+        }
+      } catch (error) {
+        console.error('Garmin API error (login failed or rate limited):', error.message);
+        garminError = error.message;
+        globalGarminClient = null; // reset client on login failure
+      }
+    }
+
+    // 2. Fetch Strava Data (if connected)
+    const state = await readState();
+    if (state.stravaTokens) {
+      try {
+        const token = await stravaAccessToken(state);
+        const res = await fetch('https://www.strava.com/api/v3/athlete/activities?per_page=5', {
+          headers: { authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          stravaActivities = await res.json();
+          console.log('Strava sync completed.');
+        } else {
+          stravaError = 'Failed to fetch Strava activities';
+        }
+      } catch (error) {
+        console.error('Strava API error:', error.message);
+        stravaError = error.message;
+      }
+    }
+
+    return send(res, 200, {
+      ...garminData,
+      stravaActivities,
+      errors: {
+        garmin: garminError,
+        strava: stravaError,
+        stravaConnected: Boolean(state.stravaTokens)
+      }
+    });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/notion/tasks') {

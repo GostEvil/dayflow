@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sync": "node server/sync-server.mjs",
+    "sync": "node --env-file=.env server/sync-server.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -18,6 +18,7 @@
     "@react-three/fiber": "^9.7.0",
     "date-fns": "^4.4.0",
     "framer-motion": "^13.1.0",
+    "garmin-connect": "^1.6.2",
     "lucide-react": "^1.31.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
