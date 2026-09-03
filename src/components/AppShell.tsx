@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, CheckSquare, Repeat, Target, Calendar,
   Timer, BookOpen, BarChart3, Lightbulb, Heart, Trophy,
-  ClipboardList, Settings, Menu, X, Zap, Activity
+  ClipboardList, Settings, Menu, X, Zap, Activity, User
 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { STORAGE_KEYS, DEFAULT_VISIBLE_TABS } from '../types';

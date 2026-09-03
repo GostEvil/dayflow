@@ -17,7 +17,7 @@ export function GarminDashboard() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:8787/api/garmin/summary');
+      const res = await fetch(`http://${window.location.hostname}:8787/api/garmin/summary`);
       const json = await res.json();
       if (json.error) throw new Error(json.error);
       setData(json);
@@ -105,7 +105,7 @@ export function GarminDashboard() {
   }
 
   const handleConnectStrava = () => {
-    window.location.href = 'http://localhost:8787/auth/strava';
+    window.location.href = `http://${window.location.hostname}:8787/auth/strava`;
   };
 
   return (

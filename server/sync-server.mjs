@@ -111,7 +111,8 @@ async function writeState(state) {
 }
 
 function send(res, status, body) {
-  res.writeHead(status, { 'content-type': 'application/json', 'access-control-allow-origin': process.env.FRONTEND_ORIGIN || 'http://localhost:5173', 'access-control-allow-headers': 'content-type', 'access-control-allow-methods': 'GET,POST,DELETE,OPTIONS' });
+  const origin = '*';
+  res.writeHead(status, { 'content-type': 'application/json', 'access-control-allow-origin': origin, 'access-control-allow-headers': 'content-type', 'access-control-allow-methods': 'GET,POST,DELETE,OPTIONS' });
   res.end(JSON.stringify(body));
 }
 
