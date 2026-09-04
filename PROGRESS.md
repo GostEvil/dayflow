@@ -4,6 +4,8 @@
 
 Make Dayflow a local-first personal hub that can reconcile tasks and calendar blocks with Notion and Google Calendar, without paid APIs or recurring infrastructure costs.
 
+daily commit :D
+
 ## Current status
 
 - [x] Local-first app with tasks, planner blocks, settings, export/import and backups.
